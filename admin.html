@@ -1,0 +1,1575 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administración | Eco Conexión Calima</title>
+    <link rel="icon" type="image/webp" href="assets/LOGO.webp">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --forest-950: #08110d;
+            --forest-900: #0d1914;
+            --forest-800: #13251d;
+            --forest-700: #1c3428;
+            --forest-500: #2d7355;
+            --forest-400: #49a874;
+            --mint-300: #89d7ac;
+            --sand-400: #dba35f;
+            --sand-300: #f0c88d;
+            --cyan-400: #41b7bf;
+            --red-400: #f16f63;
+            --white: #ffffff;
+            --text-main: #edf7ef;
+            --text-soft: #afc7b6;
+            --text-muted: #7f9887;
+            --line-soft: rgba(255, 255, 255, 0.09);
+            --surface-strong: rgba(14, 28, 21, 0.9);
+            --surface-card: rgba(16, 34, 25, 0.74);
+            --surface-card-hover: rgba(22, 44, 33, 0.9);
+            --surface-glass: rgba(255, 255, 255, 0.05);
+            --shadow-xl: 0 26px 70px rgba(0, 0, 0, 0.34);
+            --shadow-lg: 0 18px 45px rgba(0, 0, 0, 0.25);
+            --radius-sm: 14px;
+            --radius-md: 20px;
+            --radius-lg: 28px;
+            --font-main: 'Outfit', sans-serif;
+            --transition: all 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-main);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background:
+                radial-gradient(circle at top left, rgba(73, 168, 116, 0.14), transparent 34%),
+                radial-gradient(circle at 85% 10%, rgba(65, 183, 191, 0.16), transparent 28%),
+                linear-gradient(180deg, #07100b 0%, #0a1610 34%, #0d1914 100%);
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before,
+        body::after {
+            content: "";
+            position: fixed;
+            inset: auto;
+            border-radius: 999px;
+            pointer-events: none;
+            filter: blur(10px);
+            z-index: -1;
+        }
+
+        body::before {
+            width: 340px;
+            height: 340px;
+            top: 110px;
+            left: -90px;
+            background: rgba(73, 168, 116, 0.1);
+        }
+
+        body::after {
+            width: 380px;
+            height: 380px;
+            right: -120px;
+            bottom: 60px;
+            background: rgba(219, 163, 95, 0.08);
+        }
+
+        #lock-screen {
+            position: fixed;
+            inset: 0;
+            background:
+                linear-gradient(160deg, rgba(8, 17, 13, 0.92), rgba(8, 17, 13, 0.98)),
+                radial-gradient(circle at top, rgba(73, 168, 116, 0.18), transparent 45%);
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 24px;
+            transition: var(--transition);
+        }
+
+        .lock-container {
+            width: min(440px, 100%);
+            padding: 42px;
+            border-radius: var(--radius-lg);
+            background: rgba(13, 25, 20, 0.86);
+            border: 1px solid rgba(255, 255, 255, 0.09);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            box-shadow: var(--shadow-xl);
+            text-align: center;
+        }
+
+        .lock-logo {
+            height: 78px;
+            margin-bottom: 22px;
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 14px;
+            border-radius: 999px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.04);
+            color: var(--mint-300);
+            font-size: 0.78rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            margin-bottom: 18px;
+        }
+
+        .lock-title {
+            font-size: 1.7rem;
+            font-weight: 700;
+            color: var(--white);
+            margin-bottom: 10px;
+        }
+
+        .lock-description {
+            color: var(--text-soft);
+            font-size: 0.96rem;
+            line-height: 1.6;
+            margin-bottom: 24px;
+        }
+
+        .lock-input,
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 14px 16px;
+            border-radius: var(--radius-sm);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--white);
+            font-family: inherit;
+            font-size: 0.96rem;
+            outline: none;
+            transition: var(--transition);
+        }
+
+        .lock-input {
+            margin-bottom: 18px;
+            text-align: center;
+        }
+
+        .lock-input:focus,
+        input:focus,
+        select:focus,
+        textarea:focus {
+            border-color: rgba(137, 215, 172, 0.55);
+            box-shadow: 0 0 0 4px rgba(73, 168, 116, 0.15);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            min-height: 46px;
+            padding: 12px 18px;
+            border-radius: var(--radius-sm);
+            border: none;
+            font-family: inherit;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+        }
+
+        .btn:hover {
+            transform: translateY(-1px);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--sand-400), var(--sand-300));
+            color: #1b1407;
+            box-shadow: 0 14px 28px rgba(219, 163, 95, 0.18);
+        }
+
+        .btn-primary:hover {
+            box-shadow: 0 18px 32px rgba(219, 163, 95, 0.24);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: var(--text-main);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .btn-danger {
+            min-height: 38px;
+            padding: 8px 12px;
+            background: rgba(241, 111, 99, 0.12);
+            border: 1px solid rgba(241, 111, 99, 0.24);
+            color: #ffd2cd;
+        }
+
+        .btn-danger:hover {
+            background: rgba(241, 111, 99, 0.2);
+        }
+
+        .lock-btn {
+            width: 100%;
+        }
+
+        .lock-error {
+            display: none;
+            margin-top: 16px;
+            color: #ffb8af;
+            font-size: 0.92rem;
+        }
+
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            padding: 18px 30px;
+            background: rgba(8, 17, 13, 0.82);
+            border-bottom: 1px solid var(--line-soft);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+        }
+
+        .header-left,
+        .header-right,
+        .brand-block,
+        .header-meta {
+            display: flex;
+            align-items: center;
+        }
+
+        .header-left {
+            gap: 16px;
+        }
+
+        .brand-block {
+            gap: 14px;
+        }
+
+        .logo-img {
+            height: 58px;
+        }
+
+        .brand-copy {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .brand-kicker {
+            color: var(--mint-300);
+            font-size: 0.73rem;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+        }
+
+        .header-title {
+            color: var(--white);
+            font-size: 1.35rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+        }
+
+        .header-subtitle {
+            color: var(--text-soft);
+            font-size: 0.9rem;
+        }
+
+        .header-meta {
+            gap: 12px;
+        }
+
+        .meta-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 14px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: var(--text-soft);
+            font-size: 0.88rem;
+        }
+
+        .icon {
+            width: 18px;
+            height: 18px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: currentColor;
+            flex-shrink: 0;
+        }
+
+        .icon svg {
+            width: 100%;
+            height: 100%;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 1.8;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .header-right {
+            gap: 12px;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+
+        .container {
+            width: min(1320px, 100%);
+            margin: 0 auto;
+            padding: 30px 22px 40px;
+            flex: 1;
+        }
+
+        .card-panel,
+        .stat-card {
+            background: var(--surface-card);
+            border: 1px solid var(--line-soft);
+            box-shadow: var(--shadow-lg);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+        }
+
+        .hero-actions,
+        .hero-metrics,
+        .tabs-nav,
+        .panel-tools,
+        .filter-group,
+        .panel-actions,
+        .form-actions,
+        .footer-badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .metric-chip {
+            min-width: 150px;
+            padding: 14px 16px;
+            border-radius: 18px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .metric-label {
+            display: block;
+            color: var(--text-muted);
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            margin-bottom: 7px;
+        }
+
+        .metric-value {
+            color: var(--white);
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 18px;
+            margin-bottom: 28px;
+        }
+
+        .stat-card {
+            border-radius: 24px;
+            padding: 22px;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: "";
+            position: absolute;
+            inset: 0 auto auto 0;
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, rgba(255, 255, 255, 0.24), transparent);
+            opacity: 0.7;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            background: var(--surface-card-hover);
+        }
+
+        .stat-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 18px;
+        }
+
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 16px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.06);
+            color: var(--white);
+        }
+
+        .stat-pill {
+            padding: 6px 10px;
+            border-radius: 999px;
+            font-size: 0.76rem;
+            color: var(--text-soft);
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .stat-number {
+            font-size: 2.4rem;
+            font-weight: 800;
+            line-height: 1;
+            color: var(--white);
+            margin-bottom: 8px;
+        }
+
+        .stat-label {
+            color: var(--text-soft);
+            font-size: 0.95rem;
+            margin-bottom: 4px;
+        }
+
+        .stat-note {
+            color: var(--text-muted);
+            font-size: 0.82rem;
+        }
+
+        .tabs-nav {
+            margin-bottom: 24px;
+            padding: 10px;
+            border-radius: 22px;
+            background: rgba(255, 255, 255, 0.035);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+        }
+
+        .tab-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 18px;
+            border: none;
+            border-radius: 16px;
+            background: transparent;
+            color: var(--text-soft);
+            font-family: inherit;
+            font-size: 0.96rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .tab-btn:hover {
+            color: var(--white);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .tab-btn.active {
+            color: #0b130f;
+            background: linear-gradient(135deg, var(--mint-300), #d6f0df);
+            box-shadow: 0 16px 28px rgba(137, 215, 172, 0.16);
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.4s ease forwards;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .card-panel {
+            border-radius: var(--radius-lg);
+            padding: 28px;
+            margin-bottom: 24px;
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 20px;
+            margin-bottom: 22px;
+            flex-wrap: wrap;
+        }
+
+        .panel-title-block {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .panel-title {
+            font-size: 1.45rem;
+            color: var(--white);
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        .panel-subtitle {
+            color: var(--text-soft);
+            max-width: 62ch;
+            line-height: 1.6;
+            font-size: 0.94rem;
+        }
+
+        .panel-tools {
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 18px;
+        }
+
+        .filter-group {
+            flex: 1;
+            min-width: min(100%, 460px);
+        }
+
+        .filter-field {
+            position: relative;
+            flex: 1;
+            min-width: 220px;
+        }
+
+        .filter-field .icon {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+        }
+
+        .filter-field input,
+        .filter-field select {
+            padding-left: 44px;
+        }
+
+        .table-shell {
+            border-radius: 22px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            overflow: hidden;
+            background: rgba(0, 0, 0, 0.12);
+        }
+
+        .table-wrap {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 900px;
+        }
+
+        thead {
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        th,
+        td {
+            padding: 16px 18px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            vertical-align: middle;
+        }
+
+        th {
+            color: var(--mint-300);
+            font-size: 0.8rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+        tbody tr {
+            transition: var(--transition);
+        }
+
+        tbody tr:hover {
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .col-image {
+            width: 72px;
+            height: 54px;
+            border-radius: 12px;
+            object-fit: cover;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .service-name {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .service-name strong {
+            color: var(--white);
+            font-size: 0.98rem;
+        }
+
+        .service-name span {
+            color: var(--text-soft);
+            font-size: 0.84rem;
+        }
+
+        .col-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            border-radius: 999px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            border: 1px solid transparent;
+        }
+
+        .col-badge.alojamiento {
+            color: #d9f6e4;
+            background: rgba(73, 168, 116, 0.12);
+            border-color: rgba(73, 168, 116, 0.22);
+        }
+
+        .col-badge.pasadia {
+            color: #ffe6c3;
+            background: rgba(219, 163, 95, 0.12);
+            border-color: rgba(219, 163, 95, 0.24);
+        }
+
+        .col-badge.deportes {
+            color: #d0fbff;
+            background: rgba(65, 183, 191, 0.14);
+            border-color: rgba(65, 183, 191, 0.24);
+        }
+
+        .col-badge.paquetes {
+            color: #dce7ff;
+            background: rgba(114, 152, 226, 0.14);
+            border-color: rgba(114, 152, 226, 0.25);
+        }
+
+        .system-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-muted);
+            font-size: 0.84rem;
+        }
+
+        .price-stack,
+        .capacity-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .price-stack strong,
+        .capacity-stack strong {
+            color: var(--white);
+        }
+
+        .price-stack span,
+        .capacity-stack span {
+            color: var(--text-muted);
+            font-size: 0.82rem;
+        }
+
+        .empty-state {
+            display: none;
+            padding: 36px 22px;
+            text-align: center;
+            color: var(--text-soft);
+        }
+
+        .empty-state.visible {
+            display: block;
+        }
+
+        .empty-state .icon {
+            width: 38px;
+            height: 38px;
+            margin: 0 auto 14px;
+            color: var(--text-muted);
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 22px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .form-group label {
+            color: var(--text-main);
+            font-size: 0.92rem;
+            font-weight: 600;
+        }
+
+        .field-note {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            line-height: 1.5;
+        }
+
+        .form-section {
+            grid-column: 1 / -1;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 18px;
+            margin-top: 6px;
+            padding-top: 6px;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .form-section-title {
+            color: var(--white);
+            font-size: 1.02rem;
+            font-weight: 700;
+        }
+
+        .form-section-copy {
+            color: var(--text-soft);
+            font-size: 0.88rem;
+        }
+
+        .checkbox-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 12px;
+            padding: 16px;
+            border-radius: 18px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 14px;
+            border-radius: 14px;
+            background: rgba(255, 255, 255, 0.03);
+            color: var(--text-soft);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .checkbox-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-main);
+        }
+
+        .checkbox-item input {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--forest-400);
+            cursor: pointer;
+        }
+
+        .form-actions {
+            justify-content: flex-end;
+            margin-top: 6px;
+        }
+
+        .json-textarea {
+            min-height: 420px;
+            resize: vertical;
+            font-family: Consolas, Monaco, monospace;
+            font-size: 0.85rem;
+            line-height: 1.65;
+            background: rgba(3, 8, 5, 0.86);
+            color: #bde8ca;
+        }
+
+        .copy-success {
+            display: none;
+            align-items: center;
+            gap: 8px;
+            color: var(--mint-300);
+            font-size: 0.9rem;
+        }
+
+        .copy-success.visible {
+            display: inline-flex;
+        }
+
+        .helper-note {
+            padding: 16px 18px;
+            border-radius: 18px;
+            background: rgba(65, 183, 191, 0.08);
+            border: 1px solid rgba(65, 183, 191, 0.16);
+            color: var(--text-soft);
+            line-height: 1.65;
+            font-size: 0.92rem;
+        }
+
+        .footer-badges {
+            justify-content: center;
+            margin-bottom: 14px;
+        }
+
+        footer {
+            margin-top: auto;
+            padding: 28px 22px 36px;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            background: rgba(7, 14, 10, 0.5);
+        }
+
+        .toast {
+            position: fixed;
+            right: 22px;
+            bottom: 22px;
+            z-index: 120;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 16px;
+            border-radius: 16px;
+            background: rgba(10, 22, 16, 0.94);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: var(--shadow-lg);
+            color: var(--white);
+            opacity: 0;
+            transform: translateY(18px);
+            pointer-events: none;
+            transition: var(--transition);
+        }
+
+        .toast.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .toast.success {
+            border-color: rgba(73, 168, 116, 0.3);
+        }
+
+        .toast.error {
+            border-color: rgba(241, 111, 99, 0.3);
+        }
+
+        .toast .icon {
+            color: var(--mint-300);
+        }
+
+        @media (max-width: 1024px) {
+            .panel-header,
+            .panel-tools,
+            .form-section {
+                flex-direction: column;
+                align-items: stretch;
+            }
+        }
+
+        @media (max-width: 768px) {
+            header {
+                padding: 16px 18px;
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .header-left,
+            .header-right {
+                justify-content: space-between;
+            }
+
+            .container {
+                padding: 20px 14px 30px;
+            }
+
+            .lock-container,
+            .card-panel {
+                padding: 22px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .filter-group,
+            .filter-field {
+                min-width: 100%;
+            }
+
+            .tabs-nav {
+                padding: 8px;
+            }
+
+            .tab-btn {
+                width: 100%;
+                justify-content: flex-start;
+            }
+
+            .toast {
+                left: 14px;
+                right: 14px;
+                bottom: 14px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="lock-screen">
+        <div class="lock-container">
+            <img src="assets/LOGO.webp" alt="Logo Eco Conexión" class="lock-logo">
+            <div class="eyebrow">
+                <span class="icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><path d="M12 3l7 4v5c0 4.5-2.9 8.6-7 9-4.1-.4-7-4.5-7-9V7l7-4z"></path><path d="M9.5 12.5l1.8 1.8 3.7-4.3"></path></svg>
+                </span>
+                Acceso Seguro
+            </div>
+            <h2 class="lock-title">Partner Central</h2>
+            <p class="lock-description">Gestiona servicios, actualiza el inventario turístico y exporta la base de datos desde una interfaz más clara y profesional.</p>
+            <input type="password" id="password-input" class="lock-input" placeholder="Ingresa la contraseña" autocomplete="current-password">
+            <button id="unlock-btn" class="btn btn-primary lock-btn">Desbloquear panel</button>
+            <div id="lock-error" class="lock-error">Contraseña incorrecta. Pista: es "calima2026"</div>
+        </div>
+    </div>
+
+    <header>
+        <div class="header-left">
+            <div class="brand-block">
+                <img src="assets/LOGO.webp" alt="Logo Eco Conexión" class="logo-img">
+                <div class="brand-copy">
+                    <span class="brand-kicker">Centro de operaciones</span>
+                    <span class="header-title">Partner Central</span>
+                    <span class="header-subtitle">Panel administrativo de Eco Conexión Calima</span>
+                </div>
+            </div>
+        </div>
+        <div class="header-right">
+            <div class="meta-pill">
+                <span class="icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><path d="M12 20h9"></path><path d="M12 4h9"></path><path d="M4 9h16"></path><path d="M6 4v16"></path></svg>
+                </span>
+                <span id="header-total-count">0 servicios activos</span>
+            </div>
+            <a href="index.html" class="btn btn-secondary">
+                <span class="icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><path d="M3 12h18"></path><path d="M13 5l7 7-7 7"></path></svg>
+                </span>
+                Ir a la web
+            </a>
+            <button id="logout-btn" class="btn btn-secondary">
+                <span class="icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><path d="M16 17l5-5-5-5"></path><path d="M21 12H9"></path></svg>
+                </span>
+                Cerrar sesión
+            </button>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="stats-grid">
+            <article class="stat-card">
+                <div class="stat-top">
+                    <span class="stat-icon" aria-hidden="true">
+                        <span class="icon"><svg viewBox="0 0 24 24"><path d="M3 21V7l9-4 9 4v14"></path><path d="M9 21v-6h6v6"></path></svg></span>
+                    </span>
+                    <span class="stat-pill">Hospedaje</span>
+                </div>
+                <div class="stat-number" id="stat-alojamiento">0</div>
+                <div class="stat-label">Alojamientos</div>
+                <div class="stat-note">Hoteles, glampings y cabañas activas</div>
+            </article>
+            <article class="stat-card">
+                <div class="stat-top">
+                    <span class="stat-icon" aria-hidden="true">
+                        <span class="icon"><svg viewBox="0 0 24 24"><path d="M12 3c4 0 7 3.1 7 7.5 0 5.2-7 10.5-7 10.5S5 15.7 5 10.5C5 6.1 8 3 12 3z"></path><path d="M12 13a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z"></path></svg></span>
+                    </span>
+                    <span class="stat-pill">Naturaleza</span>
+                </div>
+                <div class="stat-number" id="stat-pasadia">0</div>
+                <div class="stat-label">Pasadías</div>
+                <div class="stat-note">Experiencias de ecoturismo y descanso</div>
+            </article>
+            <article class="stat-card">
+                <div class="stat-top">
+                    <span class="stat-icon" aria-hidden="true">
+                        <span class="icon"><svg viewBox="0 0 24 24"><path d="M4 18c2.5-2.3 5.2-3.5 8-3.5 2.7 0 5.4 1.2 8 3.5"></path><path d="M8 10c1.2-2.8 2.5-4.7 4-5.5 1.6.8 2.9 2.7 4 5.5"></path><path d="M10.5 10h3"></path></svg></span>
+                    </span>
+                    <span class="stat-pill">Aventura</span>
+                </div>
+                <div class="stat-number" id="stat-deportes">0</div>
+                <div class="stat-label">Deportes</div>
+                <div class="stat-note">Actividades acuáticas y adrenalina</div>
+            </article>
+            <article class="stat-card">
+                <div class="stat-top">
+                    <span class="stat-icon" aria-hidden="true">
+                        <span class="icon"><svg viewBox="0 0 24 24"><path d="M21 8.5V18a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8.5"></path><path d="M1 8l4.5-5h13L23 8"></path><path d="M9 13h6"></path></svg></span>
+                    </span>
+                    <span class="stat-pill">Bundle</span>
+                </div>
+                <div class="stat-number" id="stat-paquetes">0</div>
+                <div class="stat-label">Paquetes</div>
+                <div class="stat-note">Planes completos listos para vender</div>
+            </article>
+        </section>
+
+        <nav class="tabs-nav">
+            <button class="tab-btn active" data-tab="listado">
+                <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 6h13"></path><path d="M8 12h13"></path><path d="M8 18h13"></path><path d="M3 6h.01"></path><path d="M3 12h.01"></path><path d="M3 18h.01"></path></svg></span>
+                Servicios registrados
+            </button>
+            <button class="tab-btn" data-tab="nuevo">
+                <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 5v14"></path><path d="M5 12h14"></path></svg></span>
+                Registrar nuevo servicio
+            </button>
+            <button class="tab-btn" data-tab="desarrollo">
+                <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3v12"></path><path d="M7 10l5 5 5-5"></path><path d="M5 21h14"></path></svg></span>
+                Exportar base de datos
+            </button>
+        </nav>
+
+        <section id="tab-listado" class="tab-content active">
+            <div class="card-panel">
+                <div class="panel-header">
+                    <div class="panel-title-block">
+                        <h2 class="panel-title">Catálogo activo</h2>
+                        <p class="panel-subtitle">Visualiza todos los servicios, aplica filtros al instante y detecta rápidamente qué registros vienen del sistema o fueron agregados manualmente.</p>
+                    </div>
+                    <div class="panel-actions">
+                        <span id="total-count-lbl" class="meta-pill">Cargando servicios...</span>
+                    </div>
+                </div>
+                <div class="panel-tools">
+                    <div class="filter-group">
+                        <div class="filter-field">
+                            <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-3.5-3.5"></path></svg></span>
+                            <input type="search" id="service-search" placeholder="Buscar por nombre, subtítulo o categoría">
+                        </div>
+                        <div class="filter-field">
+                            <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 6h16"></path><path d="M7 12h10"></path><path d="M10 18h4"></path></svg></span>
+                            <select id="service-category-filter">
+                                <option value="all">Todas las categorías</option>
+                                <option value="alojamiento">Alojamiento</option>
+                                <option value="pasadia">Pasadía</option>
+                                <option value="deportes">Deportes</option>
+                                <option value="paquetes">Paquetes</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button id="clear-filters-btn" class="btn btn-secondary">
+                        <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 6h18"></path><path d="M8 6V4h8v2"></path><path d="M19 6l-1 14H6L5 6"></path><path d="M10 11v5"></path><path d="M14 11v5"></path></svg></span>
+                        Limpiar filtros
+                    </button>
+                </div>
+                <div class="table-shell">
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Imagen</th>
+                                    <th>Servicio</th>
+                                    <th>Categoría</th>
+                                    <th>Precio base</th>
+                                    <th>Capacidad</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="services-table-body"></tbody>
+                        </table>
+                    </div>
+                    <div id="services-empty-state" class="empty-state">
+                        <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><path d="M9.5 9.5l5 5"></path><path d="M14.5 9.5l-5 5"></path></svg></span>
+                        <strong>No hay resultados para los filtros actuales.</strong>
+                        <p>Ajusta la búsqueda o restablece los filtros para volver a ver el catálogo completo.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="tab-nuevo" class="tab-content">
+            <div class="card-panel">
+                <div class="panel-header">
+                    <div class="panel-title-block">
+                        <h2 class="panel-title">Registrar nuevo servicio</h2>
+                        <p class="panel-subtitle">Completa la información comercial del hotel, pasadía o experiencia. El formulario ahora está organizado para que el equipo cargue datos con menos fricción.</p>
+                    </div>
+                </div>
+                <form id="new-service-form">
+                    <div class="form-grid">
+                        <div class="form-section">
+                            <div>
+                                <div class="form-section-title">Información principal</div>
+                                <div class="form-section-copy">Datos clave para mostrar el servicio en el buscador y en el panel.</div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="p-title">Nombre del hotel o plan *</label>
+                            <input type="text" id="p-title" required placeholder="Ej: Glamping Domo Estelar">
+                        </div>
+                        <div class="form-group">
+                            <label for="p-category">Categoría de servicio *</label>
+                            <select id="p-category" required>
+                                <option value="" disabled selected>Selecciona una opción</option>
+                                <option value="alojamiento">Alojamiento</option>
+                                <option value="pasadia">Pasadía o ecoturismo</option>
+                                <option value="deportes">Deportes acuáticos o aventura</option>
+                                <option value="paquetes">Paquete todo incluido</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="p-subtitle">Eslogan o subtítulo corto *</label>
+                            <input type="text" id="p-subtitle" required placeholder="Ej: Jacuzzi privado y vista increíble">
+                        </div>
+                        <div class="form-group">
+                            <label for="p-image">URL de imagen principal *</label>
+                            <input type="url" id="p-image" required placeholder="Ej: https://images.unsplash.com/..." value="https://images.unsplash.com/photo-1533759413974-9e15f3b745ac?q=80&w=800">
+                            <span class="field-note">Usa una imagen horizontal de buena calidad para que se vea mejor en la tabla y en la web.</span>
+                        </div>
+
+                        <div class="form-section">
+                            <div>
+                                <div class="form-section-title">Condiciones comerciales</div>
+                                <div class="form-section-copy">Precio, tipo de cobro y capacidad para calcular mejor las reservas.</div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="p-price">Precio base (COP) *</label>
+                            <input type="number" id="p-price" required placeholder="Ej: 250000" min="0">
+                        </div>
+                        <div class="form-group">
+                            <label for="p-pricetype">Tipo de cobro *</label>
+                            <select id="p-pricetype" required>
+                                <option value="night">Por noche</option>
+                                <option value="person">Por persona</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="p-maxguests">Capacidad máxima *</label>
+                            <input type="number" id="p-maxguests" required placeholder="Ej: 4" min="1" value="4">
+                        </div>
+                        <div class="form-group">
+                            <label for="p-childrate">Descuento niños (0.0 a 1.0) *</label>
+                            <input type="number" id="p-childrate" required min="0" max="1" step="0.1" value="0.5" placeholder="Ej: 0.5 para 50 por ciento de descuento">
+                        </div>
+
+                        <div class="form-section">
+                            <div>
+                                <div class="form-section-title">Atributos del servicio</div>
+                                <div class="form-section-copy">Selecciona comodidades y extras disponibles para enriquecer la ficha comercial.</div>
+                            </div>
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label>Comodidades y características *</label>
+                            <div class="checkbox-group" id="features-checkboxes">
+                                <label class="checkbox-item"><input type="checkbox" value="Vista al Lago" checked> Vista al Lago</label>
+                                <label class="checkbox-item"><input type="checkbox" value="Jacuzzi Privado" checked> Jacuzzi Privado</label>
+                                <label class="checkbox-item"><input type="checkbox" value="Piscina"> Piscina</label>
+                                <label class="checkbox-item"><input type="checkbox" value="Desayuno Incluido" checked> Desayuno Incluido</label>
+                                <label class="checkbox-item"><input type="checkbox" value="Wifi Premium" checked> Wifi Premium</label>
+                                <label class="checkbox-item"><input type="checkbox" value="Cocina Equipada"> Cocina Equipada</label>
+                                <label class="checkbox-item"><input type="checkbox" value="Malla Catamarán"> Malla Catamarán</label>
+                                <label class="checkbox-item"><input type="checkbox" value="Guía Certificado"> Guía certificado</label>
+                                <label class="checkbox-item"><input type="checkbox" value="Seguro Médico"> Seguro médico</label>
+                            </div>
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label>Servicios adicionales disponibles</label>
+                            <div class="checkbox-group" id="addons-checkboxes"></div>
+                        </div>
+
+                        <div class="form-group full-width form-actions">
+                            <button type="submit" class="btn btn-primary">
+                                <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12l4 4L19 6"></path></svg></span>
+                                Registrar servicio en el buscador
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <section id="tab-desarrollo" class="tab-content">
+            <div class="card-panel">
+                <div class="panel-header">
+                    <div class="panel-title-block">
+                        <h2 class="panel-title">Exportar base de datos</h2>
+                        <p class="panel-subtitle">Genera un bloque listo para compartir con desarrollo o para reemplazar manualmente la lista inicial de productos.</p>
+                    </div>
+                    <div class="panel-actions">
+                        <span id="copy-feedback" class="copy-success">
+                            <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12l4 4L19 6"></path></svg></span>
+                            Copiado al portapapeles
+                        </span>
+                        <button id="copy-json-btn" class="btn btn-primary">
+                            <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 7V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-2"></path><rect x="4" y="7" width="12" height="14" rx="2"></rect></svg></span>
+                            Copiar código
+                        </button>
+                    </div>
+                </div>
+                <div class="helper-note">Este bloque incluye la base de datos completa de servicios, incluyendo registros nuevos creados desde este panel. Puedes enviarlo al desarrollador o reemplazar el contenido de <code>booking-data.js</code> para conservar los cambios.</div>
+                <div style="height: 18px;"></div>
+                <textarea class="json-textarea" id="json-output-area" readonly></textarea>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-badges">
+            <span class="meta-pill">Vista administrativa renovada</span>
+            <span class="meta-pill">Interacción más clara</span>
+            <span class="meta-pill">Iconografía profesional</span>
+        </div>
+        <p>&copy; 2026 Eco Conexión Calima. Central de gestión de turismo y alojamiento.</p>
+    </footer>
+
+    <div id="toast" class="toast success" role="status" aria-live="polite">
+        <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12l4 4L19 6"></path></svg></span>
+        <span id="toast-message">Operación completada</span>
+    </div>
+
+    <script src="booking-data.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const categoryLabels = {
+                alojamiento: 'Alojamiento',
+                pasadia: 'Pasadía',
+                deportes: 'Deportes',
+                paquetes: 'Paquetes'
+            };
+
+            const lockScreen = document.getElementById('lock-screen');
+            const passInput = document.getElementById('password-input');
+            const unlockBtn = document.getElementById('unlock-btn');
+            const lockError = document.getElementById('lock-error');
+            const tabButtons = document.querySelectorAll('.tab-btn');
+            const tabContents = document.querySelectorAll('.tab-content');
+            const serviceSearch = document.getElementById('service-search');
+            const serviceCategoryFilter = document.getElementById('service-category-filter');
+            const clearFiltersBtn = document.getElementById('clear-filters-btn');
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toast-message');
+            const copyFeedback = document.getElementById('copy-feedback');
+
+            let toastTimer;
+
+            const showToast = (message, type = 'success') => {
+                toastMessage.textContent = message;
+                toast.className = `toast ${type} visible`;
+
+                clearTimeout(toastTimer);
+                toastTimer = setTimeout(() => {
+                    toast.classList.remove('visible');
+                }, 2600);
+            };
+
+            if (sessionStorage.getItem('ecocalima_admin_logged') === 'true') {
+                lockScreen.style.opacity = '0';
+                setTimeout(() => {
+                    lockScreen.style.display = 'none';
+                }, 280);
+            }
+
+            const checkUnlock = () => {
+                if (passInput.value === 'calima2026') {
+                    sessionStorage.setItem('ecocalima_admin_logged', 'true');
+                    lockScreen.style.opacity = '0';
+                    setTimeout(() => {
+                        lockScreen.style.display = 'none';
+                    }, 280);
+                } else {
+                    lockError.style.display = 'block';
+                    passInput.value = '';
+                    passInput.focus();
+                }
+            };
+
+            const activateTab = (tabId) => {
+                tabButtons.forEach((button) => {
+                    button.classList.toggle('active', button.getAttribute('data-tab') === tabId);
+                });
+
+                tabContents.forEach((content) => {
+                    content.classList.toggle('active', content.id === `tab-${tabId}`);
+                });
+
+                if (tabId === 'desarrollo') {
+                    renderJsonOutput();
+                }
+            };
+
+            const getFilteredProducts = () => {
+                const products = window.BookingData.getProducts();
+                const searchTerm = serviceSearch.value.trim().toLowerCase();
+                const selectedCategory = serviceCategoryFilter.value;
+
+                return products.filter((product) => {
+                    const matchesCategory = selectedCategory === 'all' || product.category === selectedCategory;
+                    const haystack = `${product.title} ${product.subtitle} ${product.category}`.toLowerCase();
+                    const matchesSearch = !searchTerm || haystack.includes(searchTerm);
+                    return matchesCategory && matchesSearch;
+                });
+            };
+
+            const renderServicesTable = () => {
+                const tbody = document.getElementById('services-table-body');
+                const emptyState = document.getElementById('services-empty-state');
+                const totalCountLbl = document.getElementById('total-count-lbl');
+                const filteredProducts = getFilteredProducts();
+                const totalProducts = window.BookingData.getProducts();
+
+                tbody.innerHTML = '';
+                totalCountLbl.textContent = `${filteredProducts.length} de ${totalProducts.length} servicios visibles`;
+                emptyState.classList.toggle('visible', filteredProducts.length === 0);
+
+                filteredProducts.forEach((product) => {
+                    const isSystem = !product.id.startsWith('custom-');
+                    const row = document.createElement('tr');
+                    const categoryText = categoryLabels[product.category] || product.category;
+                    const priceTypeText = product.priceType === 'night' ? 'Por noche' : 'Por persona';
+
+                    row.innerHTML = `
+                        <td><img src="${product.image}" alt="${product.title}" class="col-image"></td>
+                        <td>
+                            <div class="service-name">
+                                <strong>${product.title}</strong>
+                                <span>${product.subtitle}</span>
+                            </div>
+                        </td>
+                        <td><span class="col-badge ${product.category}">${categoryText}</span></td>
+                        <td>
+                            <div class="price-stack">
+                                <strong>$${product.price.toLocaleString('es-CO')} COP</strong>
+                                <span>${priceTypeText}</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="capacity-stack">
+                                <strong>${product.maxGuests} personas</strong>
+                                <span>Capacidad máxima</span>
+                            </div>
+                        </td>
+                        <td>
+                            ${isSystem
+                                ? `<span class="system-tag"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3l7 4v5c0 4.5-2.9 8.6-7 9-4.1-.4-7-4.5-7-9V7l7-4z"></path><path d="M9.5 12.5l1.8 1.8 3.7-4.3"></path></svg></span>Servicio del sistema</span>`
+                                : `<button class="btn btn-danger delete-btn" data-id="${product.id}"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 6h18"></path><path d="M8 6V4h8v2"></path><path d="M19 6l-1 14H6L5 6"></path><path d="M10 11v5"></path><path d="M14 11v5"></path></svg></span>Eliminar</button>`}
+                        </td>
+                    `;
+
+                    tbody.appendChild(row);
+                });
+
+                document.querySelectorAll('.delete-btn').forEach((button) => {
+                    button.addEventListener('click', () => {
+                        const id = button.getAttribute('data-id');
+                        if (confirm('¿Estás seguro de que deseas eliminar este servicio? Esta acción no se puede deshacer.')) {
+                            window.BookingData.deleteProduct(id);
+                            renderServicesTable();
+                            updateStats();
+                            renderJsonOutput();
+                            showToast('Servicio eliminado correctamente.');
+                        }
+                    });
+                });
+            };
+
+            const updateStats = () => {
+                const products = window.BookingData.getProducts();
+                const counts = { alojamiento: 0, pasadia: 0, deportes: 0, paquetes: 0 };
+
+                products.forEach((product) => {
+                    if (counts[product.category] !== undefined) {
+                        counts[product.category] += 1;
+                    }
+                });
+
+                document.getElementById('stat-alojamiento').textContent = counts.alojamiento;
+                document.getElementById('stat-pasadia').textContent = counts.pasadia;
+                document.getElementById('stat-deportes').textContent = counts.deportes;
+                document.getElementById('stat-paquetes').textContent = counts.paquetes;
+                document.getElementById('header-total-count').textContent = `${products.length} servicios activos`;
+            };
+
+            const renderJsonOutput = () => {
+                const textarea = document.getElementById('json-output-area');
+                const products = window.BookingData.getProducts();
+
+                textarea.value = '// Reemplaza la lista INITIAL_PRODUCTS en booking-data.js con este arreglo:\nconst INITIAL_PRODUCTS = ' +
+                    JSON.stringify(products, null, 4) + ';';
+            };
+
+            const addonsContainer = document.getElementById('addons-checkboxes');
+            const allAddons = window.BookingData.getAllAddons();
+
+            addonsContainer.innerHTML = '';
+            Object.values(allAddons).forEach((addon) => {
+                const label = document.createElement('label');
+                label.className = 'checkbox-item';
+                label.innerHTML = `<input type="checkbox" value="${addon.id}"> ${addon.name} (+$${addon.price.toLocaleString('es-CO')} COP)`;
+                addonsContainer.appendChild(label);
+            });
+
+            unlockBtn.addEventListener('click', checkUnlock);
+            passInput.addEventListener('keypress', (event) => {
+                if (event.key === 'Enter') {
+                    checkUnlock();
+                }
+            });
+
+            document.getElementById('logout-btn').addEventListener('click', () => {
+                sessionStorage.removeItem('ecocalima_admin_logged');
+                location.reload();
+            });
+
+            tabButtons.forEach((button) => {
+                button.addEventListener('click', () => activateTab(button.getAttribute('data-tab')));
+            });
+
+            serviceSearch.addEventListener('input', renderServicesTable);
+            serviceCategoryFilter.addEventListener('change', renderServicesTable);
+            clearFiltersBtn.addEventListener('click', () => {
+                serviceSearch.value = '';
+                serviceCategoryFilter.value = 'all';
+                renderServicesTable();
+            });
+
+            document.getElementById('copy-json-btn').addEventListener('click', async () => {
+                const textarea = document.getElementById('json-output-area');
+                try {
+                    await navigator.clipboard.writeText(textarea.value);
+                } catch (error) {
+                    textarea.select();
+                    document.execCommand('copy');
+                }
+
+                copyFeedback.classList.add('visible');
+                setTimeout(() => copyFeedback.classList.remove('visible'), 2000);
+                showToast('Código JSON copiado al portapapeles.');
+            });
+
+            const form = document.getElementById('new-service-form');
+            form.addEventListener('submit', (event) => {
+                event.preventDefault();
+
+                const features = [];
+                document.querySelectorAll('#features-checkboxes input:checked').forEach((checkbox) => {
+                    features.push(checkbox.value);
+                });
+
+                const addons = [];
+                document.querySelectorAll('#addons-checkboxes input:checked').forEach((checkbox) => {
+                    addons.push(checkbox.value);
+                });
+
+                const imageValue = document.getElementById('p-image').value;
+                const newService = {
+                    id: 'custom-' + Date.now(),
+                    category: document.getElementById('p-category').value,
+                    title: document.getElementById('p-title').value,
+                    subtitle: document.getElementById('p-subtitle').value,
+                    rating: 5,
+                    reviewsCount: 1,
+                    price: parseFloat(document.getElementById('p-price').value),
+                    priceType: document.getElementById('p-pricetype').value,
+                    image: imageValue,
+                    gallery: [imageValue],
+                    features,
+                    maxGuests: parseInt(document.getElementById('p-maxguests').value, 10),
+                    childDiscountRate: parseFloat(document.getElementById('p-childrate').value),
+                    addons
+                };
+
+                window.BookingData.saveProduct(newService);
+                form.reset();
+                document.getElementById('p-image').value = 'https://images.unsplash.com/photo-1533759413974-9e15f3b745ac?q=80&w=800';
+                document.getElementById('p-maxguests').value = '4';
+                document.getElementById('p-childrate').value = '0.5';
+                activateTab('listado');
+                renderServicesTable();
+                updateStats();
+                renderJsonOutput();
+                showToast('Servicio agregado y visible en el buscador principal.');
+            });
+
+            renderServicesTable();
+            updateStats();
+            renderJsonOutput();
+        });
+    </script>
+</body>
+
+</html>
