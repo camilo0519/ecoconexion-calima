@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eco Conexión | Agencia Operadora Turística</title>
+    <meta name="description"
+        content="Vive una aventura natural en el Lago Calima. Pasadías y paquetes inmersivos que renuevan cuerpo, mente y espíritu.">
+    <!-- Google Fonts for modern typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <!-- Header & Nav (Sticky) -->
+    <header id="main-header">
+        <div class="header-container">
+            <div class="logo">Eco Conexión</div>
+            <nav class="main-nav">
+                <button class="mobile-menu-btn" aria-label="Abrir menú">☰</button>
+                <ul class="nav-links">
+                    <li><a href="#inicio">Inicio</a></li>
+                    <li><a href="#pasadias">Pasadías</a></li>
+                    <li><a href="#paquetes-2-dias">Paquetes 2 Días</a></li>
+                    <li><a href="#paquete-3-dias">Paquete 3 Días</a></li>
+                    <li><a href="#nosotros">Nosotros</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="inicio" class="hero-section">
+        <video class="hero-video" autoplay loop muted playsinline>
+            <source src="assets/calima_paraiso.mp4" type="video/mp4">
+            Tu navegador no soporta el tag de video.
+        </video>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1>Conectamos tu Corazón con la Magia de la Naturaleza</h1>
+            <h3>Vive una aventura natural que renueva cuerpo, mente y espíritu.</h3>
+            <a href="#pasadias" class="cta-button">Reserva tu Aventura</a>
+        </div>
+    </section>
+
+    <!-- Pasadías Section (CSS Grid) -->
+    <section id="pasadias" class="pasadias-section">
+        <div class="container">
+            <h2 class="section-title">Nuestros Pasadías en el Lago Calima</h2>
+            <div class="grid-4-cols">
+                <!-- Pasadía 1 -->
+                <div class="card">
+                    <div class="card-image">
+                        <img src="https://images.unsplash.com/photo-1545562083-a600704fa486?q=80&w=800&auto=format&fit=crop"
+                            alt="Pasadía Museo y Pontón">
+                    </div>
+                    <div class="card-content">
+                        <h4>Pasadía 1</h4>
+                        <p class="includes">Museo, Almuerzo, Pontón (40 Min), Seguro Médico.</p>
+                        <p class="price">$69.900</p>
+                        <div class="badges">
+                            <span class="badge naturaleza">Naturaleza</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Pasadía 2 -->
+                <div class="card">
+                    <div class="card-image">
+                        <img src="https://images.unsplash.com/photo-1499696010180-025ef6e1a8f9?q=80&w=800&auto=format&fit=crop"
+                            alt="Pasadía Centro Campestre">
+                    </div>
+                    <div class="card-content">
+                        <h4>Pasadía 2</h4>
+                        <p class="includes">Centro Campestre, Museo, Almuerzo, Pontón (40 Min), Seguro Médico.</p>
+                        <p class="price">$107.900</p>
+                        <div class="badges">
+                            <span class="badge naturaleza">Naturaleza</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Pasadía 3 -->
+                <div class="card">
+                    <div class="card-image">
+                        <img src="https://images.unsplash.com/photo-1544605963-3168233a116b?q=80&w=800&auto=format&fit=crop"
+                            alt="Pasadía Paddle y Pontón">
+                    </div>
+                    <div class="card-content">
+                        <h4>Pasadía 3</h4>
+                        <p class="includes">Paddle, Pontón (40 Min), Almuerzo, Centro Campestre, Seguro Médico.</p>
+                        <p class="price">$158.900</p>
+                        <div class="badges">
+                            <span class="badge deportivo">Deportivo</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Pasadía 4 -->
+                <div class="card">
+                    <div class="card-image">
+                        <img src="https://images.unsplash.com/photo-1519504547900-20516ff9a9b6?q=80&w=800&auto=format&fit=crop"
+                            alt="Pasadía Kayak y Jetsky">
+                    </div>
+                    <div class="card-content">
+                        <h4>Pasadía 4</h4>
+                        <p class="includes">Kayak, Jetsky (20 Min - 1 Moto x Pareja), Almuerzo, Seguro Médico.</p>
+                        <p class="price">$151.900</p>
+                        <div class="badges">
+                            <span class="badge deportivo">Deportivo</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pasadias-note">
+                <p><strong>Nota:</strong> Contamos también con Pasadías Naturaleza (Cascadas el Encanto, Mirador
+                    Tribunas, Caminata Calima) y Pasadías Deportivos (MTB los 2 Rios, MTB El Encanto).</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Paquetes Inmersivos - 2 Días (Flexbox) -->
+    <section id="paquetes-2-dias" class="paquetes-section">
+        <div class="container">
+            <h2 class="section-title">Paquetes Inmersivos - 2 Días</h2>
+            <div class="flex-2-cols">
+                <!-- Tarjeta 1 -->
+                <div class="package-card horizontal">
+                    <div class="pkg-image">
+                        <img src="https://images.unsplash.com/photo-1433086966358-54859d0ed716?q=80&w=800&auto=format&fit=crop"
+                            alt="Paquete Lago y Rio Bravo">
+                    </div>
+                    <div class="pkg-info">
+                        <h3>PAQUETE LAGO Y RIO BRAVO (2 Noches - 2 Días)</h3>
+                        <p class="pkg-subtitle">2 días para descubrir la esencia cultural, natural y sensorial de
+                            Calima. Naturaleza · Aventura suave · cultura local · bienestar.</p>
+                        <div class="pkg-details">
+                            <p><strong>Qué incluye:</strong> Alojamiento 2 Noches en Hotel, Intérprete Local, 1
+                                Almuerzo, 2 Refrigerios, 2 Desayunos, Transporte Local (1 Día), Póliza Médica, Souvenir
+                                (Gorra Exclusiva).</p>
+                            <p><strong>Experiencias:</strong> Pueblo Mágico, Museo Arqueológico, Mirador Guadualito,
+                                Paddle (1h), Muro Represa, Cascada Rio Bravo, Pontón (40 Min), Práctica de Shinrin-Yoku
+                                (Baño de Bosque).</p>
+                        </div>
+                        <button class="btn-outline" onclick="openModal('modal-lago-rio')">Ver Itinerario</button>
+                    </div>
+                </div>
+                <!-- Tarjeta 2 -->
+                <div class="package-card horizontal">
+                    <div class="pkg-image">
+                        <img src="https://images.unsplash.com/photo-1432405972818-f55469ca6741?q=80&w=800&auto=format&fit=crop"
+                            alt="Las 12 Cascadas del Duende">
+                    </div>
+                    <div class="pkg-info">
+                        <h3>LAS 12 CASCADAS DEL DUENDE (2 Noches - 2 Días)</h3>
+                        <p class="pkg-subtitle">Experiencia eco-wellness de aventura. Dos días de conexión profunda con
+                            la naturaleza entre cascadas ocultas.</p>
+                        <div class="pkg-details">
+                            <p><strong>Qué incluye:</strong> Alojamiento 2 Noches, Intérprete Local, 2 Almuerzos, 2
+                                Refrigerios, 2 Desayunos, Transporte Local, Póliza Médica, Souvenir.</p>
+                            <p><strong>Experiencias:</strong> Baño de Bosque, Circuito por 10 Cascadas, 2 Caminatas
+                                Ecológicas Conscientes, Mirador el Castillo, Río Calima, Cascadas el Caimo y el Encanto.
+                            </p>
+                        </div>
+                        <button class="btn-outline" onclick="openModal('modal-cascadas')">Ver Itinerario</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Experiencia Premium - 3 Días -->
+    <section id="paquete-3-dias" class="premium-section">
+        <div class="premium-container">
+            <div class="premium-content">
+                <h2>PAQUETE CALIMA (2 Noches - 3 Días)</h2>
+                <h4 class="premium-subtitle">Experiencia slow adventure en Calima Darién. Tres días de inmersión
+                    sensorial entre agua, montaña, bosque y cultura local.</h4>
+                <p><strong>Perfil del viajero:</strong> Viajeros interesados en naturaleza activa con componente
+                    cultural.<br><strong>Nivel de exigencia física:</strong> Bajo a moderado.</p>
+                <ul class="premium-days">
+                    <li><strong>Día 1:</strong> Cultura y paisaje (Conecta con la memoria cultural, historias y
+                        paisajes).</li>
+                    <li><strong>Día 2:</strong> Agua y naturaleza (El cuerpo cambia de ritmo, viento y silencio).</li>
+                    <li><strong>Día 3:</strong> Senderismo y bienestar (Pausa consciente para escuchar y respirar).</li>
+                </ul>
+                <button class="cta-button" onclick="openModal('modal-calima')">Ver Itinerario Completo</button>
+            </div>
+            <div class="premium-image">
+                <img src="https://images.unsplash.com/photo-1506501139174-099022df5260?q=80&w=1200&auto=format&fit=crop"
+                    alt="Paquete Calima Premium">
+            </div>
+        </div>
+    </section>
+
+    <!-- Información para el Viajero -->
+    <section class="info-section" id="nosotros">
+        <div class="container">
+            <div class="info-grid">
+                <div class="info-box">
+                    <div class="icon">🚫</div>
+                    <h3>No incluye</h3>
+                    <ul>
+                        <li>Transporte de llegada al destino</li>
+                        <li>Gastos no especificados en el plan</li>
+                        <li>Consumos personales adicionales</li>
+                    </ul>
+                </div>
+                <div class="info-box">
+                    <div class="icon">✅</div>
+                    <h3>Recomendaciones</h3>
+                    <ul>
+                        <li>Ropa cómoda de secado rápido</li>
+                        <li>Tenis o calzado de senderismo</li>
+                        <li>Protector solar y sombrero</li>
+                        <li>Repelente para mosquitos</li>
+                        <li>Muda de ropa adicional</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="container footer-content">
+            <div class="footer-brand">
+                <h2>Eco Conexión</h2>
+                <p>Conectamos tu corazón con la magia de la naturaleza en el hermoso Lago Calima.</p>
+            </div>
+            <div class="footer-links">
+                <h3>Enlaces Rápidos</h3>
+                <ul>
+                    <li><a href="#inicio">Inicio</a></li>
+                    <li><a href="#pasadias">Pasadías</a></li>
+                    <li><a href="#paquetes-2-dias">Paquetes</a></li>
+                </ul>
+            </div>
+            <div class="footer-contact">
+                <h3>Contacto</h3>
+                <p>📍 Calima el Darién, Valle del Cauca</p>
+                <p>📱 +57 300 123 4567</p>
+                <p>✉️ info@ecoconexion.com</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Eco Conexión. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <!-- Modals -->
+    <div id="modal-base" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <div id="modal-body">
+                <!-- Content injected via JS -->
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
