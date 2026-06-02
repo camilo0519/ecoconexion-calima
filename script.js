@@ -664,32 +664,149 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
+    const CATEGORY_GALLERY_FALLBACKS = {
+        alojamiento: [
+            "https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=1200&auto=format&fit=crop",
+            "https://images.unsplash.com/photo-1501785888041-af3ef285b470?q=80&w=1200&auto=format&fit=crop",
+            "https://images.unsplash.com/photo-1470770841072-f978cf4d019e?q=80&w=1200&auto=format&fit=crop",
+            "https://images.unsplash.com/photo-1510798831971-661eb04b3739?q=80&w=1200&auto=format&fit=crop",
+            "https://images.unsplash.com/photo-1448375240586-882707db888b?q=80&w=1200&auto=format&fit=crop"
+        ],
+        pasadia: [
+            "https://images.unsplash.com/photo-1433086966358-54859d0ed716?q=80&w=1200&auto=format&fit=crop",
+            "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?q=80&w=1200&auto=format&fit=crop",
+            "https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?q=80&w=1200&auto=format&fit=crop",
+            "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=1200&auto=format&fit=crop",
+            "https://images.unsplash.com/photo-1501854140801-50d01698950b?q=80&w=1200&auto=format&fit=crop"
+        ],
+        deportes: [
+            "https://images.unsplash.com/photo-1502680390469-be75c86b636f?q=80&w=1200&auto=format&fit=crop",
+            "https://images.unsplash.com/photo-1544551763-46a013bb70d5?q=80&w=1200&auto=format&fit=crop",
+            "https://images.unsplash.com/photo-1517176118179-c5544777d0ca?q=80&w=1200&auto=format&fit=crop",
+            "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1200&auto=format&fit=crop",
+            "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1200&auto=format&fit=crop"
+        ],
+        paquetes: [
+            "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=1200&auto=format&fit=crop",
+            "https://images.unsplash.com/photo-1454496522488-7a8e488e8606?q=80&w=1200&auto=format&fit=crop",
+            "https://images.unsplash.com/photo-1486916856992-e4db22c8df33?q=80&w=1200&auto=format&fit=crop",
+            "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?q=80&w=1200&auto=format&fit=crop",
+            "https://images.unsplash.com/photo-1473448912268-2022ce9509d8?q=80&w=1200&auto=format&fit=crop"
+        ]
+    };
+
+    const updateStickyCalculator = () => {
+        const product = checkoutState.product;
+        if (!product) return;
+
+        const guestsCount = parseInt(document.getElementById('w-card-guests').value, 10) || 2;
+        checkoutState.guests = guestsCount;
+        checkoutState.children = 0; // Se refina en el checkout modal
+
+        let nights = 1;
+        let baseTotal = 0;
+
+        if (product.priceType === 'night') {
+            const checkinVal = document.getElementById('w-card-checkin').value;
+            const checkoutVal = document.getElementById('w-card-checkout').value;
+            checkoutState.checkin = checkinVal;
+            checkoutState.checkout = checkoutVal;
+
+            if (checkinVal && checkoutVal) {
+                const date1 = new Date(checkinVal);
+                const date2 = new Date(checkoutVal);
+                const diffTime = Math.abs(date2 - date1);
+                nights = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) || 1;
+            }
+            baseTotal = product.price * nights;
+        } else {
+            const singleDateVal = document.getElementById('w-card-singledate').value;
+            checkoutState.singleDate = singleDateVal;
+            baseTotal = product.price * guestsCount;
+        }
+
+        // Actualizar UI del cotizador en la tarjeta sticky
+        const calcLabel = document.getElementById('breakdown-calc-label');
+        const calcVal = document.getElementById('breakdown-calc-val');
+        const totalVal = document.getElementById('breakdown-total-val');
+
+        if (calcLabel) {
+            if (product.priceType === 'night') {
+                calcLabel.textContent = `$${product.price.toLocaleString('es-CO')} COP x ${nights} ${nights === 1 ? 'noche' : 'noches'}`;
+            } else {
+                calcLabel.textContent = `$${product.price.toLocaleString('es-CO')} COP x ${guestsCount} ${guestsCount === 1 ? 'persona' : 'personas'}`;
+            }
+        }
+        if (calcVal) {
+            calcVal.textContent = `$${baseTotal.toLocaleString('es-CO')} COP`;
+        }
+        if (totalVal) {
+            totalVal.textContent = `$${baseTotal.toLocaleString('es-CO')} COP`;
+        }
+
+        // Sincronizar también con la barra móvil
+        const mBarPriceAmount = document.getElementById('m-bar-price-amount');
+        if (mBarPriceAmount) {
+            mBarPriceAmount.textContent = `$${baseTotal.toLocaleString('es-CO')} COP`;
+        }
+    };
+
     const initBookingPage = () => {
-        if (!bookingPageHost) return;
+        // Verificar si estamos en la página de reservas
+        if (!document.body.classList.contains('booking-page')) return;
 
         const params = new URLSearchParams(window.location.search);
         const productId = params.get('product');
         const product = productId ? window.BookingData.getProductById(productId) : null;
 
         if (!product) {
-            bookingPageHost.innerHTML = '<div class="booking-page-empty"><h2>Servicio no encontrado</h2><p>No pudimos cargar la reserva solicitada. Regresa al catálogo y elige una experiencia disponible.</p><a href="index.html#explorar" class="btn btn-gold">Volver al catálogo</a></div>';
+            const container = document.querySelector('.airbnb-detail-container');
+            if (container) {
+                container.innerHTML = '<div class="booking-page-empty" style="text-align: center; padding: 100px 20px;"><h2>Servicio no encontrado</h2><p style="color: var(--text-light); margin-bottom: 25px;">No pudimos cargar la reserva solicitada. Regresa al catálogo y elige una experiencia disponible.</p><a href="index.html#explorar" class="btn btn-gold" style="padding: 12px 24px; border-radius: 8px;">Volver al catálogo</a></div>';
+            }
             return;
         }
 
+        // Cargar filtros del buscador a la reserva
         const guestsParam = parseInt(params.get('guests') || '2', 10);
         searchGuestsFilter = Number.isNaN(guestsParam) ? 2 : Math.max(1, guestsParam);
         searchDateFilter = params.get('date') || '';
         searchCheckinFilter = params.get('checkin') || '';
         searchCheckoutFilter = params.get('checkout') || '';
 
+        // Copiar producto a estado global
+        checkoutState.product = product;
+        checkoutState.guests = searchGuestsFilter;
+
+        // Formateador de fecha
+        const formatDate = (d) => d.toISOString().split('T')[0];
+        const today = new Date();
+        const tomorrow = new Date(today);
+        tomorrow.setDate(tomorrow.getDate() + 1);
+
+        checkoutState.singleDate = searchDateFilter || formatDate(today);
+        checkoutState.checkin = searchCheckinFilter || searchDateFilter || formatDate(today);
+        checkoutState.checkout = searchCheckoutFilter || formatDate(tomorrow);
+
+        // Actualizar título, subtítulo, metadata
         const pageTitle = document.getElementById('booking-page-product-name');
         const pageSubtitle = document.getElementById('booking-page-product-subtitle');
-        const pageMeta = document.getElementById('booking-page-meta');
-        const pageTags = document.getElementById('booking-page-tags');
-        const pagePhoto = document.getElementById('booking-page-photo');
-        const pagePhotoTitle = document.getElementById('booking-page-photo-title');
-        const pageSideCategory = document.getElementById('booking-page-side-category');
-        const pageSidePrice = document.getElementById('booking-page-side-price');
+        const pageRating = document.getElementById('booking-page-rating');
+        const pageReviewsCount = document.getElementById('booking-page-reviews-count');
+        const pageReviewsSummary = document.getElementById('booking-page-reviews-summary');
+        const pageMetaGuests = document.getElementById('booking-page-meta-guests');
+        const pageSubtitleCopies = document.querySelectorAll('.booking-page-product-subtitle-copy');
+        const pageMetaGuestsCopies = document.querySelectorAll('.booking-page-meta-guests-copy');
+        
+        const cardPriceAmount = document.getElementById('card-price-amount');
+        const cardOldPrice = document.getElementById('card-old-price');
+        const cardPriceUnit = document.getElementById('card-price-unit');
+        const cardRatingText = document.getElementById('card-rating-text');
+
+        const mBarPriceAmount = document.getElementById('m-bar-price-amount');
+        const mBarPriceUnit = document.getElementById('m-bar-price-unit');
+        const mBarRatingVal = document.getElementById('m-bar-rating-val');
+
         const categoryMap = {
             alojamiento: 'Alojamiento',
             pasadia: 'Pasadía',
@@ -699,31 +816,299 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (pageTitle) pageTitle.textContent = product.title;
         if (pageSubtitle) pageSubtitle.textContent = product.subtitle;
-        if (pageMeta) {
-            pageMeta.textContent = `${product.maxGuests} personas max. · ${product.priceType === 'night' ? 'Tarifa por noche' : 'Tarifa por persona'}`;
-        }
-        if (pagePhoto) {
-            pagePhoto.style.backgroundImage = `linear-gradient(180deg, rgba(7, 12, 9, 0.08), rgba(7, 12, 9, 0.58)), url('${product.image}')`;
-        }
-        if (pagePhotoTitle) pagePhotoTitle.textContent = product.title;
-        if (pageSideCategory) pageSideCategory.textContent = categoryMap[product.category] || product.category;
-        if (pageSidePrice) pageSidePrice.textContent = product.priceType === 'night' ? 'Reserva por noche' : 'Reserva por persona';
-        if (pageTags) {
-            const tags = [
-                categoryMap[product.category] || product.category,
-                `${product.maxGuests} personas`,
-                product.priceType === 'night' ? 'Escapada con estadía' : 'Plan de día o aventura'
-            ];
+        pageSubtitleCopies.forEach((node) => {
+            node.textContent = product.subtitle;
+        });
+        if (pageRating) pageRating.textContent = product.rating.toFixed(1);
+        if (pageReviewsCount) pageReviewsCount.textContent = `${product.reviewsCount} reseñas`;
+        if (pageReviewsSummary) pageReviewsSummary.textContent = `${product.rating.toFixed(1)} · ${product.reviewsCount} reseñas`;
+        
+        const guestText = `${product.maxGuests} huéspedes max · ${categoryMap[product.category] || product.category}`;
+        if (pageMetaGuests) pageMetaGuests.textContent = guestText;
+        pageMetaGuestsCopies.forEach((node) => {
+            node.textContent = guestText;
+        });
 
-            if (Array.isArray(product.features)) {
-                product.features.slice(0, 2).forEach((feature) => tags.push(feature));
-            }
 
-            pageTags.innerHTML = tags.map((tag) => `<span class="booking-page-tag">${tag}</span>`).join('');
+        // Precios sticky card
+        if (cardPriceAmount) cardPriceAmount.textContent = `$${product.price.toLocaleString('es-CO')} COP`;
+        if (cardOldPrice) {
+            cardOldPrice.textContent = `$${Math.round(product.price * 1.25).toLocaleString('es-CO')} COP`;
+            cardOldPrice.style.display = 'inline';
         }
+        const unitText = product.priceType === 'night' ? '/ noche' : '/ persona';
+        if (cardPriceUnit) cardPriceUnit.textContent = unitText;
+        if (cardRatingText) cardRatingText.textContent = `${product.rating.toFixed(1)} (${product.reviewsCount})`;
+
+        // Mobile bar
+        if (mBarPriceAmount) mBarPriceAmount.textContent = `$${product.price.toLocaleString('es-CO')} COP`;
+        if (mBarPriceUnit) mBarPriceUnit.textContent = unitText;
+        if (mBarRatingVal) mBarRatingVal.textContent = product.rating.toFixed(1);
 
         document.title = `Reservar ${product.title} | Eco Conexión Calima`;
-        renderBookingWizard(productId, bookingPageHost, 'page');
+
+        // Renderizar fotos del grid
+        const photoGrid = document.getElementById('booking-photo-grid');
+        if (photoGrid) {
+            let images = [];
+            if (product.gallery && Array.isArray(product.gallery)) {
+                images = [...product.gallery];
+            }
+            if (images.length === 0) {
+                images.push(product.image);
+            }
+            const fallbacks = CATEGORY_GALLERY_FALLBACKS[product.category] || CATEGORY_GALLERY_FALLBACKS.alojamiento;
+            let fbIndex = 0;
+            while (images.length < 5) {
+                const nextFb = fallbacks[fbIndex % fallbacks.length];
+                if (!images.includes(nextFb)) {
+                    images.push(nextFb);
+                } else {
+                    images.push(fallbacks[(fbIndex + 1) % fallbacks.length]);
+                }
+                fbIndex++;
+            }
+
+            photoGrid.innerHTML = `
+                <div class="photo-item-main" style="border-top-left-radius: 12px; border-bottom-left-radius: 12px;">
+                    <img src="${images[0]}" alt="${product.title} - Principal">
+                </div>
+                <div class="photo-item-sub">
+                    <img src="${images[1]}" alt="${product.title} - 1">
+                </div>
+                <div class="photo-item-sub" style="border-top-right-radius: 12px;">
+                    <img src="${images[2]}" alt="${product.title} - 2">
+                </div>
+                <div class="photo-item-sub">
+                    <img src="${images[3]}" alt="${product.title} - 3">
+                </div>
+                <div class="photo-item-sub" style="border-bottom-right-radius: 12px;">
+                    <img src="${images[4]}" alt="${product.title} - 4">
+                </div>
+                <button type="button" class="btn-show-all-photos" id="btn-show-photos-lightbox" style="position: absolute; bottom: 20px; right: 20px; background: rgba(0,0,0,0.7); border: 1px solid rgba(255,255,255,0.25); color: white; border-radius: 8px; padding: 8px 14px; font-size: 0.85rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; z-index: 5;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                    Mostrar todas las fotos
+                </button>
+            `;
+        }
+
+        // Renderizar comodidades
+        const amenitiesGrid = document.getElementById('booking-page-amenities-grid');
+        if (amenitiesGrid) {
+            const amenityIconMap = {
+                "Vista al Lago": `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>`,
+                "Jacuzzi Privado": `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2v6"/><path d="M21 16v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/></svg>`,
+                "Malla Catamarán": `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><path d="M9 3v18"/><path d="M15 3v18"/><path d="M3 9h18"/><path d="M3 15h18"/></svg>`,
+                "Desayuno Incluido": `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>`,
+                "Wifi Premium": `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.94 0"/><circle cx="12" cy="20" r="1"/></svg>`,
+                "Fogata": `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>`,
+                "Piscina Climatizada": `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 6h20"/><path d="M22 6c0 4.418-4 8-10 8S2 10.418 2 6"/><path d="M2 18h20"/><path d="M22 18c0 2.209-4 4-10 4s-10-1.791-10-4"/></svg>`,
+                "Zonas Verdes": `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 22h20L12 2z"/></svg>`,
+                "Restaurante": `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2v20"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>`,
+                "Parqueadero": `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 17V7h4a3 3 0 0 1 0 6H9"/></svg>`,
+                "Sendero Ecológico": `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 22H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2z"/></svg>`,
+                "Cocina Equipada": `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2v20"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>`,
+                "Asador BBQ": `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/></svg>`,
+                "Piscina Privada": `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 6h20"/><path d="M22 6c0 4.418-4 8-10 8S2 10.418 2 6"/></svg>`,
+                "Admite Mascotas": `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/></svg>`,
+                "default": `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>`
+            };
+
+            let amenitiesHtml = '';
+            if (product.features && Array.isArray(product.features)) {
+                product.features.forEach(f => {
+                    const icon = amenityIconMap[f] || amenityIconMap.default;
+                    amenitiesHtml += `
+                        <div class="amenity-item" style="display: flex; align-items: center; gap: 12px; color: var(--text-dark); font-size: 0.95rem; padding: 6px 0;">
+                            <span class="amenity-icon" style="color: var(--accent-gold); display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px;">${icon}</span>
+                            <span>${f}</span>
+                        </div>
+                    `;
+                });
+            } else {
+                amenitiesHtml = '<p style="color: var(--text-light); font-style: italic;">No se especificaron comodidades.</p>';
+            }
+            amenitiesGrid.innerHTML = amenitiesHtml;
+        }
+
+        // Renderizar comentarios
+        const reviewsCommentsContainer = document.getElementById('booking-page-reviews-comments');
+        if (reviewsCommentsContainer) {
+            const fakeReviews = [
+                {
+                    name: "Mariana Restrepo",
+                    date: "Mayo de 2026",
+                    avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=150&auto=format&fit=crop",
+                    comment: "Un lugar espectacular. La vista al lago desde el jacuzzi es inigualable. Los guías de Eco Conexión Calima fueron súper atentos y la comida del restaurante local estuvo deliciosa. Volveré sin duda."
+                },
+                {
+                    name: "Carlos Mario Gómez",
+                    date: "Abril de 2026",
+                    avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=150&auto=format&fit=crop",
+                    comment: "Excelente servicio y hospitalidad. Todo coincide exactamente con la descripción. Reservar por el portal fue sencillísimo y el boleto con QR nos sirvió para ingresar de inmediato. El clima estuvo perfecto."
+                }
+            ];
+            reviewsCommentsContainer.innerHTML = fakeReviews.map(r => `
+                <div class="review-comment-card" style="display: flex; flex-direction: column; gap: 12px; padding: 20px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 16px;">
+                    <div class="reviewer-header" style="display: flex; align-items: center; gap: 12px;">
+                        <img src="${r.avatar}" alt="${r.name}" style="width: 44px; height: 44px; border-radius: 50%; object-fit: cover; border: 1px solid rgba(255,255,255,0.15);">
+                        <div>
+                            <strong style="display: block; color: var(--white); font-size: 0.95rem;">${r.name}</strong>
+                            <span style="font-size: 0.78rem; color: var(--text-light);">${r.date}</span>
+                        </div>
+                    </div>
+                    <p style="color: var(--text-dark); font-size: 0.88rem; line-height: 1.5; margin: 0; font-style: italic;">"${r.comment}"</p>
+                </div>
+            `).join('');
+        }
+
+        // Configurar campos del cotizador sticky card
+        const cardCheckin = document.getElementById('w-card-checkin');
+        const cardCheckout = document.getElementById('w-card-checkout');
+        const cardSingleDate = document.getElementById('w-card-singledate');
+        const cardGuests = document.getElementById('w-card-guests');
+
+        const checkinWrapper = document.getElementById('card-checkin-wrapper');
+        const checkoutWrapper = document.getElementById('card-checkout-wrapper');
+        const singleDateWrapper = document.getElementById('card-single-date-wrapper');
+
+        // Mostrar u ocultar campos según tipo de tarifa
+        if (product.priceType === 'night') {
+            if (checkinWrapper) checkinWrapper.style.display = 'flex';
+            if (checkoutWrapper) checkoutWrapper.style.display = 'flex';
+            if (singleDateWrapper) singleDateWrapper.style.display = 'none';
+
+            if (cardCheckin) {
+                cardCheckin.min = formatDate(today);
+                cardCheckin.value = checkoutState.checkin;
+            }
+            if (cardCheckout) {
+                cardCheckout.min = formatDate(tomorrow);
+                cardCheckout.value = checkoutState.checkout;
+            }
+        } else {
+            if (checkinWrapper) checkinWrapper.style.display = 'none';
+            if (checkoutWrapper) checkoutWrapper.style.display = 'none';
+            if (singleDateWrapper) singleDateWrapper.style.display = 'flex';
+
+            if (cardSingleDate) {
+                cardSingleDate.min = formatDate(today);
+                cardSingleDate.value = checkoutState.singleDate;
+            }
+        }
+
+        // Llenar selector de huéspedes dinámicamente hasta la capacidad máxima
+        if (cardGuests) {
+            cardGuests.innerHTML = '';
+            for (let i = 1; i <= product.maxGuests; i++) {
+                const opt = document.createElement('option');
+                opt.value = i;
+                opt.textContent = `${i} ${i === 1 ? 'huésped' : 'huéspedes'}`;
+                if (i === checkoutState.guests) {
+                    opt.selected = true;
+                }
+                opt.style.backgroundColor = '#12351d';
+                opt.style.color = 'white';
+                cardGuests.appendChild(opt);
+            }
+        }
+
+        // Vincular eventos de cambio del cotizador
+        const updateEvents = ['change', 'input'];
+        updateEvents.forEach(evt => {
+            if (cardCheckin) cardCheckin.addEventListener(evt, () => {
+                // Ajustar check-out mínimo al día siguiente
+                const inVal = new Date(cardCheckin.value);
+                const minOut = new Date(inVal);
+                minOut.setDate(minOut.getDate() + 1);
+                if (cardCheckout) {
+                    cardCheckout.min = formatDate(minOut);
+                    if (new Date(cardCheckout.value) <= inVal) {
+                        cardCheckout.value = cardCheckout.min;
+                    }
+                }
+                updateStickyCalculator();
+            });
+            if (cardCheckout) cardCheckout.addEventListener(evt, updateStickyCalculator);
+            if (cardSingleDate) cardSingleDate.addEventListener(evt, updateStickyCalculator);
+            if (cardGuests) cardGuests.addEventListener(evt, updateStickyCalculator);
+        });
+
+        // Inicializar cotización
+        updateStickyCalculator();
+
+        // Controlar envío de reservas (Sticky Card y Mobile Bottom Bar)
+        const triggerCheckoutModal = () => {
+            // Validar fechas
+            if (product.priceType === 'night') {
+                const cin = document.getElementById('w-card-checkin').value;
+                const cout = document.getElementById('w-card-checkout').value;
+                if (!cin || !cout) {
+                    alert('Por favor selecciona las fechas de llegada y salida.');
+                    return;
+                }
+                checkoutState.checkin = cin;
+                checkoutState.checkout = cout;
+            } else {
+                const sdate = document.getElementById('w-card-singledate').value;
+                if (!sdate) {
+                    alert('Por favor selecciona la fecha de la experiencia.');
+                    return;
+                }
+                checkoutState.singleDate = sdate;
+            }
+
+            checkoutState.guests = parseInt(document.getElementById('w-card-guests').value, 10);
+            checkoutState.children = 0;
+
+            // Abrir modal checkout
+            const checkoutModal = document.getElementById('modal-checkout-flow');
+            const wizardHost = document.getElementById('checkout-wizard-host');
+
+            if (checkoutModal && wizardHost) {
+                checkoutModal.style.display = 'block';
+                setTimeout(() => checkoutModal.classList.add('show'), 10);
+                document.body.style.overflow = 'hidden';
+
+                // Renderizar wizard directamente en el modal
+                renderBookingWizard(product.id, wizardHost, 'modal');
+
+                // Avanzar programáticamente al Paso 2 (Adicionales)
+                const step1Content = document.getElementById('w-step-1');
+                const step2Content = document.getElementById('w-step-2');
+                const ind1 = document.getElementById('w-step-ind-1');
+                const ind2 = document.getElementById('w-step-ind-2');
+
+                if (step1Content) step1Content.style.display = 'none';
+                if (step2Content) step2Content.style.display = 'block';
+                if (ind1) {
+                    ind1.classList.remove('active');
+                    ind1.classList.add('completed');
+                }
+                if (ind2) ind2.classList.add('active');
+
+                // Renderizar los adicionales del Paso 2
+                renderAddonsStep();
+            }
+        };
+
+        const btnSticky = document.getElementById('btn-submit-reserva-sticky');
+        const btnMobile = document.getElementById('btn-submit-reserva-mobile');
+        if (btnSticky) btnSticky.addEventListener('click', triggerCheckoutModal);
+        if (btnMobile) btnMobile.addEventListener('click', triggerCheckoutModal);
+
+        // Controlar cerrar modal de checkout
+        const closeCheckoutModal = document.querySelector('.close-checkout-modal');
+        const checkoutModal = document.getElementById('modal-checkout-flow');
+        if (closeCheckoutModal && checkoutModal) {
+            closeCheckoutModal.addEventListener('click', () => {
+                checkoutModal.classList.remove('show');
+                setTimeout(() => {
+                    checkoutModal.style.display = 'none';
+                    document.body.style.overflow = 'auto';
+                }, 300);
+            });
+        }
     };
 
     // Calcular valores y renderizar recibo final del Paso 4

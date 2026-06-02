@@ -14,53 +14,313 @@
 </head>
 
 <body class="booking-page">
-    <main class="booking-page-shell">
-        <div class="booking-page-topbar">
-            <a href="index.html#explorar" class="booking-page-back">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M19 12H5"></path>
-                    <path d="m12 19-7-7 7-7"></path>
-                </svg>
-                Volver al catálogo
-            </a>
-            <img src="assets/LOGO.webp" alt="Eco Conexión Calima" style="height: 56px;">
-        </div>
-
-        <section class="booking-page-hero">
-            <div class="booking-page-hero-copy">
-                <div class="booking-page-kicker">Reserva directa</div>
-                <h1 class="booking-page-title" id="booking-page-product-name">Tu experiencia en Calima</h1>
-                <p class="booking-page-subtitle" id="booking-page-product-subtitle">Cargando información del servicio seleccionado.</p>
-                <div class="booking-page-meta" id="booking-page-meta">Preparando detalles de la reserva.</div>
-                <div class="booking-page-tags" id="booking-page-tags"></div>
+    <!-- Header & Nav (Sticky/Scrolled) -->
+    <header id="main-header" class="scrolled">
+        <div class="header-container">
+            <div class="logo">
+                <a href="index.html#inicio">
+                    <img src="assets/LOGO.webp" alt="Eco Conexión Calima" class="header-logo">
+                </a>
             </div>
-            <div class="booking-page-visual">
-                <div class="booking-page-photo" id="booking-page-photo">
-                    <div class="booking-page-photo-overlay"></div>
-                    <div class="booking-page-photo-card">
-                        <span class="booking-page-photo-kicker">Escapada en Lago Calima</span>
-                        <strong id="booking-page-photo-title">Experiencia destacada</strong>
-                        <p>Una reserva pensada para sentirse como el inicio del viaje, no como un formulario frío.</p>
+            <nav class="main-nav">
+                <button class="mobile-menu-btn" aria-label="Abrir menú">☰</button>
+                <ul class="nav-links">
+                    <li><a href="index.html#inicio">Inicio</a></li>
+                    <li><a href="index.html#pilares">Nosotros</a></li>
+                    <li><a href="index.html#explorar">Buscar Aventuras</a></li>
+                    <li><a href="index.html#faqs">FAQs</a></li>
+                    <li><a href="index.html#contacto" class="nav-cta">Contacto</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="booking-page-shell" style="padding-top: 100px;">
+        <!-- Contenedor Principal de Detalles al estilo Airbnb -->
+        <div class="airbnb-detail-container" style="margin-top: 10px;">
+            <!-- Cabecera de Producto Estilo Airbnb -->
+            <div class="airbnb-detail-header" style="margin-bottom: 24px;">
+                <h1 class="airbnb-product-title" id="booking-page-product-name" style="font-size: 2.25rem; font-weight: 800; color: var(--white); margin: 0 0 10px; line-height: 1.2;">Tu experiencia en Calima</h1>
+                <div class="airbnb-header-meta" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; font-size: 0.95rem; color: var(--text-light);">
+                    <div class="airbnb-meta-left" style="display: flex; align-items: center; flex-wrap: wrap;">
+                        <span class="airbnb-meta-rating" style="font-weight: 700; color: var(--white); display: inline-flex; align-items: center;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" class="star-icon" style="color: var(--accent-gold); vertical-align: middle; margin-right: 3px;"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                            <span id="booking-page-rating">4.9</span> · 
+                            <span id="booking-page-reviews-count" class="meta-reviews-link" style="text-decoration: underline; cursor: pointer; font-weight: 600; color: var(--text-light); transition: var(--transition);">38 reseñas</span>
+                        </span>
+                        <span class="meta-divider" style="margin: 0 8px; color: rgba(255,255,255,0.25);">·</span>
+                        <span class="airbnb-meta-location" style="text-decoration: underline; font-weight: 600; cursor: pointer; color: var(--text-light);">Lago Calima, Darién, Colombia</span>
+                        <span class="meta-divider" style="margin: 0 8px; color: rgba(255,255,255,0.25);">·</span>
+                        <span id="booking-page-meta-guests" style="color: var(--text-light); font-weight: 600;">4 huéspedes max · Alojamiento</span>
+                    </div>
+                    <div class="airbnb-header-actions" style="display: flex; gap: 15px;">
+                        <button class="header-action-btn" id="btn-share-detail" style="background: none; border: none; color: var(--text-light); font-family: inherit; font-size: 0.9rem; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; transition: var(--transition);">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+                            Compartir
+                        </button>
+                        <button class="header-action-btn" id="btn-save-detail" style="background: none; border: none; color: var(--text-light); font-family: inherit; font-size: 0.9rem; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; transition: var(--transition);">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+                            Guardar
+                        </button>
                     </div>
                 </div>
-                <aside class="booking-page-sidecard">
-                    <strong>Proceso de reserva</strong>
-                    <p>Selecciona fechas, personaliza el servicio, deja tus datos y confirma por WhatsApp o pago en línea.</p>
-                    <div class="booking-page-sidegrid">
-                        <div>
-                            <span>Ambiente</span>
-                            <strong id="booking-page-side-category">Turismo de naturaleza</strong>
+            </div>
+
+            <!-- Grilla de Fotos de 5 Imágenes -->
+            <div class="airbnb-photo-grid" id="booking-photo-grid">
+                <!-- Se inyecta dinámicamente desde JS -->
+                <div class="photo-grid-placeholder" style="grid-column: span 3; text-align: center; padding: 100px 0; color: var(--text-light);">Cargando galería de imágenes...</div>
+            </div>
+
+            <!-- Layout de Dos Columnas -->
+            <div class="airbnb-columns-layout" style="display: flex; gap: 50px; margin-top: 30px; position: relative;">
+                <!-- Columna Izquierda (Información y Detalles) -->
+                <div class="airbnb-left-col" style="flex: 1; min-width: 0;">
+                    <!-- Host Info -->
+                    <div class="detail-host-section" style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 25px; border-bottom: 1px solid rgba(255,255,255,0.08); margin-bottom: 25px;">
+                        <div class="host-copy">
+                            <h2 style="color: var(--white); font-size: 1.35rem; font-weight: 700; margin-bottom: 6px;">Experiencia ofrecida por Eco Conexión Calima</h2>
+                            <p class="booking-page-meta-guests-copy" style="color: var(--text-light); font-size: 0.95rem;">4 huéspedes · 1 habitación · 1 baño privado</p>
                         </div>
-                        <div>
-                            <span>Modalidad</span>
-                            <strong id="booking-page-side-price">Reserva guiada</strong>
+                        <div class="host-avatar" style="width: 56px; height: 56px; border-radius: 50%; overflow: hidden; border: 2px solid var(--primary-green); flex-shrink: 0;">
+                            <img src="assets/LOGO.webp" alt="Eco Conexión" class="host-avatar-img" style="width: 100%; height: 100%; object-fit: contain; background: white;">
                         </div>
                     </div>
-                </aside>
-            </div>
-        </section>
 
-        <section class="booking-page-wizard" id="booking-page-wizard-host"></section>
+                    <!-- Highlight Features (USPs) -->
+                    <div class="detail-highlights" style="display: flex; flex-direction: column; gap: 24px; padding-bottom: 25px; border-bottom: 1px solid rgba(255,255,255,0.08); margin-bottom: 25px;">
+                        <div class="highlight-item" style="display: flex; gap: 16px; align-items: flex-start;">
+                            <div class="highlight-icon" style="color: var(--accent-gold); margin-top: 2px;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                            </div>
+                            <div class="highlight-text">
+                                <strong style="display: block; color: var(--white); font-size: 1rem; margin-bottom: 2px;">Llegada autónoma</strong>
+                                <p style="color: var(--text-light); font-size: 0.9rem; margin: 0;">Accede al alojamiento fácilmente mediante la cerradura con teclado numérico.</p>
+                            </div>
+                        </div>
+                        <div class="highlight-item" style="display: flex; gap: 16px; align-items: flex-start;">
+                            <div class="highlight-icon" style="color: var(--accent-gold); margin-top: 2px;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                            </div>
+                            <div class="highlight-text">
+                                <strong style="display: block; color: var(--white); font-size: 1rem; margin-bottom: 2px;">Operador local certificado</strong>
+                                <p style="color: var(--text-light); font-size: 0.9rem; margin: 0;">Cumple con las normas nacionales de turismo y póliza de seguro médico activa.</p>
+                            </div>
+                        </div>
+                        <div class="highlight-item" style="display: flex; gap: 16px; align-items: flex-start;">
+                            <div class="highlight-icon" style="color: var(--accent-gold); margin-top: 2px;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h20"/><path d="M20 12v8H4v-8"/><path d="m15 5-3-3-3 3h6Z"/><path d="M12 2v10"/></svg>
+                            </div>
+                            <div class="highlight-text">
+                                <strong style="display: block; color: var(--white); font-size: 1rem; margin-bottom: 2px;">Cancelación flexible</strong>
+                                <p style="color: var(--text-light); font-size: 0.9rem; margin: 0;">Cancela de forma gratuita hasta 48 horas antes del inicio de tu experiencia.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Description -->
+                    <div class="detail-description" style="padding-bottom: 25px; border-bottom: 1px solid rgba(255,255,255,0.08); margin-bottom: 25px;">
+                        <p class="description-lead booking-page-product-subtitle-copy" style="font-size: 1.1rem; color: var(--white); font-weight: 600; margin-bottom: 15px; line-height: 1.5;">Cargando subtítulo de la experiencia.</p>
+                        <p class="description-body" style="color: var(--text-dark); font-size: 0.95rem; margin-bottom: 15px; line-height: 1.6;">
+                            Disfruta de una estadía espectacular en el Lago Calima. Este lugar ha sido especialmente diseñado para conectarte con la biodiversidad local, ofreciendo vistas inigualables y la comodidad necesaria para un descanso reparador o una aventura deportiva inolvidable.
+                        </p>
+                        <p class="description-body" style="color: var(--text-dark); font-size: 0.95rem; margin: 0; line-height: 1.6;">
+                            Ubicado en una zona privilegiada de Calima Darién, tendrás acceso directo a actividades ecoturísticas, deportes acuáticos, zonas de avistamiento y senderos naturales guiados por operadores calificados de la región.
+                        </p>
+                    </div>
+
+                    <!-- Amenities (Lo que ofrece) -->
+                    <div class="detail-amenities-section" style="padding-bottom: 25px; border-bottom: 1px solid rgba(255,255,255,0.08); margin-bottom: 25px;">
+                        <h3 style="color: var(--white); font-size: 1.25rem; font-weight: 700; margin-bottom: 20px;">Lo que este lugar ofrece</h3>
+                        <div class="amenities-grid" id="booking-page-amenities-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                            <!-- Se llena dinámicamente -->
+                        </div>
+                    </div>
+
+                    <!-- Calendario Visual Decorativo -->
+                    <div class="detail-calendar-section" style="padding-bottom: 25px; border-bottom: 1px solid rgba(255,255,255,0.08); margin-bottom: 25px;">
+                        <h3 style="color: var(--white); font-size: 1.25rem; font-weight: 700; margin-bottom: 6px;">Fechas seleccionadas</h3>
+                        <p style="color: var(--text-light); font-size: 0.9rem; margin-bottom: 20px;">Elige tus días de viaje en el selector de la derecha para verificar tarifas detalladas.</p>
+                        <div class="mock-calendar-container" style="background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.05); border-radius: var(--radius-md); padding: 20px;">
+                            <div class="mock-calendar-header" style="display: flex; justify-content: space-between; font-weight: 700; color: var(--white); margin-bottom: 15px; font-size: 0.95rem; padding: 0 10px;">
+                                <span id="mock-cal-month-1">Mes 1</span>
+                                <span id="mock-cal-month-2" class="mobile-hide">Mes 2</span>
+                            </div>
+                            <div class="mock-calendar-grids" style="display: flex; gap: 30px;">
+                                <div class="mock-cal-grid" style="flex: 1; display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; gap: 8px; font-size: 0.85rem;">
+                                    <div class="cal-day-name" style="font-weight: 700; color: var(--text-light);">Do</div><div class="cal-day-name" style="font-weight: 700; color: var(--text-light);">Lu</div><div class="cal-day-name" style="font-weight: 700; color: var(--text-light);">Ma</div><div class="cal-day-name" style="font-weight: 700; color: var(--text-light);">Mi</div><div class="cal-day-name" style="font-weight: 700; color: var(--text-light);">Ju</div><div class="cal-day-name" style="font-weight: 700; color: var(--text-light);">Vi</div><div class="cal-day-name" style="font-weight: 700; color: var(--text-light);">Sá</div>
+                                    <div class="cal-day empty"></div><div class="cal-day empty"></div><div class="cal-day">1</div><div class="cal-day">2</div><div class="cal-day">3</div><div class="cal-day">4</div><div class="cal-day">5</div>
+                                    <div class="cal-day">6</div><div class="cal-day">7</div><div class="cal-day">8</div><div class="cal-day">9</div><div class="cal-day selected-range-start" style="background: var(--accent-gold); color: var(--bg-light); border-radius: 50%; font-weight: 700;">10</div><div class="cal-day selected-range" style="background: rgba(223, 161, 53, 0.2); color: var(--white);">11</div><div class="cal-day selected-range-end" style="background: var(--accent-gold); color: var(--bg-light); border-radius: 50%; font-weight: 700;">12</div>
+                                    <div class="cal-day">13</div><div class="cal-day">14</div><div class="cal-day">15</div><div class="cal-day">16</div><div class="cal-day">17</div><div class="cal-day">18</div><div class="cal-day">19</div>
+                                    <div class="cal-day">20</div><div class="cal-day">21</div><div class="cal-day">22</div><div class="cal-day">23</div><div class="cal-day">24</div><div class="cal-day">25</div><div class="cal-day">26</div>
+                                    <div class="cal-day">27</div><div class="cal-day">28</div><div class="cal-day">29</div><div class="cal-day">30</div>
+                                </div>
+                                <div class="mock-cal-grid mobile-hide" style="flex: 1; display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; gap: 8px; font-size: 0.85rem;">
+                                    <div class="cal-day-name" style="font-weight: 700; color: var(--text-light);">Do</div><div class="cal-day-name" style="font-weight: 700; color: var(--text-light);">Lu</div><div class="cal-day-name" style="font-weight: 700; color: var(--text-light);">Ma</div><div class="cal-day-name" style="font-weight: 700; color: var(--text-light);">Mi</div><div class="cal-day-name" style="font-weight: 700; color: var(--text-light);">Ju</div><div class="cal-day-name" style="font-weight: 700; color: var(--text-light);">Vi</div><div class="cal-day-name" style="font-weight: 700; color: var(--text-light);">Sá</div>
+                                    <div class="cal-day empty"></div><div class="cal-day empty"></div><div class="cal-day empty"></div><div class="cal-day">1</div><div class="cal-day">2</div><div class="cal-day">3</div><div class="cal-day">4</div>
+                                    <div class="cal-day">5</div><div class="cal-day">6</div><div class="cal-day">7</div><div class="cal-day">8</div><div class="cal-day">9</div><div class="cal-day">10</div><div class="cal-day">11</div>
+                                    <div class="cal-day">12</div><div class="cal-day">13</div><div class="cal-day">14</div><div class="cal-day">15</div><div class="cal-day">16</div><div class="cal-day">17</div><div class="cal-day">18</div>
+                                    <div class="cal-day">19</div><div class="cal-day">20</div><div class="cal-day">21</div><div class="cal-day">22</div><div class="cal-day">23</div><div class="cal-day">24</div><div class="cal-day">25</div>
+                                    <div class="cal-day">26</div><div class="cal-day">27</div><div class="cal-day">28</div><div class="cal-day">29</div><div class="cal-day">30</div><div class="cal-day">31</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Reseñas y Puntuación Detallada -->
+                    <div class="detail-reviews-section" style="margin-bottom: 25px;">
+                        <div class="reviews-header-block" style="display: flex; align-items: center; gap: 8px; margin-bottom: 25px;">
+                            <h3 style="color: var(--white); font-size: 1.25rem; font-weight: 700; display: flex; align-items: center; gap: 6px;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" class="star-icon" style="color: var(--accent-gold);"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                                <span id="booking-page-reviews-summary">4.9 · 38 reseñas</span>
+                            </h3>
+                        </div>
+                        <div class="reviews-score-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: x 40px; row-gap: 15px; column-gap: 40px; margin-bottom: 30px;">
+                            <div class="score-row" style="display: flex; align-items: center; justify-content: space-between; gap: 15px; font-size: 0.9rem;">
+                                <span style="color: var(--text-dark); min-width: 110px;">Limpieza</span>
+                                <div class="progress-bar-wrapper" style="flex: 1; height: 5px; background: rgba(255,255,255,0.08); border-radius: 5px; overflow: hidden; position: relative;">
+                                    <div class="progress-bar-fill" style="width: 98%; height: 100%; background: var(--primary-green-light); border-radius: 5px;"></div>
+                                </div>
+                                <span class="score-num" style="color: var(--white); font-weight: 600; min-width: 25px; text-align: right;">4.9</span>
+                            </div>
+                            <div class="score-row" style="display: flex; align-items: center; justify-content: space-between; gap: 15px; font-size: 0.9rem;">
+                                <span style="color: var(--text-dark); min-width: 110px;">Exactitud</span>
+                                <div class="progress-bar-wrapper" style="flex: 1; height: 5px; background: rgba(255,255,255,0.08); border-radius: 5px; overflow: hidden; position: relative;">
+                                    <div class="progress-bar-fill" style="width: 96%; height: 100%; background: var(--primary-green-light); border-radius: 5px;"></div>
+                                </div>
+                                <span class="score-num" style="color: var(--white); font-weight: 600; min-width: 25px; text-align: right;">4.8</span>
+                            </div>
+                            <div class="score-row" style="display: flex; align-items: center; justify-content: space-between; gap: 15px; font-size: 0.9rem;">
+                                <span style="color: var(--text-dark); min-width: 110px;">Check-in</span>
+                                <div class="progress-bar-wrapper" style="flex: 1; height: 5px; background: rgba(255,255,255,0.08); border-radius: 5px; overflow: hidden; position: relative;">
+                                    <div class="progress-bar-fill" style="width: 98%; height: 100%; background: var(--primary-green-light); border-radius: 5px;"></div>
+                                </div>
+                                <span class="score-num" style="color: var(--white); font-weight: 600; min-width: 25px; text-align: right;">4.9</span>
+                            </div>
+                            <div class="score-row" style="display: flex; align-items: center; justify-content: space-between; gap: 15px; font-size: 0.9rem;">
+                                <span style="color: var(--text-dark); min-width: 110px;">Comunicación</span>
+                                <div class="progress-bar-wrapper" style="flex: 1; height: 5px; background: rgba(255,255,255,0.08); border-radius: 5px; overflow: hidden; position: relative;">
+                                    <div class="progress-bar-fill" style="width: 96%; height: 100%; background: var(--primary-green-light); border-radius: 5px;"></div>
+                                </div>
+                                <span class="score-num" style="color: var(--white); font-weight: 600; min-width: 25px; text-align: right;">4.8</span>
+                            </div>
+                            <div class="score-row" style="display: flex; align-items: center; justify-content: space-between; gap: 15px; font-size: 0.9rem;">
+                                <span style="color: var(--text-dark); min-width: 110px;">Ubicación</span>
+                                <div class="progress-bar-wrapper" style="flex: 1; height: 5px; background: rgba(255,255,255,0.08); border-radius: 5px; overflow: hidden; position: relative;">
+                                    <div class="progress-bar-fill" style="width: 98%; height: 100%; background: var(--primary-green-light); border-radius: 5px;"></div>
+                                </div>
+                                <span class="score-num" style="color: var(--white); font-weight: 600; min-width: 25px; text-align: right;">4.9</span>
+                            </div>
+                            <div class="score-row" style="display: flex; align-items: center; justify-content: space-between; gap: 15px; font-size: 0.9rem;">
+                                <span style="color: var(--text-dark); min-width: 110px;">Precio</span>
+                                <div class="progress-bar-wrapper" style="flex: 1; height: 5px; background: rgba(255,255,255,0.08); border-radius: 5px; overflow: hidden; position: relative;">
+                                    <div class="progress-bar-fill" style="width: 96%; height: 100%; background: var(--primary-green-light); border-radius: 5px;"></div>
+                                </div>
+                                <span class="score-num" style="color: var(--white); font-weight: 600; min-width: 25px; text-align: right;">4.8</span>
+                            </div>
+                        </div>
+                        <div class="reviews-comments-grid" id="booking-page-reviews-comments" style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+                            <!-- Se llena dinámicamente -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Columna Derecha (Tarjeta de Reserva Sticky) -->
+                <div class="airbnb-right-col" style="width: 380px; flex-shrink: 0; position: relative;">
+                    <div class="airbnb-booking-card" id="sticky-booking-card" style="position: sticky; top: 110px; background: var(--bg-card); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 24px; padding: 24px; box-shadow: 0 16px 40px rgba(0,0,0,0.3); display: flex; flex-direction: column; gap: 20px;">
+                        <div class="card-price-header" style="display: flex; justify-content: space-between; align-items: baseline;">
+                            <div class="price-val">
+                                <span class="old-price" id="card-old-price" style="text-decoration: line-through; font-size: 0.95rem; color: var(--text-light); margin-right: 6px; display: none;">$0 COP</span>
+                                <strong id="card-price-amount" style="color: var(--white); font-size: 1.45rem; font-weight: 800;">$0 COP</strong>
+                                <span class="price-unit" id="card-price-unit" style="font-size: 0.88rem; color: var(--text-light); font-weight: 400;">/ noche</span>
+                            </div>
+                            <div class="rating-val" style="display: flex; align-items: center; gap: 4px; font-size: 0.88rem; color: var(--white); font-weight: 600;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="currentColor" class="star-icon" style="color: var(--accent-gold);"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                                <span id="card-rating-text">4.9</span>
+                            </div>
+                        </div>
+
+                        <!-- Selector unificado de fechas y huéspedes -->
+                        <div class="booking-fields-box" style="border: 1px solid rgba(255,255,255,0.15); border-radius: 12px; overflow: hidden; background: rgba(0,0,0,0.3);">
+                            <div class="dates-row-group" style="display: flex; border-bottom: 1px solid rgba(255,255,255,0.15);">
+                                <div class="field-item date-field" id="card-checkin-wrapper" style="flex: 1; padding: 10px 14px; border-right: 1px solid rgba(255,255,255,0.15); display: flex; flex-direction: column; gap: 4px;">
+                                    <label style="font-size: 0.65rem; font-weight: 800; color: var(--accent-gold); text-transform: uppercase; letter-spacing: 0.5px;">Llegada</label>
+                                    <input type="date" id="w-card-checkin" style="background: transparent; border: none; color: white; font-family: inherit; font-size: 0.88rem; font-weight: 600; outline: none; padding: 0; width: 100%; cursor: pointer;">
+                                </div>
+                                <div class="field-item date-field" id="card-checkout-wrapper" style="flex: 1; padding: 10px 14px; display: flex; flex-direction: column; gap: 4px;">
+                                    <label style="font-size: 0.65rem; font-weight: 800; color: var(--accent-gold); text-transform: uppercase; letter-spacing: 0.5px;">Salida</label>
+                                    <input type="date" id="w-card-checkout" style="background: transparent; border: none; color: white; font-family: inherit; font-size: 0.88rem; font-weight: 600; outline: none; padding: 0; width: 100%; cursor: pointer;">
+                                </div>
+                                <div class="field-item date-field full" id="card-single-date-wrapper" style="display: none; width: 100%; padding: 10px 14px; flex-direction: column; gap: 4px;">
+                                    <label style="font-size: 0.65rem; font-weight: 800; color: var(--accent-gold); text-transform: uppercase; letter-spacing: 0.5px;">Fecha de Experiencia</label>
+                                    <input type="date" id="w-card-singledate" style="background: transparent; border: none; color: white; font-family: inherit; font-size: 0.88rem; font-weight: 600; outline: none; padding: 0; width: 100%; cursor: pointer;">
+                                </div>
+                            </div>
+                            <div class="field-item guests-field" style="padding: 10px 14px; display: flex; flex-direction: column; gap: 4px;">
+                                <label style="font-size: 0.65rem; font-weight: 800; color: var(--accent-gold); text-transform: uppercase; letter-spacing: 0.5px;">Huéspedes</label>
+                                <select id="w-card-guests" style="background: transparent; border: none; color: white; font-family: inherit; font-size: 0.88rem; font-weight: 600; outline: none; padding: 0; width: 100%; cursor: pointer;">
+                                    <option value="1" style="background-color: #12351d; color: white;">1 persona</option>
+                                    <option value="2" selected style="background-color: #12351d; color: white;">2 personas</option>
+                                    <option value="4" style="background-color: #12351d; color: white;">4 personas</option>
+                                    <option value="6" style="background-color: #12351d; color: white;">6 personas</option>
+                                    <option value="10" style="background-color: #12351d; color: white;">10+ personas</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Botón Reservar -->
+                        <button type="button" class="btn-reserva-airbnb" id="btn-submit-reserva-sticky" style="background: var(--accent-gold); color: var(--bg-light); border: none; border-radius: 12px; padding: 14px; font-weight: 700; font-size: 1.05rem; cursor: pointer; transition: var(--transition); text-align: center; width: 100%; box-shadow: 0 4px 15px rgba(223,161,53,0.3);">Reservar</button>
+                        <p class="no-charge-note" style="text-align: center; font-size: 0.78rem; color: var(--text-light); margin: -5px 0 0;">No se te cobrará nada todavía</p>
+
+                        <!-- Tabla de desglose de precios dinámico -->
+                        <div class="price-breakdown-table" id="card-price-breakdown" style="display: flex; flex-direction: column; gap: 12px; margin-top: 10px;">
+                            <div class="breakdown-row" style="display: flex; justify-content: space-between; font-size: 0.9rem; color: var(--text-dark);">
+                                <span id="breakdown-calc-label">$0 COP x 1 noche</span>
+                                <span id="breakdown-calc-val">$0 COP</span>
+                            </div>
+                            <div class="breakdown-row discount hidden" id="breakdown-discount-row" style="display: none; justify-content: space-between; font-size: 0.9rem; color: #81c784;">
+                                <span>Descuento niños</span>
+                                <span id="breakdown-discount-val">-$0 COP</span>
+                            </div>
+                            <div class="breakdown-row service-fee" style="display: flex; justify-content: space-between; font-size: 0.9rem; color: var(--text-dark);">
+                                <span>Tarifa de servicio Eco Conexión</span>
+                                <span class="free-badge" style="color: var(--primary-green-light); font-weight: 600;">Gratis</span>
+                            </div>
+                            <div class="breakdown-divider" style="border-top: 1px solid rgba(255,255,255,0.08); margin: 5px 0;"></div>
+                            <div class="breakdown-row total-row" style="display: flex; justify-content: space-between; font-size: 1.05rem; color: var(--white);">
+                                <span>Total (antes de adicionales)</span>
+                                <strong id="breakdown-total-val" style="font-weight: 800; color: var(--accent-gold);">$0 COP</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Barra inferior de reserva para móviles (Bottom Bar) -->
+        <div class="mobile-booking-bottom-bar" id="mobile-bottom-bar" style="display: none; position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(18,53,29,0.95); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); border-top: 1px solid rgba(255,255,255,0.1); padding: 12px 20px; justify-content: space-between; align-items: center; z-index: 100; box-shadow: 0 -8px 20px rgba(0,0,0,0.3);">
+            <div class="m-bar-price" style="display: flex; flex-direction: column;">
+                <div style="display: flex; align-items: baseline; gap: 4px;">
+                    <strong id="m-bar-price-amount" style="color: white; font-size: 1.15rem; font-weight: 800;">$0 COP</strong>
+                    <span id="m-bar-price-unit" style="font-size: 0.75rem; color: var(--text-light);">/ noche</span>
+                </div>
+                <div class="m-bar-rating" style="display: flex; align-items: center; gap: 4px; font-size: 0.72rem; color: var(--text-light); margin-top: 2px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="currentColor" class="star-icon" style="color: var(--accent-gold);"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                    <span id="m-bar-rating-val">4.9</span>
+                </div>
+            </div>
+            <button type="button" class="btn-reserva-airbnb mobile-btn" id="btn-submit-reserva-mobile" style="background: var(--accent-gold); color: var(--bg-light); border: none; border-radius: 8px; padding: 10px 20px; font-weight: 700; font-size: 0.95rem; cursor: pointer; transition: var(--transition);">Reservar</button>
+        </div>
+
+        <!-- Modal de Checkout para el Wizard -->
+        <div id="modal-checkout-flow" class="modal" style="display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.85); backdrop-filter: blur(10px); opacity: 0; transition: opacity 0.3s ease;">
+            <div class="modal-content" style="background: linear-gradient(180deg, rgba(8, 24, 13, 0.98), rgba(7, 20, 11, 0.96)); max-width: 800px; margin: 3vh auto; padding: 25px; border-radius: var(--radius-lg); border: 1px solid rgba(255,255,255,0.08); box-shadow: 0 32px 80px rgba(0, 0, 0, 0.5); max-height: 94vh; overflow-y: auto; position: relative;">
+                <span class="close-checkout-modal close-modal" style="top: 15px; right: 20px; font-size: 2.2rem; cursor: pointer; color: white; position: absolute;">&times;</span>
+                <div id="checkout-wizard-host">
+                    <!-- Se inyecta dinámicamente desde JS en el Paso 2 (Adicionales) en adelante -->
+                </div>
+            </div>
+        </div>
     </main>
 
     <div id="modal-gateway" class="modal">
