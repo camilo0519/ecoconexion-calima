@@ -81,8 +81,8 @@ const CATEGORIES = {
 async function init() {
     try {
         const [prodRes, addonRes] = await Promise.all([
-            fetch('api.php?action=get_products'),
-            fetch('api.php?action=get_addons')
+            fetch('backend/api.php?action=get_products'),
+            fetch('backend/api.php?action=get_addons')
         ]);
         if (!prodRes.ok || !addonRes.ok) {
             throw new Error("Respuesta incorrecta de la API.");
@@ -111,7 +111,7 @@ function getProductById(id) {
 
 async function saveProduct(product) {
     try {
-        const res = await fetch('api.php?action=save_product', {
+        const res = await fetch('backend/api.php?action=save_product', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(product)
@@ -127,7 +127,7 @@ async function saveProduct(product) {
 
 async function deleteProduct(id) {
     try {
-        const res = await fetch('api.php?action=delete_product', {
+        const res = await fetch('backend/api.php?action=delete_product', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ id })
@@ -156,7 +156,7 @@ function getAllAddons() {
 
 async function saveAddon(addon) {
     try {
-        const res = await fetch('api.php?action=save_addon', {
+        const res = await fetch('backend/api.php?action=save_addon', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(addon)
@@ -172,7 +172,7 @@ async function saveAddon(addon) {
 
 async function saveBooking(booking) {
     try {
-        const res = await fetch('api.php?action=save_booking', {
+        const res = await fetch('backend/api.php?action=save_booking', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(booking)
