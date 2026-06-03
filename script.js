@@ -2,7 +2,9 @@
  * Eco Conexión Calima - Lógica del Buscador, Catálogo Dinámico y Motor de Reservas (Airbnb Style)
  */
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
+    // Cargar base de datos desde MySQL
+    await window.BookingData.init();
     
     // --- 1. Header Sticky & Cambio de Color ---
     const header = document.getElementById('main-header');
@@ -1404,7 +1406,24 @@ document.addEventListener('DOMContentLoaded', () => {
             gatewayLoader.classList.add('hidden');
             gatewayLoader.style.display = 'none';
             gatewayModal.classList.remove('show');
-            
+
+            // Registrar reserva en la base de datos MySQL
+            const product = checkoutState.product;
+            const totals = calculateTotals();
+            const bookingPayload = {
+                productId: product.id,
+                checkIn: product.priceType === 'night' ? checkoutState.checkin : checkoutState.singleDate,
+                checkOut: product.priceType === 'night' ? checkoutState.checkout : checkoutState.singleDate,
+                guests: checkoutState.guests,
+                children: checkoutState.children,
+                totalPrice: totals.finalTotal
+            };
+            window.BookingData.saveBooking(bookingPayload).then(response => {
+                console.log("Reserva registrada con éxito:", response);
+            }).catch(error => {
+                console.error("No se pudo registrar la reserva en la base de datos:", error);
+            });
+
             setTimeout(() => {
                 gatewayModal.style.display = 'none';
                 

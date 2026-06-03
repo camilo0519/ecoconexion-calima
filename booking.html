@@ -10,7 +10,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css?v=3.2">
 </head>
 
 <body class="booking-page">
@@ -45,7 +45,8 @@
                     <div class="airbnb-meta-left" style="display: flex; align-items: center; flex-wrap: wrap;">
                         <span class="airbnb-meta-rating" style="font-weight: 700; color: var(--white); display: inline-flex; align-items: center;">
                             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" class="star-icon" style="color: var(--accent-gold); vertical-align: middle; margin-right: 3px;"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
-                            <span id="booking-page-rating">4.9</span> · 
+                            <span id="booking-page-rating">4.9</span>
+                            <span class="meta-divider" style="margin: 0 8px; color: rgba(255,255,255,0.25);">·</span>
                             <span id="booking-page-reviews-count" class="meta-reviews-link" style="text-decoration: underline; cursor: pointer; font-weight: 600; color: var(--text-light); transition: var(--transition);">38 reseñas</span>
                         </span>
                         <span class="meta-divider" style="margin: 0 8px; color: rgba(255,255,255,0.25);">·</span>
@@ -142,9 +143,23 @@
                         <h3 style="color: var(--white); font-size: 1.25rem; font-weight: 700; margin-bottom: 6px;">Fechas seleccionadas</h3>
                         <p style="color: var(--text-light); font-size: 0.9rem; margin-bottom: 20px;">Elige tus días de viaje en el selector de la derecha para verificar tarifas detalladas.</p>
                         <div class="mock-calendar-container" style="background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.05); border-radius: var(--radius-md); padding: 20px;">
-                            <div class="mock-calendar-header" style="display: flex; justify-content: space-between; font-weight: 700; color: var(--white); margin-bottom: 15px; font-size: 0.95rem; padding: 0 10px;">
-                                <span id="mock-cal-month-1">Mes 1</span>
-                                <span id="mock-cal-month-2" class="mobile-hide">Mes 2</span>
+                            <div class="mock-calendar-header" style="display: flex; gap: 30px; font-weight: 700; color: var(--white); margin-bottom: 15px; font-size: 0.95rem; position: relative; height: 40px; align-items: center;">
+                                <!-- Botón Mes Anterior -->
+                                <button type="button" id="btn-cal-prev" class="cal-nav-btn" aria-label="Mes anterior" style="position: absolute; left: 5px;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+                                </button>
+                                
+                                <div style="flex: 1; text-align: center; display: flex; justify-content: center; align-items: center; height: 100%;">
+                                    <span id="mock-cal-month-1">Mes 1</span>
+                                </div>
+                                <div class="mobile-hide" style="flex: 1; text-align: center; display: flex; justify-content: center; align-items: center; height: 100%;">
+                                    <span id="mock-cal-month-2">Mes 2</span>
+                                </div>
+
+                                <!-- Botón Mes Siguiente -->
+                                <button type="button" id="btn-cal-next" class="cal-nav-btn" aria-label="Mes siguiente" style="position: absolute; right: 5px;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+                                </button>
                             </div>
                             <div class="mock-calendar-grids" style="display: flex; gap: 30px;">
                                 <div class="mock-cal-grid" style="flex: 1; display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; gap: 8px; font-size: 0.85rem;">
@@ -228,15 +243,17 @@
                 <!-- Columna Derecha (Tarjeta de Reserva Sticky) -->
                 <div class="airbnb-right-col" style="width: 380px; flex-shrink: 0; position: relative;">
                     <div class="airbnb-booking-card" id="sticky-booking-card" style="position: sticky; top: 110px; background: var(--bg-card); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 24px; padding: 24px; box-shadow: 0 16px 40px rgba(0,0,0,0.3); display: flex; flex-direction: column; gap: 20px;">
-                        <div class="card-price-header" style="display: flex; justify-content: space-between; align-items: baseline;">
-                            <div class="price-val">
-                                <span class="old-price" id="card-old-price" style="text-decoration: line-through; font-size: 0.95rem; color: var(--text-light); margin-right: 6px; display: none;">$0 COP</span>
-                                <strong id="card-price-amount" style="color: var(--white); font-size: 1.45rem; font-weight: 800;">$0 COP</strong>
-                                <span class="price-unit" id="card-price-unit" style="font-size: 0.88rem; color: var(--text-light); font-weight: 400;">/ noche</span>
+                        <div class="card-price-header" style="display: flex; justify-content: space-between; align-items: flex-end; gap: 15px;">
+                            <div class="price-val" style="display: flex; flex-direction: column; gap: 2px;">
+                                <span class="old-price" id="card-old-price" style="text-decoration: line-through; font-size: 0.88rem; color: var(--text-dark); display: none; line-height: 1.2; margin-bottom: 2px;">$0 COP</span>
+                                <div class="current-price-row" style="display: flex; align-items: baseline; gap: 4px; white-space: nowrap;">
+                                    <strong id="card-price-amount" style="color: var(--white); font-size: 1.45rem; font-weight: 800; line-height: 1;">$0 COP</strong>
+                                    <span class="price-unit" id="card-price-unit" style="font-size: 0.88rem; color: var(--text-light); font-weight: 400;">/ noche</span>
+                                </div>
                             </div>
-                            <div class="rating-val" style="display: flex; align-items: center; gap: 4px; font-size: 0.88rem; color: var(--white); font-weight: 600;">
+                            <div class="rating-val" style="display: flex; align-items: center; gap: 4px; font-size: 0.88rem; color: var(--white); font-weight: 600; white-space: nowrap; flex-shrink: 0; margin-bottom: 2px;">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="currentColor" class="star-icon" style="color: var(--accent-gold);"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
-                                <span id="card-rating-text">4.9</span>
+                                <span id="card-rating-text" style="white-space: nowrap;">4.9</span>
                             </div>
                         </div>
 

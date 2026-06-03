@@ -1,261 +1,11 @@
 /**
- * Eco Conexión Calima - Base de Datos y Lógica de Sincronización
- * Actúa como base de datos local y permite la integración con localStorage para el panel de administración (/admin).
+ * Eco Conexión Calima - Base de Datos y Lógica de Sincronización con PHP/MySQL
+ * Permite la integración transparente entre el frontend y la base de datos real mediante llamadas asíncronas a api.php.
  */
 
-// Lista maestra de servicios adicionales (Addons)
-const MASTER_ADDONS = {
-    "transporte-cali": {
-        id: "transporte-cali",
-        name: "Transporte desde Cali/Buga (Ida y Vuelta)",
-        price: 50000,
-        type: "person",
-        description: "Transporte en van compartida con aire acondicionado."
-    },
-    "almuerzo-premium": {
-        id: "almuerzo-premium",
-        name: "Almuerzo Premium de la Casa",
-        price: 25000,
-        type: "person",
-        description: "Menú gourmet con entrada, plato fuerte típico y bebida natural."
-    },
-    "decoracion-romantica": {
-        id: "decoracion-romantica",
-        name: "Decoración Romántica Especial",
-        price: 120000,
-        type: "booking",
-        description: "Pétalos de rosa, velas decorativas, globos y botella de champaña."
-    },
-    "jetski-extra": {
-        id: "jetski-extra",
-        name: "Paseo adicional en Jetski (20 min)",
-        price: 85000,
-        type: "booking",
-        description: "Moto acuática de última generación (1 o 2 personas)."
-    },
-    "guia-ingles": {
-        id: "guia-ingles",
-        name: "Intérprete / Guía Bilingüe (Inglés)",
-        price: 70000,
-        type: "booking",
-        description: "Guía privado certificado con manejo de inglés fluido."
-    }
-};
+let cachedProducts = [];
+let cachedAddons = {};
 
-// Catálogo base de servicios turísticos del Lago Calima
-const INITIAL_PRODUCTS = [
-    {
-        id: "glamping-altavista",
-        category: "alojamiento",
-        title: "Glamping Altavista Lago Calima",
-        subtitle: "Alojamiento exclusivo con vista de 180° al lago",
-        rating: 4.9,
-        reviewsCount: 38,
-        price: 290000,
-        priceType: "night",
-        image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=1200&auto=format&fit=crop",
-        gallery: [
-            "https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=1200&auto=format&fit=crop",
-            "https://images.unsplash.com/photo-1501785888041-af3ef285b470?q=80&w=1200&auto=format&fit=crop"
-        ],
-        features: ["Vista al Lago", "Jacuzzi Privado", "Malla Catamarán", "Desayuno Incluido", "Wifi Premium", "Fogata"],
-        maxGuests: 4,
-        childDiscountRate: 0.5,
-        addons: ["transporte-cali", "decoracion-romantica", "jetski-extra"]
-    },
-    {
-        id: "hotel-campestre-calima",
-        category: "alojamiento",
-        title: "Eco-Hotel Campestre Lago Calima",
-        subtitle: "Habitaciones confortables rodeadas de naturaleza y senderos",
-        rating: 4.7,
-        reviewsCount: 54,
-        price: 180000,
-        priceType: "night",
-        image: "https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=1200&auto=format&fit=crop",
-        gallery: [
-            "https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=1200&auto=format&fit=crop",
-            "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1200&auto=format&fit=crop"
-        ],
-        features: ["Piscina Climatizada", "Zonas Verdes", "Restaurante", "Parqueadero", "Sendero Ecológico", "Zona de Hamacas"],
-        maxGuests: 6,
-        childDiscountRate: 0.4,
-        addons: ["transporte-cali", "almuerzo-premium", "guia-ingles"]
-    },
-    {
-        id: "chalet-familiar-dariend",
-        category: "alojamiento",
-        title: "Chalet Familiar Calima Darién",
-        subtitle: "Finca campestre ideal para grupos y familias",
-        rating: 4.8,
-        reviewsCount: 22,
-        price: 450000,
-        priceType: "night",
-        image: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1200&auto=format&fit=crop",
-        gallery: [
-            "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1200&auto=format&fit=crop",
-            "https://images.unsplash.com/photo-1516483638261-f4dbaf036963?q=80&w=1200&auto=format&fit=crop"
-        ],
-        features: ["Cocina Equipada", "Asador BBQ", "Piscina Privada", "Cancha de Fútbol", "Admite Mascotas"],
-        maxGuests: 12,
-        childDiscountRate: 0.5,
-        addons: ["transporte-cali", "almuerzo-premium", "jetski-extra"]
-    },
-    {
-        id: "pasadia-duende",
-        category: "pasadia",
-        title: "Pasadía Cascadas del Duende",
-        subtitle: "Senderismo ecológico guiado y circuito por cascadas cristalinas",
-        rating: 4.9,
-        reviewsCount: 76,
-        price: 85000,
-        priceType: "person",
-        image: "https://images.unsplash.com/photo-1433086966358-54859d0ed716?q=80&w=1200&auto=format&fit=crop",
-        gallery: [
-            "https://images.unsplash.com/photo-1433086966358-54859d0ed716?q=80&w=1200&auto=format&fit=crop"
-        ],
-        features: ["Guía Local Certificado", "Entrada a Reserva Natural", "Seguro de Asistencia Médica", "Refrigerio Tradicional", "Baño de Cascada"],
-        maxGuests: 25,
-        childDiscountRate: 0.3,
-        addons: ["transporte-cali", "almuerzo-premium"]
-    },
-    {
-        id: "pasadia-shinrin-yoku",
-        category: "pasadia",
-        title: "Baño de Bosque & Bienestar",
-        subtitle: "Experiencia de Shinrin-Yoku y meditación guiada en la naturaleza",
-        rating: 5.0,
-        reviewsCount: 19,
-        price: 95000,
-        priceType: "person",
-        image: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?q=80&w=1200&auto=format&fit=crop",
-        gallery: [
-            "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?q=80&w=1200&auto=format&fit=crop"
-        ],
-        features: ["Terapeuta Shinrin-Yoku", "Sesión de Yoga Aire Libre", "Infusión Herbal de Bienestar", "Seguro Médico", "Caminata Consciente"],
-        maxGuests: 15,
-        childDiscountRate: 0.0,
-        addons: ["transporte-cali", "almuerzo-premium", "guia-ingles"]
-    },
-    {
-        id: "deporte-windsurf-kitesurf",
-        category: "deportes",
-        title: "Curso de Kitesurf o Windsurf",
-        subtitle: "Clases de iniciación personalizadas con instructores avalados",
-        rating: 4.8,
-        reviewsCount: 31,
-        price: 180000,
-        priceType: "person",
-        image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1200&auto=format&fit=crop",
-        gallery: [
-            "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1200&auto=format&fit=crop"
-        ],
-        features: ["Equipo Completo Incluido", "Instructor Certificado", "Lancha de Apoyo", "Chaleco Salvavidas", "1.5 Horas de Práctica"],
-        maxGuests: 5,
-        childDiscountRate: 0.1,
-        addons: ["transporte-cali", "almuerzo-premium", "guia-ingles"]
-    },
-    {
-        id: "deporte-paddle-tour",
-        category: "deportes",
-        title: "Tour Guiado en Paddle Board / Kayak",
-        subtitle: "Navegación al amanecer o atardecer por los rincones del lago",
-        rating: 4.9,
-        reviewsCount: 47,
-        price: 75000,
-        priceType: "person",
-        image: "https://images.unsplash.com/photo-1500375592092-40eb2168fd21?q=80&w=1200&auto=format&fit=crop",
-        gallery: [
-            "https://images.unsplash.com/photo-1500375592092-40eb2168fd21?q=80&w=1200&auto=format&fit=crop"
-        ],
-        features: ["Tabla de Stand Up Paddle", "Remo y Chaleco", "Instrucción Básica", "Registro Fotográfico", "Tour de 2 Horas"],
-        maxGuests: 15,
-        childDiscountRate: 0.2,
-        addons: ["transporte-cali", "almuerzo-premium", "jetski-extra"]
-    },
-    {
-        id: "paquete-lago-rio-bravo",
-        category: "paquetes",
-        title: "Paquete Lago y Río Bravo (2 Días)",
-        subtitle: "El balance perfecto entre cultura local, agua y naturaleza activa",
-        rating: 4.9,
-        reviewsCount: 14,
-        price: 320000,
-        priceType: "person",
-        image: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=1200&auto=format&fit=crop",
-        gallery: [
-            "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=1200&auto=format&fit=crop",
-            "https://images.unsplash.com/photo-1501785888041-af3ef285b470?q=80&w=1200&auto=format&fit=crop"
-        ],
-        features: ["Alojamiento 1 Noche", "Visita al Museo Arqueológico", "Tour en Pontón (40 Min)", "Senderismo Cascada Río Bravo", "Desayuno y Almuerzo"],
-        maxGuests: 10,
-        childDiscountRate: 0.4,
-        addons: ["transporte-cali", "jetski-extra", "guia-ingles"]
-    }
-];
-
-// --- FUNCIONES DE COMUNICACIÓN CON BASE DE DATOS LOCALSTORAGE ---
-
-/**
- * Obtener todos los productos fusionando el catálogo base con los agregados por el administrador.
- */
-function getProducts() {
-    const customProducts = JSON.parse(localStorage.getItem('ecocalima_custom_products')) || [];
-    return [...INITIAL_PRODUCTS, ...customProducts];
-}
-
-/**
- * Obtener un producto específico por ID.
- */
-function getProductById(id) {
-    const all = getProducts();
-    return all.find(p => p.id === id);
-}
-
-/**
- * Guardar un nuevo producto en la base de datos de localStorage.
- */
-function saveProduct(product) {
-    const customProducts = JSON.parse(localStorage.getItem('ecocalima_custom_products')) || [];
-
-    // Validar id único
-    if (getProductById(product.id)) {
-        product.id = product.id + '-' + Date.now();
-    }
-
-    customProducts.push(product);
-    localStorage.setItem('ecocalima_custom_products', JSON.stringify(customProducts));
-    return product;
-}
-
-/**
- * Eliminar un producto personalizado.
- */
-function deleteProduct(id) {
-    const customProducts = JSON.parse(localStorage.getItem('ecocalima_custom_products')) || [];
-    const filtered = customProducts.filter(p => p.id !== id);
-    localStorage.setItem('ecocalima_custom_products', JSON.stringify(filtered));
-    return true;
-}
-
-/**
- * Obtener detalles de un servicio adicional (Addon).
- */
-function getAddonDetails(addonId) {
-    return MASTER_ADDONS[addonId] || null;
-}
-
-/**
- * Obtener todos los servicios adicionales.
- */
-function getAllAddons() {
-    return MASTER_ADDONS;
-}
-
-/**
- * Íconos SVG profesionales para categorías.
- * No usa emojis ni librerías externas.
- */
 const CATEGORY_ICONS = {
     todos: `
         <svg class="category-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
@@ -304,9 +54,6 @@ const CATEGORY_ICONS = {
     `
 };
 
-/**
- * Mapeo de categorías a etiquetas e íconos profesionales.
- */
 const CATEGORIES = {
     "todos": {
         label: "Ver Todos",
@@ -330,13 +77,124 @@ const CATEGORIES = {
     }
 };
 
+// Inicializar datos cargándolos desde la base de datos MySQL (vía api.php)
+async function init() {
+    try {
+        const [prodRes, addonRes] = await Promise.all([
+            fetch('api.php?action=get_products'),
+            fetch('api.php?action=get_addons')
+        ]);
+        if (!prodRes.ok || !addonRes.ok) {
+            throw new Error("Respuesta incorrecta de la API.");
+        }
+        cachedProducts = await prodRes.json();
+        const addonsList = await addonRes.json();
+        cachedAddons = {};
+        addonsList.forEach(addon => {
+            cachedAddons[addon.id] = addon;
+        });
+    } catch (e) {
+        console.error("Falla al conectar con MySQL/API PHP. Usando localStorage de respaldo.", e);
+        // Fallback local de emergencia en caso de que PHP no esté disponible
+        cachedProducts = JSON.parse(localStorage.getItem('ecocalima_custom_products')) || [];
+        cachedAddons = JSON.parse(localStorage.getItem('ecocalima_custom_addons')) || {};
+    }
+}
+
+function getProducts() {
+    return cachedProducts;
+}
+
+function getProductById(id) {
+    return cachedProducts.find(p => p.id === id) || null;
+}
+
+async function saveProduct(product) {
+    try {
+        const res = await fetch('api.php?action=save_product', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(product)
+        });
+        const result = await res.json();
+        await init();
+        return result;
+    } catch (e) {
+        console.error("Error al guardar producto:", e);
+        return { status: 'error', message: e.message };
+    }
+}
+
+async function deleteProduct(id) {
+    try {
+        const res = await fetch('api.php?action=delete_product', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id })
+        });
+        const result = await res.json();
+        await init();
+        return result;
+    } catch (e) {
+        console.error("Error al eliminar producto:", e);
+        return { status: 'error', message: e.message };
+    }
+}
+
+function isProductOverridden(id) {
+    const p = getProductById(id);
+    return p ? !!p.isOverridden : false;
+}
+
+function getAddonDetails(addonId) {
+    return cachedAddons[addonId] || null;
+}
+
+function getAllAddons() {
+    return cachedAddons;
+}
+
+async function saveAddon(addon) {
+    try {
+        const res = await fetch('api.php?action=save_addon', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(addon)
+        });
+        const result = await res.json();
+        await init();
+        return result;
+    } catch (e) {
+        console.error("Error al guardar adicional:", e);
+        return { status: 'error', message: e.message };
+    }
+}
+
+async function saveBooking(booking) {
+    try {
+        const res = await fetch('api.php?action=save_booking', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(booking)
+        });
+        return await res.json();
+    } catch (e) {
+        console.error("Error al guardar reserva:", e);
+        return { status: 'error', message: e.message };
+    }
+}
+
 // Exportar objetos para uso en navegadores
 window.BookingData = {
+    init,
     getProducts,
     getProductById,
     saveProduct,
     deleteProduct,
+    isProductOverridden,
     getAddonDetails,
     getAllAddons,
+    saveAddon,
+    saveBooking,
     CATEGORIES
 };
