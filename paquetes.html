@@ -27,6 +27,30 @@
                     <li><a href="index.html#faqs">FAQs</a></li>
                     <li><a href="index.html#contacto" class="nav-cta">Contacto</a></li>
                 </ul>
+                <div class="lang-switcher" id="lang-switcher">
+                    <button class="lang-trigger" id="lang-trigger" aria-label="Cambiar idioma" aria-expanded="false">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                        <span class="lang-current-flag" id="lang-current-flag">🇨🇴</span>
+                        <svg class="lang-chevron" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+                    </button>
+                    <div class="lang-dropdown" id="lang-dropdown" role="listbox">
+                        <div class="lang-dropdown-inner">
+                            <p class="lang-dropdown-title">Seleccionar idioma</p>
+                            <ul class="lang-list">
+                                <li class="lang-option active" data-lang="es" data-flag="🇨🇴" role="option">🇨🇴 <span>Español</span></li>
+                                <li class="lang-option" data-lang="en" data-flag="🇬🇧" role="option">🇬🇧 <span>English</span></li>
+                                <li class="lang-option" data-lang="fr" data-flag="🇫🇷" role="option">🇫🇷 <span>Français</span></li>
+                                <li class="lang-option" data-lang="pt" data-flag="🇧🇷" role="option">🇧🇷 <span>Português</span></li>
+                                <li class="lang-option" data-lang="de" data-flag="🇩🇪" role="option">🇩🇪 <span>Deutsch</span></li>
+                                <li class="lang-option" data-lang="it" data-flag="🇮🇹" role="option">🇮🇹 <span>Italiano</span></li>
+                                <li class="lang-option" data-lang="zh-CN" data-flag="🇨🇳" role="option">🇨🇳 <span>中文</span></li>
+                                <li class="lang-option" data-lang="ja" data-flag="🇯🇵" role="option">🇯🇵 <span>日本語</span></li>
+                                <li class="lang-option" data-lang="ko" data-flag="🇰🇷" role="option">🇰🇷 <span>한국어</span></li>
+                                <li class="lang-option" data-lang="ar" data-flag="🇸🇦" role="option">🇸🇦 <span>العربية</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
             </nav>
         </div>
     </header>
@@ -72,6 +96,9 @@
         </section>
     </main>
 
+    <div id="google_translate_element" style="display:none;visibility:hidden;width:0;height:0;overflow:hidden;"></div>
+    <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateInit"></script>
+    <script src="assets/js/lang-switcher.js"></script>
     <script src="assets/js/booking-data.js"></script>
     <script src="assets/js/script.js"></script>
 </body>

@@ -170,6 +170,66 @@ async function saveAddon(addon) {
     }
 }
 
+async function getReviews(productId, status = 'approved') {
+    try {
+        const params = new URLSearchParams({ action: 'get_reviews' });
+        if (productId) params.set('product_id', productId);
+        if (status) {
+            params.set('status', status);
+        } else {
+            params.set('status', 'all');
+        }
+        const res = await fetch(`backend/api.php?${params.toString()}`);
+        if (!res.ok) throw new Error("Error al cargar reseñas.");
+        return await res.json();
+    } catch (e) {
+        console.error("Error al cargar reseñas:", e);
+        return [];
+    }
+}
+
+async function saveReview(review) {
+    try {
+        const res = await fetch('backend/api.php?action=save_review', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(review)
+        });
+        return await res.json();
+    } catch (e) {
+        console.error("Error al guardar reseña:", e);
+        return { status: 'error', message: e.message };
+    }
+}
+
+async function deleteReview(id) {
+    try {
+        const res = await fetch('backend/api.php?action=delete_review', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id })
+        });
+        return await res.json();
+    } catch (e) {
+        console.error("Error al eliminar reseña:", e);
+        return { status: 'error', message: e.message };
+    }
+}
+
+async function updateReviewStatus(id, status) {
+    try {
+        const res = await fetch('backend/api.php?action=update_review_status', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id, status })
+        });
+        return await res.json();
+    } catch (e) {
+        console.error("Error al actualizar estado de reseña:", e);
+        return { status: 'error', message: e.message };
+    }
+}
+
 async function saveBooking(booking) {
     try {
         const res = await fetch('backend/api.php?action=save_booking', {
@@ -180,6 +240,45 @@ async function saveBooking(booking) {
         return await res.json();
     } catch (e) {
         console.error("Error al guardar reserva:", e);
+        return { status: 'error', message: e.message };
+    }
+}
+
+async function getPartners() {
+    try {
+        const res = await fetch('backend/api.php?action=get_partners');
+        if (!res.ok) throw new Error("Error al cargar centros.");
+        return await res.json();
+    } catch (e) {
+        console.error("Error al cargar centros:", e);
+        return [];
+    }
+}
+
+async function savePartner(partner) {
+    try {
+        const res = await fetch('backend/api.php?action=save_partner', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(partner)
+        });
+        return await res.json();
+    } catch (e) {
+        console.error("Error al guardar centro:", e);
+        return { status: 'error', message: e.message };
+    }
+}
+
+async function deletePartner(id) {
+    try {
+        const res = await fetch('backend/api.php?action=delete_partner', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id })
+        });
+        return await res.json();
+    } catch (e) {
+        console.error("Error al eliminar centro:", e);
         return { status: 'error', message: e.message };
     }
 }
@@ -196,5 +295,12 @@ window.BookingData = {
     getAllAddons,
     saveAddon,
     saveBooking,
+    getReviews,
+    saveReview,
+    deleteReview,
+    updateReviewStatus,
+    getPartners,
+    savePartner,
+    deletePartner,
     CATEGORIES
 };

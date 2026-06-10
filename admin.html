@@ -11,33 +11,37 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --forest-950: #08110d;
-            --forest-900: #0d1914;
-            --forest-800: #13251d;
-            --forest-700: #1c3428;
-            --forest-500: #2d7355;
-            --forest-400: #49a874;
-            --mint-300: #89d7ac;
-            --sand-400: #dba35f;
-            --sand-300: #f0c88d;
-            --cyan-400: #41b7bf;
-            --red-400: #f16f63;
+            --forest-950: #060c09;
+            --forest-900: #0d1712;
+            --forest-800: #12241b;
+            --forest-700: #1a3427;
+            --forest-500: #2a684c;
+            --forest-400: #3f9b6e;
+            --mint-400: #6ee7b7;
+            --mint-300: #86efac;
+            --sand-400: #eab308;
+            --sand-300: #fde047;
+            --cyan-400: #06b6d4;
+            --cyan-300: #67e8f9;
+            --violet-400: #8b5cf6;
+            --violet-300: #c084fc;
+            --red-400: #f87171;
             --white: #ffffff;
             --text-main: #edf7ef;
             --text-soft: #afc7b6;
             --text-muted: #7f9887;
-            --line-soft: rgba(255, 255, 255, 0.09);
-            --surface-strong: rgba(14, 28, 21, 0.9);
-            --surface-card: rgba(16, 34, 25, 0.74);
-            --surface-card-hover: rgba(22, 44, 33, 0.9);
-            --surface-glass: rgba(255, 255, 255, 0.05);
-            --shadow-xl: 0 26px 70px rgba(0, 0, 0, 0.34);
-            --shadow-lg: 0 18px 45px rgba(0, 0, 0, 0.25);
-            --radius-sm: 14px;
-            --radius-md: 20px;
-            --radius-lg: 28px;
+            --line-soft: rgba(255, 255, 255, 0.08);
+            --surface-strong: rgba(6, 12, 9, 0.92);
+            --surface-card: rgba(13, 25, 20, 0.65);
+            --surface-card-hover: rgba(18, 36, 29, 0.85);
+            --surface-glass: rgba(255, 255, 255, 0.04);
+            --shadow-xl: 0 24px 54px rgba(0, 0, 0, 0.45);
+            --shadow-lg: 0 16px 36px rgba(0, 0, 0, 0.3);
+            --radius-sm: 10px;
+            --radius-md: 16px;
+            --radius-lg: 24px;
             --font-main: 'Outfit', sans-serif;
-            --transition: all 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
 
         * {
@@ -54,72 +58,112 @@
             font-family: var(--font-main);
             color: var(--text-main);
             min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            background:
-                radial-gradient(circle at top left, rgba(73, 168, 116, 0.14), transparent 34%),
-                radial-gradient(circle at 85% 10%, rgba(65, 183, 191, 0.16), transparent 28%),
-                linear-gradient(180deg, #07100b 0%, #0a1610 34%, #0d1914 100%);
+            background: #060c09;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(42, 104, 76, 0.15), transparent 45%),
+                radial-gradient(circle at 90% 80%, rgba(6, 182, 212, 0.09), transparent 45%);
             position: relative;
             overflow-x: hidden;
         }
 
-        body::before,
-        body::after {
-            content: "";
-            position: fixed;
-            inset: auto;
-            border-radius: 999px;
-            pointer-events: none;
-            filter: blur(10px);
-            z-index: -1;
+        .icon {
+            width: 18px;
+            height: 18px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: currentColor;
+            flex-shrink: 0;
         }
 
-        body::before {
-            width: 340px;
-            height: 340px;
-            top: 110px;
-            left: -90px;
-            background: rgba(73, 168, 116, 0.1);
-        }
-
-        body::after {
-            width: 380px;
-            height: 380px;
-            right: -120px;
-            bottom: 60px;
-            background: rgba(219, 163, 95, 0.08);
+        .icon svg {
+            width: 100%;
+            height: 100%;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 1.8;
+            stroke-linecap: round;
+            stroke-linejoin: round;
         }
 
         #lock-screen {
             position: fixed;
             inset: 0;
-            background:
-                linear-gradient(160deg, rgba(8, 17, 13, 0.92), rgba(8, 17, 13, 0.98)),
-                radial-gradient(circle at top, rgba(73, 168, 116, 0.18), transparent 45%);
+            background: #050b08;
             z-index: 9999;
             display: flex;
             justify-content: center;
             align-items: center;
             padding: 24px;
             transition: var(--transition);
+            overflow: hidden;
+        }
+
+        .aurora-bg {
+            position: absolute;
+            inset: -50%;
+            z-index: 1;
+            opacity: 0.6;
+            filter: blur(90px);
+            pointer-events: none;
+        }
+
+        .aurora-blob {
+            position: absolute;
+            width: 700px;
+            height: 700px;
+            border-radius: 50%;
+        }
+
+        .aurora-blob-1 {
+            background: radial-gradient(circle, rgba(42, 104, 76, 0.6) 0%, transparent 65%);
+            top: 15%;
+            left: 15%;
+            animation: auroraMove1 26s infinite alternate ease-in-out;
+        }
+
+        .aurora-blob-2 {
+            background: radial-gradient(circle, rgba(6, 182, 212, 0.5) 0%, transparent 65%);
+            bottom: 15%;
+            right: 15%;
+            animation: auroraMove2 32s infinite alternate ease-in-out;
+        }
+
+        @keyframes auroraMove1 {
+            0% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(120px, 90px) scale(1.15); }
+            100% { transform: translate(-90px, -110px) scale(0.9); }
+        }
+
+        @keyframes auroraMove2 {
+            0% { transform: translate(0, 0) scale(1.15); }
+            50% { transform: translate(-140px, -70px) scale(0.9); }
+            100% { transform: translate(100px, 120px) scale(1.08); }
         }
 
         .lock-container {
+            position: relative;
+            z-index: 2;
             width: min(440px, 100%);
-            padding: 42px;
+            padding: 44px;
             border-radius: var(--radius-lg);
-            background: rgba(13, 25, 20, 0.86);
-            border: 1px solid rgba(255, 255, 255, 0.09);
-            backdrop-filter: blur(18px);
-            -webkit-backdrop-filter: blur(18px);
+            background: rgba(10, 20, 16, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(28px);
+            -webkit-backdrop-filter: blur(28px);
             box-shadow: var(--shadow-xl);
             text-align: center;
         }
 
         .lock-logo {
-            height: 78px;
-            margin-bottom: 22px;
+            height: 72px;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 0 10px rgba(134, 239, 172, 0.2));
+            transition: var(--transition);
+        }
+
+        .lock-logo:hover {
+            transform: scale(1.06);
         }
 
         .eyebrow {
@@ -146,25 +190,9 @@
 
         .lock-description {
             color: var(--text-soft);
-            font-size: 0.96rem;
+            font-size: 0.94rem;
             line-height: 1.6;
             margin-bottom: 24px;
-        }
-
-        .lock-input,
-        input,
-        select,
-        textarea {
-            width: 100%;
-            padding: 14px 16px;
-            border-radius: var(--radius-sm);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            background: rgba(255, 255, 255, 0.05);
-            color: var(--white);
-            font-family: inherit;
-            font-size: 0.96rem;
-            outline: none;
-            transition: var(--transition);
         }
 
         .lock-input {
@@ -172,158 +200,246 @@
             text-align: center;
         }
 
-        .lock-input:focus,
-        input:focus,
-        select:focus,
-        textarea:focus {
-            border-color: rgba(137, 215, 172, 0.55);
-            box-shadow: 0 0 0 4px rgba(73, 168, 116, 0.15);
-            background: rgba(255, 255, 255, 0.08);
-        }
-
-        select option {
-            background-color: var(--forest-900);
-            color: var(--text-main);
-        }
-
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            min-height: 46px;
-            padding: 12px 18px;
-            border-radius: var(--radius-sm);
-            border: none;
-            font-family: inherit;
-            font-size: 0.95rem;
+        .lock-error {
+            display: none;
+            color: var(--red-400);
+            font-size: 0.88rem;
+            margin-top: 14px;
             font-weight: 600;
-            cursor: pointer;
-            transition: var(--transition);
-            text-decoration: none;
         }
 
-        .btn:hover {
-            transform: translateY(-1px);
-        }
-
-        .btn:active {
-            transform: translateY(0);
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, var(--sand-400), var(--sand-300));
-            color: #1b1407;
-            box-shadow: 0 14px 28px rgba(219, 163, 95, 0.18);
-        }
-
-        .btn-primary:hover {
-            box-shadow: 0 18px 32px rgba(219, 163, 95, 0.24);
-        }
-
-        .btn-secondary {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            color: var(--text-main);
-        }
-
-        .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.08);
-        }
-
-        #logout-btn:hover {
-            background: rgba(241, 111, 99, 0.1) !important;
-            border-color: rgba(241, 111, 99, 0.3) !important;
-            color: #ffd2cd !important;
-        }
-
-        .btn-danger {
-            min-height: 38px;
-            padding: 8px 12px;
-            background: rgba(241, 111, 99, 0.12);
-            border: 1px solid rgba(241, 111, 99, 0.24);
-            color: #ffd2cd;
-        }
-
-        .btn-danger:hover {
-            background: rgba(241, 111, 99, 0.2);
-        }
-
-        .lock-btn {
+        .dashboard-layout {
+            display: flex;
+            min-height: 100vh;
             width: 100%;
         }
 
-        .lock-error {
-            display: none;
-            margin-top: 16px;
-            color: #ffb8af;
-            font-size: 0.92rem;
-        }
-
-        header {
-            position: sticky;
+        .sidebar-nav {
+            width: 290px;
+            background: rgba(10, 22, 17, 0.85);
+            border-right: 1px solid var(--line-soft);
+            padding: 28px 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 28px;
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            position: fixed;
+            height: 100vh;
+            left: 0;
             top: 0;
             z-index: 100;
+            transition: var(--transition);
+        }
+
+        .sidebar-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .sidebar-logo {
+            height: 42px;
+            width: 42px;
+            object-fit: contain;
+            filter: drop-shadow(0 0 8px rgba(134, 239, 172, 0.25));
+        }
+
+        .sidebar-brand {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .brand-title {
+            font-size: 1.15rem;
+            font-weight: 800;
+            letter-spacing: -0.01em;
+            color: var(--white);
+        }
+
+        .brand-badge {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--mint-300);
+            font-weight: 700;
+            margin-top: 1px;
+        }
+
+        .sidebar-user {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--line-soft);
+            padding: 12px 14px;
+            border-radius: var(--radius-md);
+        }
+
+        .user-avatar {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--forest-500), var(--mint-400));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .user-initial {
+            font-weight: 700;
+            color: var(--white);
+            font-size: 0.95rem;
+        }
+
+        .user-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .user-name {
+            font-size: 0.88rem;
+            font-weight: 600;
+            color: var(--white);
+        }
+
+        .user-role {
+            font-size: 0.72rem;
+            color: #86efac;
+            opacity: 0.7;
+        }
+
+        .sidebar-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            flex: 1;
+        }
+
+        .sidebar-menu .tab-btn {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            border-radius: 12px;
+            border: 1px solid transparent;
+            background: transparent;
+            color: var(--text-soft);
+            font-family: inherit;
+            font-size: 0.92rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-align: left;
+            transition: var(--transition);
+        }
+
+        .sidebar-menu .tab-btn:hover {
+            background: rgba(255, 255, 255, 0.03);
+            color: var(--white);
+            transform: translateX(4px);
+        }
+
+        .sidebar-menu .tab-btn.active {
+            background: rgba(42, 104, 76, 0.12);
+            border-color: rgba(110, 231, 183, 0.22);
+            color: var(--white);
+            box-shadow: 0 4px 20px rgba(42, 104, 76, 0.15);
+        }
+
+        .sidebar-menu .tab-btn .icon {
+            opacity: 0.7;
+            transition: var(--transition);
+        }
+
+        .sidebar-menu .tab-btn.active .icon {
+            color: var(--mint-400);
+            opacity: 1;
+        }
+
+        .sidebar-footer {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            border-top: 1px solid var(--line-soft);
+            padding-top: 18px;
+        }
+
+        .sidebar-action-btn {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 14px;
+            border-radius: 10px;
+            text-decoration: none;
+            color: var(--text-soft);
+            font-size: 0.88rem;
+            font-weight: 600;
+            background: transparent;
+            border: 1px solid transparent;
+            cursor: pointer;
+            transition: var(--transition);
+            width: 100%;
+        }
+
+        .sidebar-action-btn:hover {
+            background: rgba(255, 255, 255, 0.03);
+            color: var(--white);
+        }
+
+        .sidebar-action-btn.logout-btn {
+            color: var(--red-400);
+        }
+
+        .sidebar-action-btn.logout-btn:hover {
+            background: rgba(248, 113, 113, 0.06);
+            border-color: rgba(248, 113, 113, 0.18);
+        }
+
+        .workspace-main {
+            flex: 1;
+            margin-left: 290px;
+            padding: 36px 44px;
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
+            min-height: 100vh;
+            transition: var(--transition);
+        }
+
+        .workspace-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            gap: 20px;
-            padding: 18px 30px;
-            background: rgba(8, 17, 13, 0.82);
+            padding-bottom: 20px;
             border-bottom: 1px solid var(--line-soft);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
         }
 
-        .header-left,
-        .header-right,
-        .brand-block,
-        .header-meta {
+        .header-breadcrumb {
             display: flex;
             align-items: center;
-        }
-
-        .header-left {
-            gap: 16px;
-        }
-
-        .brand-block {
-            gap: 14px;
-        }
-
-        .logo-img {
-            height: 58px;
-        }
-
-        .brand-copy {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-
-        .brand-kicker {
-            color: var(--mint-300);
-            font-size: 0.73rem;
-            letter-spacing: 0.16em;
-            text-transform: uppercase;
-            font-weight: 700;
-        }
-
-        .header-title {
-            font-size: 1.45rem;
-            font-weight: 800;
-            letter-spacing: -0.02em;
-            background: linear-gradient(135deg, var(--white) 30%, var(--mint-300) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .header-subtitle {
-            color: var(--text-soft);
+            gap: 8px;
             font-size: 0.9rem;
         }
 
-        .header-meta {
+        .crumb-parent {
+            color: var(--text-soft);
+            opacity: 0.6;
+        }
+
+        .crumb-separator {
+            color: var(--line-soft);
+        }
+
+        .crumb-active {
+            color: var(--white);
+            font-weight: 600;
+        }
+
+        .header-meta-actions {
+            display: flex;
+            align-items: center;
             gap: 12px;
         }
 
@@ -331,332 +447,146 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            padding: 10px 14px;
+            padding: 8px 14px;
             border-radius: 999px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            color: var(--text-soft);
-            font-size: 0.88rem;
-        }
-
-        .icon {
-            width: 18px;
-            height: 18px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            color: currentColor;
-            flex-shrink: 0;
-        }
-
-        .icon svg {
-            width: 100%;
-            height: 100%;
-            fill: none;
-            stroke: currentColor;
-            stroke-width: 1.8;
-            stroke-linecap: round;
-            stroke-linejoin: round;
-        }
-
-        .header-right {
-            gap: 12px;
-            flex-wrap: wrap;
-            justify-content: flex-end;
-        }
-
-        .container {
-            width: min(1320px, 100%);
-            margin: 0 auto;
-            padding: 30px 22px 40px;
-            flex: 1;
-        }
-
-        .card-panel,
-        .stat-card {
-            background: var(--surface-card);
-            border: 1px solid var(--line-soft);
-            box-shadow: var(--shadow-lg);
-            backdrop-filter: blur(18px);
-            -webkit-backdrop-filter: blur(18px);
-        }
-
-        .hero-actions,
-        .hero-metrics,
-        .tabs-nav,
-        .panel-tools,
-        .filter-group,
-        .panel-actions,
-        .form-actions,
-        .footer-badges {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-        }
-
-        .metric-chip {
-            min-width: 150px;
-            padding: 14px 16px;
-            border-radius: 18px;
             background: rgba(255, 255, 255, 0.04);
             border: 1px solid rgba(255, 255, 255, 0.08);
+            color: var(--text-soft);
+            font-size: 0.85rem;
         }
 
-        .metric-label {
-            display: block;
-            color: var(--text-muted);
-            font-size: 0.78rem;
-            text-transform: uppercase;
-            letter-spacing: 0.12em;
-            margin-bottom: 7px;
-        }
-
-        .metric-value {
+        .mobile-toggle {
+            display: none;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--line-soft);
             color: var(--white);
-            font-size: 1.25rem;
-            font-weight: 700;
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            cursor: pointer;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        .mobile-toggle:hover {
+            background: rgba(255, 255, 255, 0.08);
         }
 
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            grid-template-columns: repeat(4, 1fr);
             gap: 20px;
-            margin-bottom: 32px;
         }
 
         .stat-card {
-            border-radius: 24px;
-            padding: 24px;
-            transition: var(--transition);
+            background: rgba(13, 25, 20, 0.5);
+            border: 1px solid var(--line-soft);
+            border-radius: 20px;
+            padding: 22px;
+            display: flex;
+            flex-direction: column;
             position: relative;
             overflow: hidden;
-            background: rgba(16, 34, 25, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            box-shadow: var(--shadow-lg);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
+            transition: var(--transition);
         }
 
-        /* Card 1: Hospedaje (Alojamientos) - Green/Mint theme */
-        .stat-card:nth-child(1)::before {
+        .stat-card::before {
             content: "";
             position: absolute;
-            inset: 0 auto auto 0;
+            top: 0;
+            left: 0;
             width: 100%;
-            height: 2px;
-            background: linear-gradient(90deg, var(--mint-300), transparent);
-            opacity: 0.8;
-        }
-        .stat-card:nth-child(1) .stat-icon {
-            background: rgba(73, 168, 116, 0.1);
-            color: var(--mint-300);
-            border: 1px solid rgba(137, 215, 172, 0.2);
-            box-shadow: 0 0 15px rgba(137, 215, 172, 0.1);
-        }
-        .stat-card:nth-child(1) .stat-pill {
-            color: var(--mint-300);
-            border-color: rgba(137, 215, 172, 0.2);
-            background: rgba(137, 215, 172, 0.04);
-        }
-        .stat-card:nth-child(1):hover {
-            transform: translateY(-5px);
-            background: rgba(16, 34, 25, 0.85);
-            border-color: rgba(137, 215, 172, 0.3);
-            box-shadow: 0 20px 40px rgba(73, 168, 116, 0.08), var(--shadow-xl);
+            height: 3px;
+            opacity: 0.7;
         }
 
-        /* Card 2: Naturaleza (Pasadías) - Sand/Gold theme */
-        .stat-card:nth-child(2)::before {
-            content: "";
-            position: absolute;
-            inset: 0 auto auto 0;
-            width: 100%;
-            height: 2px;
-            background: linear-gradient(90deg, var(--sand-300), transparent);
-            opacity: 0.8;
-        }
-        .stat-card:nth-child(2) .stat-icon {
-            background: rgba(219, 163, 95, 0.1);
-            color: var(--sand-300);
-            border: 1px solid rgba(219, 163, 95, 0.2);
-            box-shadow: 0 0 15px rgba(219, 163, 95, 0.1);
-        }
-        .stat-card:nth-child(2) .stat-pill {
-            color: var(--sand-300);
-            border-color: rgba(219, 163, 95, 0.2);
-            background: rgba(219, 163, 95, 0.04);
-        }
-        .stat-card:nth-child(2):hover {
+        .stat-card:hover {
             transform: translateY(-5px);
-            background: rgba(16, 34, 25, 0.85);
-            border-color: rgba(219, 163, 95, 0.35);
-            box-shadow: 0 20px 40px rgba(219, 163, 95, 0.08), var(--shadow-xl);
+            background: rgba(18, 36, 29, 0.75);
+            box-shadow: var(--shadow-xl);
         }
 
-        /* Card 3: Aventura (Deportes) - Cyan/Teal theme */
-        .stat-card:nth-child(3)::before {
-            content: "";
-            position: absolute;
-            inset: 0 auto auto 0;
-            width: 100%;
-            height: 2px;
-            background: linear-gradient(90deg, var(--cyan-400), transparent);
-            opacity: 0.8;
-        }
-        .stat-card:nth-child(3) .stat-icon {
-            background: rgba(65, 183, 191, 0.1);
-            color: var(--cyan-400);
-            border: 1px solid rgba(65, 183, 191, 0.2);
-            box-shadow: 0 0 15px rgba(65, 183, 191, 0.1);
-        }
-        .stat-card:nth-child(3) .stat-pill {
-            color: var(--cyan-400);
-            border-color: rgba(65, 183, 191, 0.2);
-            background: rgba(65, 183, 191, 0.04);
-        }
-        .stat-card:nth-child(3):hover {
-            transform: translateY(-5px);
-            background: rgba(16, 34, 25, 0.85);
-            border-color: rgba(65, 183, 191, 0.35);
-            box-shadow: 0 20px 40px rgba(65, 183, 191, 0.08), var(--shadow-xl);
-        }
+        .stat-card.hospedaje::before { background: linear-gradient(90deg, var(--mint-400), transparent); }
+        .stat-card.hospedaje:hover { border-color: rgba(110, 231, 183, 0.25); }
+        .stat-card.hospedaje .stat-icon { background: rgba(110, 231, 183, 0.08); color: var(--mint-400); }
+        
+        .stat-card.naturaleza::before { background: linear-gradient(90deg, var(--sand-400), transparent); }
+        .stat-card.naturaleza:hover { border-color: rgba(234, 179, 8, 0.25); }
+        .stat-card.naturaleza .stat-icon { background: rgba(234, 179, 8, 0.08); color: var(--sand-400); }
 
-        /* Card 4: Bundle (Paquetes) - Blue theme */
-        .stat-card:nth-child(4)::before {
-            content: "";
-            position: absolute;
-            inset: 0 auto auto 0;
-            width: 100%;
-            height: 2px;
-            background: linear-gradient(90deg, #7298e2, transparent);
-            opacity: 0.8;
-        }
-        .stat-card:nth-child(4) .stat-icon {
-            background: rgba(114, 152, 226, 0.1);
-            color: #9ab4f5;
-            border: 1px solid rgba(114, 152, 226, 0.2);
-            box-shadow: 0 0 15px rgba(114, 152, 226, 0.1);
-        }
-        .stat-card:nth-child(4) .stat-pill {
-            color: #a3bdff;
-            border-color: rgba(114, 152, 226, 0.2);
-            background: rgba(114, 152, 226, 0.04);
-        }
-        .stat-card:nth-child(4):hover {
-            transform: translateY(-5px);
-            background: rgba(16, 34, 25, 0.85);
-            border-color: rgba(114, 152, 226, 0.35);
-            box-shadow: 0 20px 40px rgba(114, 152, 226, 0.08), var(--shadow-xl);
-        }
+        .stat-card.deportes::before { background: linear-gradient(90deg, var(--cyan-400), transparent); }
+        .stat-card.deportes:hover { border-color: rgba(6, 182, 212, 0.25); }
+        .stat-card.deportes .stat-icon { background: rgba(6, 182, 212, 0.08); color: var(--cyan-400); }
+
+        .stat-card.bundle::before { background: linear-gradient(90deg, var(--violet-400), transparent); }
+        .stat-card.bundle:hover { border-color: rgba(139, 92, 246, 0.25); }
+        .stat-card.bundle .stat-icon { background: rgba(139, 92, 246, 0.08); color: var(--violet-300); }
 
         .stat-top {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            gap: 12px;
-            margin-bottom: 18px;
+            margin-bottom: 14px;
         }
 
         .stat-icon {
-            width: 48px;
-            height: 48px;
-            border-radius: 16px;
-            display: inline-flex;
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            display: flex;
             align-items: center;
             justify-content: center;
-            transition: var(--transition);
-        }
-
-        .stat-card:hover .stat-icon {
-            transform: scale(1.1);
         }
 
         .stat-pill {
-            padding: 6px 12px;
-            border-radius: 999px;
-            font-size: 0.74rem;
-            font-weight: 700;
-            letter-spacing: 0.05em;
+            font-size: 0.65rem;
             text-transform: uppercase;
+            letter-spacing: 0.08em;
+            font-weight: 700;
+            padding: 4px 8px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--line-soft);
         }
 
         .stat-number {
-            font-size: 2.6rem;
+            font-size: 2.2rem;
             font-weight: 800;
-            line-height: 1;
             color: var(--white);
-            margin-bottom: 8px;
-            letter-spacing: -0.03em;
+            line-height: 1;
+            margin-bottom: 6px;
         }
 
         .stat-label {
-            color: var(--text-main);
-            font-size: 1rem;
+            font-size: 0.92rem;
             font-weight: 700;
-            margin-bottom: 4px;
+            color: var(--white);
         }
 
         .stat-note {
+            font-size: 0.78rem;
             color: var(--text-soft);
-            font-size: 0.84rem;
-            line-height: 1.4;
-        }
-
-        .tabs-nav {
-            margin-bottom: 28px;
-            padding: 8px;
-            border-radius: 20px;
-            background: rgba(8, 17, 13, 0.4);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            display: flex;
-            gap: 8px;
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-        }
-
-        .tab-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            padding: 12px 20px;
-            border: 1px solid transparent;
-            border-radius: 14px;
-            background: transparent;
-            color: var(--text-soft);
-            font-family: inherit;
-            font-size: 0.94rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .tab-btn:hover {
-            color: var(--white);
-            background: rgba(255, 255, 255, 0.04);
-        }
-
-        .tab-btn.active {
-            color: var(--white);
-            background: rgba(137, 215, 172, 0.08);
-            border: 1px solid rgba(137, 215, 172, 0.22);
-            box-shadow: 0 8px 24px rgba(73, 168, 116, 0.15);
+            opacity: 0.75;
+            margin-top: 3px;
         }
 
         .tab-content {
             display: none;
-            animation: fadeIn 0.4s ease forwards;
+            animation: panelFadeIn 0.35s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
         }
 
         .tab-content.active {
             display: block;
         }
 
-        @keyframes fadeIn {
+        @keyframes panelFadeIn {
             from {
                 opacity: 0;
-                transform: translateY(10px);
+                transform: translateY(12px);
             }
-
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -664,9 +594,13 @@
         }
 
         .card-panel {
+            background: rgba(13, 25, 20, 0.5);
+            border: 1px solid var(--line-soft);
             border-radius: var(--radius-lg);
-            padding: 28px;
-            margin-bottom: 24px;
+            padding: 32px;
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            box-shadow: var(--shadow-lg);
         }
 
         .panel-header {
@@ -674,45 +608,55 @@
             justify-content: space-between;
             align-items: flex-start;
             gap: 20px;
-            margin-bottom: 22px;
+            margin-bottom: 24px;
             flex-wrap: wrap;
         }
 
         .panel-title-block {
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 6px;
         }
 
         .panel-title {
-            font-size: 1.45rem;
-            color: var(--white);
+            font-size: 1.35rem;
             font-weight: 700;
-            letter-spacing: -0.02em;
+            color: var(--white);
+            letter-spacing: -0.01em;
         }
 
         .panel-subtitle {
+            font-size: 0.88rem;
             color: var(--text-soft);
-            max-width: 62ch;
+            opacity: 0.8;
             line-height: 1.6;
-            font-size: 0.94rem;
+            max-width: 70ch;
         }
 
         .panel-tools {
+            display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 18px;
+            gap: 16px;
+            margin-bottom: 22px;
+            background: rgba(255, 255, 255, 0.02);
+            padding: 16px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--line-soft);
+            flex-wrap: wrap;
         }
 
         .filter-group {
+            display: flex;
+            gap: 12px;
             flex: 1;
-            min-width: min(100%, 460px);
+            min-width: min(100%, 480px);
         }
 
         .filter-field {
             position: relative;
             flex: 1;
-            min-width: 220px;
+            min-width: 200px;
         }
 
         .filter-field .icon {
@@ -720,19 +664,24 @@
             left: 14px;
             top: 50%;
             transform: translateY(-50%);
-            color: var(--text-muted);
+            color: var(--mint-300);
+            opacity: 0.75;
         }
 
         .filter-field input,
         .filter-field select {
-            padding-left: 44px;
+            padding-left: 42px;
+            width: 100%;
+            height: 44px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
         }
 
         .table-shell {
-            border-radius: 22px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--line-soft);
             overflow: hidden;
-            background: rgba(0, 0, 0, 0.12);
+            background: rgba(0, 0, 0, 0.16);
         }
 
         .table-wrap {
@@ -745,24 +694,23 @@
             min-width: 900px;
         }
 
-        thead {
-            background: rgba(255, 255, 255, 0.03);
-        }
-
-        th,
-        td {
-            padding: 16px 18px;
-            text-align: left;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-            vertical-align: middle;
-        }
-
         th {
+            background: rgba(255, 255, 255, 0.02);
             color: var(--mint-300);
-            font-size: 0.8rem;
-            letter-spacing: 0.12em;
+            font-size: 0.75rem;
             text-transform: uppercase;
             font-weight: 700;
+            letter-spacing: 0.08em;
+            padding: 14px 20px;
+            border-bottom: 1px solid var(--line-soft);
+            text-align: left;
+        }
+
+        td {
+            padding: 14px 20px;
+            vertical-align: middle;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            text-align: left;
         }
 
         tbody tr {
@@ -770,7 +718,7 @@
         }
 
         tbody tr:hover {
-            background: rgba(255, 255, 255, 0.03);
+            background: rgba(255, 255, 255, 0.02);
         }
 
         tbody tr:last-child td {
@@ -778,95 +726,120 @@
         }
 
         .col-image {
-            width: 72px;
+            width: 74px;
             height: 54px;
-            border-radius: 12px;
+            border-radius: 10px;
             object-fit: cover;
-            border: 1px solid rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: var(--transition);
+        }
+
+        tbody tr:hover .col-image {
+            transform: scale(1.06);
+            border-color: rgba(110, 231, 183, 0.35);
         }
 
         .service-name {
             display: flex;
             flex-direction: column;
-            gap: 4px;
+            gap: 2px;
         }
 
         .service-name strong {
             color: var(--white);
-            font-size: 0.98rem;
+            font-size: 0.95rem;
         }
 
         .service-name span {
             color: var(--text-soft);
-            font-size: 0.84rem;
+            opacity: 0.7;
+            font-size: 0.8rem;
         }
 
         .col-badge {
             display: inline-flex;
             align-items: center;
-            gap: 8px;
-            padding: 8px 12px;
+            padding: 6px 12px;
             border-radius: 999px;
-            font-size: 0.78rem;
+            font-size: 0.72rem;
             font-weight: 700;
-            letter-spacing: 0.06em;
+            letter-spacing: 0.04em;
             text-transform: uppercase;
-            border: 1px solid transparent;
         }
 
-        .col-badge.alojamiento {
-            color: #d9f6e4;
-            background: rgba(73, 168, 116, 0.12);
-            border-color: rgba(73, 168, 116, 0.22);
-        }
-
-        .col-badge.pasadia {
-            color: #ffe6c3;
-            background: rgba(219, 163, 95, 0.12);
-            border-color: rgba(219, 163, 95, 0.24);
-        }
-
-        .col-badge.deportes {
-            color: #d0fbff;
-            background: rgba(65, 183, 191, 0.14);
-            border-color: rgba(65, 183, 191, 0.24);
-        }
-
-        .col-badge.paquetes {
-            color: #dce7ff;
-            background: rgba(114, 152, 226, 0.14);
-            border-color: rgba(114, 152, 226, 0.25);
-        }
+        .col-badge.alojamiento { background: rgba(110, 231, 183, 0.08); color: var(--mint-400); border: 1px solid rgba(110, 231, 183, 0.15); }
+        .col-badge.pasadia { background: rgba(234, 179, 8, 0.08); color: var(--sand-400); border: 1px solid rgba(234, 179, 8, 0.15); }
+        .col-badge.deportes { background: rgba(6, 182, 212, 0.08); color: var(--cyan-400); border: 1px solid rgba(6, 182, 212, 0.15); }
+        .col-badge.paquetes { background: rgba(139, 92, 246, 0.08); color: var(--violet-300); border: 1px solid rgba(139, 92, 246, 0.15); }
+        .col-badge.status-approved { background: rgba(110, 231, 183, 0.08); color: var(--mint-400); border: 1px solid rgba(110, 231, 183, 0.15); }
+        .col-badge.status-pending { background: rgba(234, 179, 8, 0.08); color: var(--sand-300); border: 1px solid rgba(234, 179, 8, 0.15); }
+        .col-badge.status-rejected { background: rgba(248, 113, 113, 0.08); color: var(--red-400); border: 1px solid rgba(248, 113, 113, 0.15); }
 
         .system-tag {
             display: inline-flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             color: var(--text-muted);
-            font-size: 0.84rem;
+            font-size: 0.8rem;
         }
 
         .price-stack,
         .capacity-stack {
             display: flex;
             flex-direction: column;
-            gap: 4px;
+            gap: 2px;
         }
 
         .price-stack strong,
         .capacity-stack strong {
             color: var(--white);
+            font-size: 0.92rem;
         }
 
         .price-stack span,
         .capacity-stack span {
             color: var(--text-muted);
-            font-size: 0.82rem;
+            font-size: 0.8rem;
+        }
+
+        .actions-cell {
+            display: flex;
+            gap: 6px;
+        }
+
+        .btn-action {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            border: 1px solid var(--line-soft);
+            background: rgba(255, 255, 255, 0.02);
+            color: var(--text-soft);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        .btn-action:hover {
+            background: rgba(255, 255, 255, 0.06);
+            color: var(--white);
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .btn-action.delete {
+            color: var(--red-400);
+        }
+
+        .btn-action.delete:hover {
+            background: rgba(248, 113, 113, 0.08);
+            border-color: rgba(248, 113, 113, 0.25);
+            color: var(--white);
         }
 
         .empty-state {
             display: none;
-            padding: 36px 22px;
+            padding: 44px 22px;
             text-align: center;
             color: var(--text-soft);
         }
@@ -882,10 +855,74 @@
             color: var(--text-muted);
         }
 
+        input, select, textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.04);
+            color: var(--white);
+            font-family: inherit;
+            font-size: 0.95rem;
+            outline: none;
+            transition: var(--transition);
+        }
+
+        input:focus, select:focus, textarea:focus {
+            border-color: rgba(110, 231, 183, 0.5);
+            box-shadow: 0 0 0 3px rgba(110, 231, 183, 0.12);
+            background: rgba(255, 255, 255, 0.07);
+        }
+
+        select option {
+            background-color: #0d1712;
+            color: var(--text-main);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            min-height: 44px;
+            padding: 10px 20px;
+            border-radius: 12px;
+            border: 1px solid transparent;
+            font-family: inherit;
+            font-size: 0.92rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--forest-500) 0%, var(--forest-400) 100%);
+            color: var(--white);
+            box-shadow: 0 4px 14px rgba(42, 104, 76, 0.2);
+            border: 1px solid rgba(110, 231, 183, 0.2);
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, rgba(42, 104, 76, 1) 0%, rgba(63, 155, 110, 1) 100%);
+            box-shadow: 0 6px 20px rgba(42, 104, 76, 0.35);
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--line-soft);
+            color: var(--white);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
         .form-grid {
             display: grid;
             grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 22px;
+            gap: 20px;
         }
 
         .form-group {
@@ -900,75 +937,108 @@
 
         .form-group label {
             color: var(--text-main);
-            font-size: 0.92rem;
+            font-size: 0.9rem;
             font-weight: 600;
         }
 
         .field-note {
             color: var(--text-muted);
-            font-size: 0.8rem;
+            font-size: 0.78rem;
             line-height: 1.5;
+            margin-top: 4px;
         }
 
-        .form-section {
-            grid-column: 1 / -1;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 18px;
-            margin-top: 6px;
-            padding-top: 6px;
-            border-top: 1px solid rgba(255, 255, 255, 0.06);
+        .admin-form-card {
+            background: rgba(10, 20, 16, 0.4);
+            border: 1px solid var(--line-soft);
+            border-radius: var(--radius-md);
+            padding: 24px;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            transition: var(--transition);
         }
 
-        .form-section-title {
-            color: var(--white);
-            font-size: 1.02rem;
+        .admin-form-card:hover {
+            border-color: rgba(110, 231, 183, 0.18);
+            background: rgba(16, 32, 26, 0.5);
+        }
+
+        .admin-card-header {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            padding-bottom: 10px;
+            margin-bottom: 18px;
+        }
+
+        .admin-card-title {
+            color: var(--mint-300);
+            font-size: 1.05rem;
             font-weight: 700;
         }
 
-        .form-section-copy {
+        .admin-card-desc {
             color: var(--text-soft);
-            font-size: 0.88rem;
+            opacity: 0.7;
+            font-size: 0.8rem;
+            margin-top: 3px;
         }
 
         .checkbox-group {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 12px;
-            padding: 16px;
-            border-radius: 18px;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.07);
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+            padding: 14px;
+            border-radius: 12px;
+            background: rgba(0, 0, 0, 0.14);
+            border: 1px solid rgba(255, 255, 255, 0.04);
         }
 
         .checkbox-item {
             display: flex;
             align-items: center;
             gap: 10px;
-            padding: 12px 14px;
-            border-radius: 14px;
-            background: rgba(255, 255, 255, 0.03);
+            padding: 10px 12px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.01);
+            border: 1px solid rgba(255, 255, 255, 0.03);
             color: var(--text-soft);
             cursor: pointer;
             transition: var(--transition);
         }
 
         .checkbox-item:hover {
-            background: rgba(255, 255, 255, 0.05);
-            color: var(--text-main);
+            background: rgba(255, 255, 255, 0.03);
+            color: var(--white);
+        }
+
+        .checkbox-item:has(input:checked) {
+            background: rgba(110, 231, 183, 0.08) !important;
+            border-color: rgba(110, 231, 183, 0.22) !important;
+            color: var(--white) !important;
+            box-shadow: 0 4px 12px rgba(110, 231, 183, 0.05);
         }
 
         .checkbox-item input {
-            width: 18px;
-            height: 18px;
+            width: 16px;
+            height: 16px;
             accent-color: var(--forest-400);
             cursor: pointer;
         }
 
         .form-actions {
+            display: flex;
             justify-content: flex-end;
-            margin-top: 6px;
+            margin-top: 10px;
+            gap: 12px;
+        }
+
+        .upload-zone:hover {
+            border-color: rgba(110, 231, 183, 0.4) !important;
+            background: rgba(110, 231, 183, 0.04) !important;
+        }
+
+        .upload-zone.dragover {
+            border-color: var(--mint-400) !important;
+            background: rgba(110, 231, 183, 0.08) !important;
         }
 
         .json-textarea {
@@ -979,6 +1049,7 @@
             line-height: 1.65;
             background: rgba(3, 8, 5, 0.86);
             color: #bde8ca;
+            border-color: var(--line-soft);
         }
 
         .copy-success {
@@ -994,42 +1065,37 @@
         }
 
         .helper-note {
-            padding: 16px 18px;
-            border-radius: 18px;
-            background: rgba(65, 183, 191, 0.08);
-            border: 1px solid rgba(65, 183, 191, 0.16);
+            padding: 14px 16px;
+            border-radius: 12px;
+            background: rgba(6, 182, 212, 0.08);
+            border: 1px solid rgba(6, 182, 212, 0.16);
             color: var(--text-soft);
-            line-height: 1.65;
-            font-size: 0.92rem;
-        }
-
-        .footer-badges {
-            justify-content: center;
-            margin-bottom: 14px;
+            line-height: 1.6;
+            font-size: 0.9rem;
         }
 
         footer {
             margin-top: auto;
-            padding: 28px 22px 36px;
+            padding: 24px 10px;
             text-align: center;
             color: var(--text-muted);
-            font-size: 0.9rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.06);
-            background: rgba(7, 14, 10, 0.5);
+            font-size: 0.85rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            background: rgba(7, 14, 10, 0.3);
         }
 
         .toast {
             position: fixed;
             right: 22px;
             bottom: 22px;
-            z-index: 120;
+            z-index: 1000;
             display: flex;
             align-items: center;
             gap: 10px;
             padding: 14px 16px;
-            border-radius: 16px;
+            border-radius: 12px;
             background: rgba(10, 22, 16, 0.94);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.08);
             box-shadow: var(--shadow-lg);
             color: var(--white);
             opacity: 0;
@@ -1044,11 +1110,11 @@
         }
 
         .toast.success {
-            border-color: rgba(73, 168, 116, 0.3);
+            border-color: rgba(110, 231, 183, 0.3);
         }
 
         .toast.error {
-            border-color: rgba(241, 111, 99, 0.3);
+            border-color: rgba(248, 113, 113, 0.3);
         }
 
         .toast .icon {
@@ -1056,65 +1122,51 @@
         }
 
         @media (max-width: 1024px) {
-            .panel-header,
-            .panel-tools,
-            .form-section {
-                flex-direction: column;
-                align-items: stretch;
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
             }
         }
 
         @media (max-width: 768px) {
-            header {
-                padding: 16px 18px;
+            .sidebar-nav {
+                transform: translateX(-290px);
+            }
+            .sidebar-nav.open {
+                transform: translateX(0);
+            }
+            .workspace-main {
+                margin-left: 0;
+                padding: 24px 20px;
+            }
+            .mobile-toggle {
+                display: flex;
+            }
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            .panel-tools {
                 flex-direction: column;
                 align-items: stretch;
             }
-
-            .header-left,
-            .header-right {
-                justify-content: space-between;
+            .filter-group {
+                flex-direction: column;
             }
-
-            .container {
-                padding: 20px 14px 30px;
+            .filter-field {
+                max-width: 100%;
             }
-
-            .lock-container,
-            .card-panel {
-                padding: 22px;
-            }
-
             .form-grid {
                 grid-template-columns: 1fr;
             }
-
-            .filter-group,
-            .filter-field {
-                min-width: 100%;
-            }
-
-            .tabs-nav {
-                padding: 8px;
-            }
-
-            .tab-btn {
-                width: 100%;
-                justify-content: flex-start;
-            }
-
-            .toast {
-                left: 14px;
-                right: 14px;
-                bottom: 14px;
-            }
         }
-
     </style>
 </head>
 
 <body>
     <div id="lock-screen">
+        <div class="aurora-bg">
+            <div class="aurora-blob aurora-blob-1"></div>
+            <div class="aurora-blob aurora-blob-2"></div>
+        </div>
         <div class="lock-container">
             <img src="assets/LOGO.webp" alt="Logo Eco Conexión" class="lock-logo">
             <div class="eyebrow">
@@ -1131,101 +1183,144 @@
         </div>
     </div>
 
-    <header>
-        <div class="header-left">
-            <div class="brand-block">
-                <img src="assets/LOGO.webp" alt="Logo Eco Conexión" class="logo-img">
-                <div class="brand-copy">
-                    <span class="brand-kicker">Centro de operaciones</span>
-                    <span class="header-title">Partner Central</span>
-                    <span class="header-subtitle">Panel administrativo de Eco Conexión Calima</span>
+    <div class="dashboard-layout">
+        <!-- Barra Lateral Izquierda (SaaS Sidebar) -->
+        <aside class="sidebar-nav" id="admin-sidebar">
+            <div class="sidebar-header">
+                <img src="assets/LOGO.webp" alt="Logo Eco Conexión" class="sidebar-logo">
+                <div class="sidebar-brand">
+                    <span class="brand-title">Partner Central</span>
+                    <span class="brand-badge">Operaciones</span>
                 </div>
             </div>
-        </div>
-        <div class="header-right">
-            <div class="meta-pill">
-                <span class="icon" aria-hidden="true">
-                    <svg viewBox="0 0 24 24"><path d="M12 20h9"></path><path d="M12 4h9"></path><path d="M4 9h16"></path><path d="M6 4v16"></path></svg>
-                </span>
-                <span id="header-total-count">0 servicios activos</span>
+            
+            <div class="sidebar-user">
+                <div class="user-avatar">
+                    <span class="user-initial">A</span>
+                </div>
+                <div class="user-info">
+                    <span class="user-name">Administrador</span>
+                    <span class="user-role">Socio Principal</span>
+                </div>
             </div>
-            <a href="index.html" class="btn btn-secondary">
-                <span class="icon" aria-hidden="true">
-                    <svg viewBox="0 0 24 24"><path d="M3 12h18"></path><path d="M13 5l7 7-7 7"></path></svg>
-                </span>
-                Ir a la web
-            </a>
-            <button id="logout-btn" class="btn btn-secondary">
-                <span class="icon" aria-hidden="true">
-                    <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><path d="M16 17l5-5-5-5"></path><path d="M21 12H9"></path></svg>
-                </span>
-                Cerrar sesión
-            </button>
-        </div>
-    </header>
 
-    <main class="container">
-        <section class="stats-grid">
-            <article class="stat-card">
-                <div class="stat-top">
-                    <span class="stat-icon" aria-hidden="true">
-                        <span class="icon"><svg viewBox="0 0 24 24"><path d="M3 21V7l9-4 9 4v14"></path><path d="M9 21v-6h6v6"></path></svg></span>
+            <nav class="sidebar-menu">
+                <button class="tab-btn active" data-tab="listado">
+                    <span class="icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24"><path d="M8 6h13"></path><path d="M8 12h13"></path><path d="M8 18h13"></path><path d="M3 6h.01"></path><path d="M3 12h.01"></path><path d="M3 18h.01"></path></svg>
                     </span>
-                    <span class="stat-pill">Hospedaje</span>
-                </div>
-                <div class="stat-number" id="stat-alojamiento">0</div>
-                <div class="stat-label">Alojamientos</div>
-                <div class="stat-note">Hoteles, glampings y cabañas activas</div>
-            </article>
-            <article class="stat-card">
-                <div class="stat-top">
-                    <span class="stat-icon" aria-hidden="true">
-                        <span class="icon"><svg viewBox="0 0 24 24"><path d="M12 3c4 0 7 3.1 7 7.5 0 5.2-7 10.5-7 10.5S5 15.7 5 10.5C5 6.1 8 3 12 3z"></path><path d="M12 13a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z"></path></svg></span>
+                    Servicios registrados
+                </button>
+                <button class="tab-btn" data-tab="centros">
+                    <span class="icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
                     </span>
-                    <span class="stat-pill">Naturaleza</span>
-                </div>
-                <div class="stat-number" id="stat-pasadia">0</div>
-                <div class="stat-label">Pasadías</div>
-                <div class="stat-note">Experiencias de ecoturismo y descanso</div>
-            </article>
-            <article class="stat-card">
-                <div class="stat-top">
-                    <span class="stat-icon" aria-hidden="true">
-                        <span class="icon"><svg viewBox="0 0 24 24"><path d="M4 18c2.5-2.3 5.2-3.5 8-3.5 2.7 0 5.4 1.2 8 3.5"></path><path d="M8 10c1.2-2.8 2.5-4.7 4-5.5 1.6.8 2.9 2.7 4 5.5"></path><path d="M10.5 10h3"></path></svg></span>
+                    Centros Turísticos
+                </button>
+                <button class="tab-btn" data-tab="resenas">
+                    <span class="icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"></path></svg>
                     </span>
-                    <span class="stat-pill">Aventura</span>
-                </div>
-                <div class="stat-number" id="stat-deportes">0</div>
-                <div class="stat-label">Deportes</div>
-                <div class="stat-note">Actividades acuáticas y adrenalina</div>
-            </article>
-            <article class="stat-card">
-                <div class="stat-top">
-                    <span class="stat-icon" aria-hidden="true">
-                        <span class="icon"><svg viewBox="0 0 24 24"><path d="M21 8.5V18a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8.5"></path><path d="M1 8l4.5-5h13L23 8"></path><path d="M9 13h6"></path></svg></span>
+                    Reseñas
+                </button>
+                <button class="tab-btn" data-tab="nuevo">
+                    <span class="icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24"><path d="M12 5v14"></path><path d="M5 12h14"></path></svg>
                     </span>
-                    <span class="stat-pill">Bundle</span>
-                </div>
-                <div class="stat-number" id="stat-paquetes">0</div>
-                <div class="stat-label">Paquetes</div>
-                <div class="stat-note">Planes completos listos para vender</div>
-            </article>
-        </section>
+                    Registrar nuevo servicio
+                </button>
 
-        <nav class="tabs-nav">
-            <button class="tab-btn active" data-tab="listado">
-                <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 6h13"></path><path d="M8 12h13"></path><path d="M8 18h13"></path><path d="M3 6h.01"></path><path d="M3 12h.01"></path><path d="M3 18h.01"></path></svg></span>
-                Servicios registrados
-            </button>
-            <button class="tab-btn" data-tab="nuevo">
-                <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 5v14"></path><path d="M5 12h14"></path></svg></span>
-                Registrar nuevo servicio
-            </button>
-            <button class="tab-btn" data-tab="desarrollo">
-                <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3v12"></path><path d="M7 10l5 5 5-5"></path><path d="M5 21h14"></path></svg></span>
-                Exportar base de datos
-            </button>
-        </nav>
+                <button class="tab-btn" data-tab="desarrollo">
+                    <span class="icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24"><path d="M12 3v12"></path><path d="M7 10l5 5 5-5"></path><path d="M5 21h14"></path></svg>
+                    </span>
+                    Exportar base de datos
+                </button>
+            </nav>
+
+            <div class="sidebar-footer">
+                <a href="index.html" class="sidebar-action-btn">
+                    <span class="icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24"><path d="M3 12h18"></path><path d="M13 5l7 7-7 7"></path></svg>
+                    </span>
+                    Ir a la web
+                </a>
+                <button id="logout-btn" class="sidebar-action-btn logout-btn">
+                    <span class="icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><path d="M16 17l5-5-5-5"></path><path d="M21 12H9"></path></svg>
+                    </span>
+                    Cerrar sesión
+                </button>
+            </div>
+        </aside>
+
+        <!-- Area de Trabajo Principal -->
+        <main class="workspace-main">
+            <!-- Cabecera de Workspace breadcrumb -->
+            <header class="workspace-header">
+                <div class="header-breadcrumb">
+                    <span class="crumb-parent">Dashboard</span>
+                    <span class="crumb-separator">/</span>
+                    <span class="crumb-active" id="crumb-active-tab">Servicios registrados</span>
+                </div>
+                <div class="header-meta-actions">
+                    <span id="header-total-count" class="meta-pill">0 servicios activos</span>
+                    <button class="mobile-toggle" id="sidebar-toggle" aria-label="Menu principal">
+                        <span class="icon"><svg viewBox="0 0 24 24"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></span>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Grid de Estadísticas Premium -->
+            <section class="stats-grid">
+                <article class="stat-card hospedaje">
+                    <div class="stat-top">
+                        <span class="stat-icon" aria-hidden="true">
+                            <span class="icon"><svg viewBox="0 0 24 24"><path d="M3 21V7l9-4 9 4v14"></path><path d="M9 21v-6h6v6"></path></svg></span>
+                        </span>
+                        <span class="stat-pill">Hospedaje</span>
+                    </div>
+                    <div class="stat-number" id="stat-alojamiento">0</div>
+                    <div class="stat-label">Alojamientos</div>
+                    <div class="stat-note">Glampings y cabañas activas</div>
+                </article>
+                <article class="stat-card naturaleza">
+                    <div class="stat-top">
+                        <span class="stat-icon" aria-hidden="true">
+                            <span class="icon"><svg viewBox="0 0 24 24"><path d="M12 3c4 0 7 3.1 7 7.5 0 5.2-7 10.5-7 10.5S5 15.7 5 10.5C5 6.1 8 3 12 3z"></path><path d="M12 13a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z"></path></svg></span>
+                        </span>
+                        <span class="stat-pill">Naturaleza</span>
+                    </div>
+                    <div class="stat-number" id="stat-pasadia">0</div>
+                    <div class="stat-label">Pasadías</div>
+                    <div class="stat-note">Ecoturismo y descanso guiado</div>
+                </article>
+                <article class="stat-card deportes">
+                    <div class="stat-top">
+                        <span class="stat-icon" aria-hidden="true">
+                            <span class="icon"><svg viewBox="0 0 24 24"><path d="M4 18c2.5-2.3 5.2-3.5 8-3.5 2.7 0 5.4 1.2 8 3.5"></path><path d="M8 10c1.2-2.8 2.5-4.7 4-5.5 1.6.8 2.9 2.7 4 5.5"></path><path d="M10.5 10h3"></path></svg></span>
+                        </span>
+                        <span class="stat-pill">Aventura</span>
+                    </div>
+                    <div class="stat-number" id="stat-deportes">0</div>
+                    <div class="stat-label">Deportes</div>
+                    <div class="stat-note">Actividades en el Lago Calima</div>
+                </article>
+                <article class="stat-card bundle">
+                    <div class="stat-top">
+                        <span class="stat-icon" aria-hidden="true">
+                            <span class="icon"><svg viewBox="0 0 24 24"><path d="M21 8.5V18a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8.5"></path><path d="M1 8l4.5-5h13L23 8"></path><path d="M9 13h6"></path></svg></span>
+                        </span>
+                        <span class="stat-pill">Bundle</span>
+                    </div>
+                    <div class="stat-number" id="stat-paquetes">0</div>
+                    <div class="stat-label">Paquetes</div>
+                    <div class="stat-note">Experiencias completas todo incluido</div>
+                </article>
+            </section>
+
+            <!-- Contenido de Pestañas -->
+            <div class="workspace-content">
 
         <section id="tab-listado" class="tab-content active">
             <div class="card-panel">
@@ -1293,110 +1388,298 @@
                         <p class="panel-subtitle">Completa la información comercial del hotel, pasadía o experiencia. El formulario ahora está organizado para que el equipo cargue datos con menos fricción.</p>
                     </div>
                 </div>
-                <form id="new-service-form">
-                    <div class="form-grid">
-                        <div class="form-section">
-                            <div>
-                                <div class="form-section-title">Información principal</div>
-                                <div class="form-section-copy">Datos clave para mostrar el servicio en el buscador y en el panel.</div>
+                <form id="new-service-form" class="admin-form-layout">
+                    <!-- Tarjeta 1: Información Principal -->
+                    <div class="admin-form-card">
+                        <div class="admin-card-header">
+                            <h3 class="admin-card-title">1. Información Principal</h3>
+                            <p class="admin-card-desc">Datos clave para mostrar el servicio en el catálogo y en el buscador principal.</p>
+                        </div>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="p-title">Nombre del hotel o plan *</label>
+                                <input type="text" id="p-title" required placeholder="Ej: Glamping Domo Estelar">
                             </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="p-title">Nombre del hotel o plan *</label>
-                            <input type="text" id="p-title" required placeholder="Ej: Glamping Domo Estelar">
-                        </div>
-                        <div class="form-group">
-                            <label for="p-category">Categoría de servicio *</label>
-                            <select id="p-category" required>
-                                <option value="" disabled selected>Selecciona una opción</option>
-                                <option value="alojamiento">Alojamiento</option>
-                                <option value="pasadia">Pasadía o ecoturismo</option>
-                                <option value="deportes">Deportes acuáticos o aventura</option>
-                                <option value="paquetes">Paquete todo incluido</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="p-subtitle">Eslogan o subtítulo corto *</label>
-                            <input type="text" id="p-subtitle" required placeholder="Ej: Jacuzzi privado y vista increíble">
-                        </div>
-                        <div class="form-group">
-                            <label for="p-image">URL de imagen principal *</label>
-                            <input type="url" id="p-image" required placeholder="Ej: https://images.unsplash.com/..." value="https://images.unsplash.com/photo-1533759413974-9e15f3b745ac?q=80&w=800">
-                            <span class="field-note">Usa una imagen horizontal de buena calidad para que se vea mejor en la tabla y en la web.</span>
-                        </div>
-
-                        <div class="form-section">
-                            <div>
-                                <div class="form-section-title">Condiciones comerciales</div>
-                                <div class="form-section-copy">Precio, tipo de cobro y capacidad para calcular mejor las reservas.</div>
+                            <div class="form-group">
+                                <label for="p-category">Categoría de servicio *</label>
+                                <select id="p-category" required>
+                                    <option value="" disabled selected>Selecciona una opción</option>
+                                    <option value="alojamiento">Alojamiento</option>
+                                    <option value="pasadia">Pasadía o ecoturismo</option>
+                                    <option value="deportes">Deportes acuáticos o aventura</option>
+                                    <option value="paquetes">Paquete todo incluido</option>
+                                </select>
                             </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="p-price">Precio base (COP) *</label>
-                            <input type="number" id="p-price" required placeholder="Ej: 250000" min="0">
-                        </div>
-                        <div class="form-group">
-                            <label for="p-pricetype">Tipo de cobro *</label>
-                            <select id="p-pricetype" required>
-                                <option value="night">Por noche</option>
-                                <option value="person">Por persona</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="p-maxguests">Capacidad máxima *</label>
-                            <input type="number" id="p-maxguests" required placeholder="Ej: 4" min="1" value="4">
-                        </div>
-                        <div class="form-group">
-                            <label for="p-childrate">Descuento niños (0.0 a 1.0) *</label>
-                            <input type="number" id="p-childrate" required min="0" max="1" step="0.1" value="0.5" placeholder="Ej: 0.5 para 50 por ciento de descuento">
-                        </div>
-
-                        <div class="form-section">
-                            <div>
-                                <div class="form-section-title">Atributos del servicio</div>
-                                <div class="form-section-copy">Selecciona comodidades y extras disponibles para enriquecer la ficha comercial.</div>
+                            <div class="form-group">
+                                <label for="p-partner">Centro turístico *</label>
+                                <select id="p-partner" required>
+                                    <option value="" disabled selected>Selecciona un centro</option>
+                                </select>
                             </div>
-                        </div>
-
-                        <div class="form-group full-width">
-                            <label>Comodidades y características *</label>
-                            <div class="checkbox-group" id="features-checkboxes">
-                                <label class="checkbox-item"><input type="checkbox" value="Vista al Lago" checked> Vista al Lago</label>
-                                <label class="checkbox-item"><input type="checkbox" value="Jacuzzi Privado" checked> Jacuzzi Privado</label>
-                                <label class="checkbox-item"><input type="checkbox" value="Piscina"> Piscina</label>
-                                <label class="checkbox-item"><input type="checkbox" value="Desayuno Incluido" checked> Desayuno Incluido</label>
-                                <label class="checkbox-item"><input type="checkbox" value="Wifi Premium" checked> Wifi Premium</label>
-                                <label class="checkbox-item"><input type="checkbox" value="Cocina Equipada"> Cocina Equipada</label>
-                                <label class="checkbox-item"><input type="checkbox" value="Malla Catamarán"> Malla Catamarán</label>
-                                <label class="checkbox-item"><input type="checkbox" value="Guía Certificado"> Guía certificado</label>
-                                <label class="checkbox-item"><input type="checkbox" value="Seguro Médico"> Seguro médico</label>
+                            <div class="form-group">
+                                <label for="p-subtitle">Eslogan o subtítulo corto *</label>
+                                <input type="text" id="p-subtitle" required placeholder="Ej: Jacuzzi privado y vista increíble">
                             </div>
-                            <div class="inline-add-control" style="display: flex; gap: 10px; margin-top: 10px;">
-                                <input type="text" id="add-feature-input" placeholder="Nueva comodidad (Ej: Aire acondicionado)" style="max-width: 320px;">
-                                <button type="button" id="btn-add-feature" class="btn btn-secondary" style="min-height: auto; padding: 10px 16px;">+ Agregar</button>
+                            <div class="form-group full-width">
+                                <label for="p-description">Descripción detallada</label>
+                                <textarea id="p-description" placeholder="Ingresa la descripción detallada del servicio..." rows="5"></textarea>
+                                <div class="field-note">Soporta múltiples párrafos separándolos con saltos de línea.</div>
                             </div>
-                        </div>
-
-                        <div class="form-group full-width">
-                            <label>Servicios adicionales disponibles</label>
-                            <div class="checkbox-group" id="addons-checkboxes"></div>
-                            <div class="inline-add-control" style="display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap;">
-                                <input type="text" id="add-addon-name-input" placeholder="Nombre (Ej: Alquiler de Kayak)" style="flex: 2; min-width: 180px; max-width: 320px;">
-                                <input type="number" id="add-addon-price-input" placeholder="Precio COP" style="flex: 1; min-width: 100px; max-width: 180px;">
-                                <button type="button" id="btn-add-addon" class="btn btn-secondary" style="min-height: auto; padding: 10px 16px;">+ Agregar adicional</button>
+                            <input type="hidden" id="p-image" value="https://images.unsplash.com/photo-1533759413974-9e15f3b745ac?q=80&w=800">
+                            <div class="form-group full-width" style="margin-top: 10px;">
+                                <label>Imagen del servicio * (Se comprimirá automáticamente)</label>
+                                <div class="upload-zone" id="p-upload-zone" style="border: 2px dashed rgba(255, 255, 255, 0.15); border-radius: 12px; padding: 20px; text-align: center; background: rgba(255, 255, 255, 0.02); transition: var(--transition); cursor: pointer;">
+                                    <input type="file" id="p-image-file" accept="image/*" style="display: none;">
+                                    <span class="icon" style="color: var(--mint-300); width: 32px; height: 32px; margin-bottom: 8px;"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"></path></svg></span>
+                                    <p style="font-size: 0.9rem; color: var(--text-soft);" id="p-upload-text">Arrastra una imagen aquí o haz click para seleccionar archivo</p>
+                                    <span id="p-upload-status" style="font-size: 0.8rem; color: var(--mint-300); display: block; margin-top: 6px; font-weight: 600;"></span>
+                                </div>
+                                <div id="p-image-preview-container" style="display: none; margin-top: 12px; align-items: center; gap: 12px; background: rgba(0,0,0,0.12); padding: 10px; border-radius: 10px;">
+                                    <img id="p-image-preview" src="" style="width: 80px; height: 60px; object-fit: cover; border-radius: 6px; border: 1px solid var(--line-soft);">
+                                    <div style="flex: 1;">
+                                        <span id="p-preview-filename" style="font-size: 0.85rem; color: var(--white); display: block; font-weight: 600;"></span>
+                                        <span id="p-preview-size" style="font-size: 0.78rem; color: var(--text-soft); display: block;"></span>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-
-                        <div class="form-group full-width form-actions">
-                            <button type="submit" class="btn btn-primary">
-                                <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12l4 4L19 6"></path></svg></span>
-                                Registrar servicio en el buscador
-                            </button>
                         </div>
                     </div>
+
+                    <!-- Tarjeta 2: Condiciones Comerciales -->
+                    <div class="admin-form-card">
+                        <div class="admin-card-header">
+                            <h3 class="admin-card-title">2. Condiciones Comerciales</h3>
+                            <p class="admin-card-desc">Precio base, tipo de cobro y capacidad permitida para calcular las reservas.</p>
+                        </div>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="p-price">Precio base (COP) *</label>
+                                <input type="text" id="p-price" required placeholder="Ej: 250.000" inputmode="numeric" autocomplete="off">
+                            </div>
+                            <div class="form-group">
+                                <label for="p-pricetype">Tipo de cobro *</label>
+                                <select id="p-pricetype" required>
+                                    <option value="night">Por noche</option>
+                                    <option value="person">Por persona</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="p-maxguests">Capacidad máxima *</label>
+                                <input type="number" id="p-maxguests" required placeholder="Ej: 4" min="1" value="4">
+                            </div>
+                            <div class="form-group">
+                                <label for="p-childrate">Descuento niños (0.0 a 1.0) *</label>
+                                <input type="number" id="p-childrate" required min="0" max="1" step="0.1" value="0.5" placeholder="Ej: 0.5 para 50 por ciento de descuento">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tarjeta 3: Atributos y Adicionales -->
+                    <div class="admin-form-card">
+                        <div class="admin-card-header">
+                            <h3 class="admin-card-title">3. Atributos y Adicionales</h3>
+                            <p class="admin-card-desc">Selecciona comodidades y servicios adicionales para enriquecer la ficha de venta.</p>
+                        </div>
+                        <div class="form-grid">
+                            <div class="form-group full-width">
+                                <label>Comodidades y características *</label>
+                                <div class="checkbox-group" id="features-checkboxes">
+                                    <label class="checkbox-item"><input type="checkbox" value="Vista al Lago" checked> Vista al Lago</label>
+                                    <label class="checkbox-item"><input type="checkbox" value="Jacuzzi Privado" checked> Jacuzzi Privado</label>
+                                    <label class="checkbox-item"><input type="checkbox" value="Piscina"> Piscina</label>
+                                    <label class="checkbox-item"><input type="checkbox" value="Desayuno Incluido" checked> Desayuno Incluido</label>
+                                    <label class="checkbox-item"><input type="checkbox" value="Wifi Premium" checked> Wifi Premium</label>
+                                    <label class="checkbox-item"><input type="checkbox" value="Cocina Equipada"> Cocina Equipada</label>
+                                    <label class="checkbox-item"><input type="checkbox" value="Malla Catamarán"> Malla Catamarán</label>
+                                    <label class="checkbox-item"><input type="checkbox" value="Guía Certificado"> Guía certificado</label>
+                                    <label class="checkbox-item"><input type="checkbox" value="Seguro Médico"> Seguro médico</label>
+                                </div>
+                                <div class="inline-add-control" style="display: flex; gap: 10px; margin-top: 10px;">
+                                    <input type="text" id="add-feature-input" placeholder="Nueva comodidad (Ej: Aire acondicionado)" style="max-width: 320px;">
+                                    <button type="button" id="btn-add-feature" class="btn btn-secondary" style="min-height: auto; padding: 10px 16px;">+ Agregar</button>
+                                </div>
+                            </div>
+
+                            <div class="form-group full-width" style="margin-top: 10px;">
+                                <label>Servicios adicionales disponibles</label>
+                                <div class="checkbox-group" id="addons-checkboxes"></div>
+                                <div class="inline-add-control" style="display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap;">
+                                    <input type="text" id="add-addon-name-input" placeholder="Nombre (Ej: Alquiler de Kayak)" style="flex: 2; min-width: 180px; max-width: 320px;">
+                                    <input type="number" id="add-addon-price-input" placeholder="Precio COP" style="flex: 1; min-width: 100px; max-width: 180px;">
+                                    <button type="button" id="btn-add-addon" class="btn btn-secondary" style="min-height: auto; padding: 10px 16px;">+ Agregar adicional</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Botón de Envío -->
+                    <div class="form-actions" style="margin-top: 10px;">
+                        <button type="submit" class="btn btn-primary" style="padding: 14px 28px; border-radius: 12px; font-size: 1rem; width: auto; min-width: 260px;">
+                            <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12l4 4L19 6"></path></svg></span>
+                            Registrar servicio en el buscador
+                        </button>
+                    </div>
                 </form>
+            </div>
+        </section>
+
+        <section id="tab-centros" class="tab-content">
+            <div class="card-panel">
+                <div class="panel-header">
+                    <div class="panel-title-block">
+                        <h2 class="panel-title">Centros Turísticos Aliados</h2>
+                        <p class="panel-subtitle">Gestiona los hoteles, glampings y centros turísticos aliados. Cada centro puede tener uno o más servicios en el buscador.</p>
+                    </div>
+                    <div class="panel-actions">
+                        <button id="btn-nuevo-centro" class="btn btn-primary">
+                            <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 5v14"></path><path d="M5 12h14"></path></svg></span>
+                            Nuevo centro
+                        </button>
+                    </div>
+                </div>
+                <div class="table-shell">
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Centro</th>
+                                    <th>Contacto</th>
+                                    <th>RNT</th>
+                                    <th>Comisión</th>
+                                    <th>Servicios</th>
+                                    <th>Estado</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="partners-table-body"></tbody>
+                        </table>
+                    </div>
+                    <div id="partners-empty-state" class="empty-state">
+                        <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><path d="M9.5 9.5l5 5"></path><path d="M14.5 9.5l-5 5"></path></svg></span>
+                        <strong>No hay centros turísticos registrados.</strong>
+                        <p>Agrega centros aliados para empezar a gestionar sus servicios y comisiones.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal / Formulario de Centro -->
+            <div class="modal-overlay" id="centro-modal">
+                <div class="modal-content" style="max-width: 680px;">
+                    <div class="modal-header">
+                        <h3 id="centro-modal-title">Nuevo centro turístico</h3>
+                        <button class="modal-close" id="centro-modal-close">&times;</button>
+                    </div>
+                    <form id="centro-form" class="admin-form-layout">
+                        <input type="hidden" id="centro-id">
+                        <div class="form-grid">
+                            <div class="form-group full-width">
+                                <label for="centro-name">Nombre del centro *</label>
+                                <input type="text" id="centro-name" required placeholder="Ej: Mystic Paradise Glamping">
+                            </div>
+                            <div class="form-group full-width">
+                                <label for="centro-description">Descripción</label>
+                                <textarea id="centro-description" rows="3" placeholder="Describe el centro turístico..."></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="centro-logo">URL del logo</label>
+                                <input type="text" id="centro-logo" placeholder="https://...">
+                            </div>
+                            <div class="form-group">
+                                <label for="centro-cover">URL imagen de portada</label>
+                                <input type="text" id="centro-cover" placeholder="https://...">
+                            </div>
+                            <div class="form-group">
+                                <label for="centro-phone">Teléfono de contacto</label>
+                                <input type="text" id="centro-phone" placeholder="+57 300 000 0000">
+                            </div>
+                            <div class="form-group">
+                                <label for="centro-email">Correo electrónico</label>
+                                <input type="email" id="centro-email" placeholder="contacto@ejemplo.com">
+                            </div>
+                            <div class="form-group">
+                                <label for="centro-website">Sitio web</label>
+                                <input type="text" id="centro-website" placeholder="https://...">
+                            </div>
+                            <div class="form-group">
+                                <label for="centro-rnt">RNT</label>
+                                <input type="text" id="centro-rnt" placeholder="Registro Nacional de Turismo">
+                            </div>
+                            <div class="form-group">
+                                <label for="centro-commission">Comisión (%) *</label>
+                                <input type="number" id="centro-commission" required min="0" max="100" step="0.5" value="10" placeholder="Ej: 15">
+                            </div>
+                            <div class="form-group">
+                                <label for="centro-address">Dirección</label>
+                                <input type="text" id="centro-address" placeholder="Ej: Km 10 Vereda Llanitos">
+                            </div>
+                            <div class="form-group">
+                                <label for="centro-status">Estado</label>
+                                <select id="centro-status">
+                                    <option value="active">Activo</option>
+                                    <option value="inactive">Inactivo</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-actions" style="display: flex; gap: 12px; justify-content: flex-end; margin-top: 20px;">
+                            <button type="button" id="centro-cancel-btn" class="btn btn-secondary">Cancelar</button>
+                            <button type="submit" class="btn btn-primary">Guardar centro</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <section id="tab-resenas" class="tab-content">
+            <div class="card-panel">
+                <div class="panel-header">
+                    <div class="panel-title-block">
+                        <h2 class="panel-title">Gestión de Reseñas</h2>
+                        <p class="panel-subtitle">Administra las reseñas de los viajeros. Aprueba, rechaza o elimina comentarios según sea necesario.</p>
+                    </div>
+                    <div class="panel-actions">
+                        <span id="reviews-count-lbl" class="meta-pill">Cargando reseñas...</span>
+                    </div>
+                </div>
+                <div class="panel-tools">
+                    <div class="filter-group">
+                        <div class="filter-field">
+                            <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-3.5-3.5"></path></svg></span>
+                            <input type="search" id="reviews-search" placeholder="Buscar por autor, producto o comentario">
+                        </div>
+                        <div class="filter-field">
+                            <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 6h16"></path><path d="M7 12h10"></path><path d="M10 18h4"></path></svg></span>
+                            <select id="reviews-status-filter">
+                                <option value="all">Todos los estados</option>
+                                <option value="approved">Aprobadas</option>
+                                <option value="pending">Pendientes</option>
+                                <option value="rejected">Rechazadas</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="table-shell">
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Autor</th>
+                                    <th>Producto</th>
+                                    <th>Calificación</th>
+                                    <th>Comentario</th>
+                                    <th>Fecha</th>
+                                    <th>Estado</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="reviews-table-body"></tbody>
+                        </table>
+                    </div>
+                    <div id="reviews-empty-state" class="empty-state">
+                        <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><path d="M9.5 9.5l5 5"></path><path d="M14.5 9.5l-5 5"></path></svg></span>
+                        <strong>No hay reseñas para mostrar.</strong>
+                        <p>Las reseñas de los viajeros aparecerán aquí una vez que sean enviadas desde la página de reservas.</p>
+                    </div>
+                </div>
             </div>
         </section>
 
@@ -1438,121 +1721,152 @@
                         <p class="panel-subtitle">Modifica la información comercial, tarifas, capacidad o comodidades del servicio seleccionado.</p>
                     </div>
                 </div>
-                <form id="edit-service-form">
-                    <div class="form-grid">
-                        <div class="form-section">
-                            <div>
-                                <div class="form-section-title">Información principal</div>
-                                <div class="form-section-copy">Datos clave del servicio en el catálogo.</div>
+                <form id="edit-service-form" class="admin-form-layout">
+                    <!-- Tarjeta 1: Información Principal -->
+                    <div class="admin-form-card">
+                        <div class="admin-card-header">
+                            <h3 class="admin-card-title">1. Información Principal</h3>
+                            <p class="admin-card-desc">Datos clave del servicio en el catálogo.</p>
+                        </div>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="e-title">Nombre del hotel o plan *</label>
+                                <input type="text" id="e-title" required placeholder="Ej: Glamping Domo Estelar">
+                            </div>
+                            <div class="form-group">
+                                <label for="e-category">Categoría de servicio *</label>
+                                <select id="e-category" required>
+                                    <option value="alojamiento">Alojamiento</option>
+                                    <option value="pasadia">Pasadía o ecoturismo</option>
+                                    <option value="deportes">Deportes acuáticos o aventura</option>
+                                    <option value="paquetes">Paquete todo incluido</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="e-partner">Centro turístico *</label>
+                                <select id="e-partner" required>
+                                    <option value="" disabled selected>Selecciona un centro</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="e-subtitle">Eslogan o subtítulo corto *</label>
+                                <input type="text" id="e-subtitle" required placeholder="Ej: Jacuzzi privado y vista increíble">
+                            </div>
+                            <div class="form-group full-width">
+                                <label for="e-description">Descripción detallada</label>
+                                <textarea id="e-description" placeholder="Ingresa la descripción detallada del servicio..." rows="5"></textarea>
+                                <div class="field-note">Soporta múltiples párrafos separándolos con saltos de línea.</div>
+                            </div>
+                            <input type="hidden" id="e-image">
+                            <div class="form-group full-width" style="margin-top: 10px;">
+                                <label>Imagen del servicio * (Se comprimirá automáticamente)</label>
+                                <div class="upload-zone" id="e-upload-zone" style="border: 2px dashed rgba(255, 255, 255, 0.15); border-radius: 12px; padding: 20px; text-align: center; background: rgba(255, 255, 255, 0.02); transition: var(--transition); cursor: pointer;">
+                                    <input type="file" id="e-image-file" accept="image/*" style="display: none;">
+                                    <span class="icon" style="color: var(--mint-300); width: 32px; height: 32px; margin-bottom: 8px;"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"></path></svg></span>
+                                    <p style="font-size: 0.9rem; color: var(--text-soft);" id="e-upload-text">Arrastra una imagen aquí o haz click para seleccionar archivo</p>
+                                    <span id="e-upload-status" style="font-size: 0.8rem; color: var(--mint-300); display: block; margin-top: 6px; font-weight: 600;"></span>
+                                </div>
+                                <div id="e-image-preview-container" style="display: none; margin-top: 12px; align-items: center; gap: 12px; background: rgba(0,0,0,0.12); padding: 10px; border-radius: 10px;">
+                                    <img id="e-image-preview" src="" style="width: 80px; height: 60px; object-fit: cover; border-radius: 6px; border: 1px solid var(--line-soft);">
+                                    <div style="flex: 1;">
+                                        <span id="e-preview-filename" style="font-size: 0.85rem; color: var(--white); display: block; font-weight: 600;"></span>
+                                        <span id="e-preview-size" style="font-size: 0.78rem; color: var(--text-soft); display: block;"></span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
+                    </div>
 
-                        <div class="form-group">
-                            <label for="e-title">Nombre del hotel o plan *</label>
-                            <input type="text" id="e-title" required placeholder="Ej: Glamping Domo Estelar">
+                    <!-- Tarjeta 2: Condiciones Comerciales -->
+                    <div class="admin-form-card">
+                        <div class="admin-card-header">
+                            <h3 class="admin-card-title">2. Condiciones Comerciales</h3>
+                            <p class="admin-card-desc">Tarifas y capacidad máxima de reservas.</p>
                         </div>
-                        <div class="form-group">
-                            <label for="e-category">Categoría de servicio *</label>
-                            <select id="e-category" required>
-                                <option value="alojamiento">Alojamiento</option>
-                                <option value="pasadia">Pasadía o ecoturismo</option>
-                                <option value="deportes">Deportes acuáticos o aventura</option>
-                                <option value="paquetes">Paquete todo incluido</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="e-subtitle">Eslogan o subtítulo corto *</label>
-                            <input type="text" id="e-subtitle" required placeholder="Ej: Jacuzzi privado y vista increíble">
-                        </div>
-                        <div class="form-group">
-                            <label for="e-image">URL de imagen principal *</label>
-                            <input type="url" id="e-image" required placeholder="Ej: https://images.unsplash.com/...">
-                        </div>
-
-                        <div class="form-section">
-                            <div>
-                                <div class="form-section-title">Condiciones comerciales</div>
-                                <div class="form-section-copy">Tarifas y capacidad máxima.</div>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="e-price">Precio base (COP) *</label>
+                                <input type="text" id="e-price" required placeholder="Ej: 250.000" inputmode="numeric" autocomplete="off">
+                            </div>
+                            <div class="form-group">
+                                <label for="e-pricetype">Tipo de cobro *</label>
+                                <select id="e-pricetype" required>
+                                    <option value="night">Por noche</option>
+                                    <option value="person">Por persona</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="e-maxguests">Capacidad máxima *</label>
+                                <input type="number" id="e-maxguests" required placeholder="Ej: 4" min="1">
+                            </div>
+                            <div class="form-group">
+                                <label for="e-childrate">Descuento niños (0.0 a 1.0) *</label>
+                                <input type="number" id="e-childrate" required min="0" max="1" step="0.1" placeholder="Ej: 0.5">
                             </div>
                         </div>
+                    </div>
 
-                        <div class="form-group">
-                            <label for="e-price">Precio base (COP) *</label>
-                            <input type="number" id="e-price" required placeholder="Ej: 250000" min="0">
+                    <!-- Tarjeta 3: Atributos y Adicionales -->
+                    <div class="admin-form-card">
+                        <div class="admin-card-header">
+                            <h3 class="admin-card-title">3. Atributos del servicio</h3>
+                            <p class="admin-card-desc">Selecciona comodidades y servicios adicionales del plan.</p>
                         </div>
-                        <div class="form-group">
-                            <label for="e-pricetype">Tipo de cobro *</label>
-                            <select id="e-pricetype" required>
-                                <option value="night">Por noche</option>
-                                <option value="person">Por persona</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="e-maxguests">Capacidad máxima *</label>
-                            <input type="number" id="e-maxguests" required placeholder="Ej: 4" min="1">
-                        </div>
-                        <div class="form-group">
-                            <label for="e-childrate">Descuento niños (0.0 a 1.0) *</label>
-                            <input type="number" id="e-childrate" required min="0" max="1" step="0.1" placeholder="Ej: 0.5">
-                        </div>
+                        <div class="form-grid">
+                            <div class="form-group full-width">
+                                <label>Comodidades y características *</label>
+                                <div class="checkbox-group" id="edit-features-checkboxes">
+                                    <label class="checkbox-item"><input type="checkbox" value="Vista al Lago"> Vista al Lago</label>
+                                    <label class="checkbox-item"><input type="checkbox" value="Jacuzzi Privado"> Jacuzzi Privado</label>
+                                    <label class="checkbox-item"><input type="checkbox" value="Piscina"> Piscina</label>
+                                    <label class="checkbox-item"><input type="checkbox" value="Desayuno Incluido"> Desayuno Incluido</label>
+                                    <label class="checkbox-item"><input type="checkbox" value="Wifi Premium"> Wifi Premium</label>
+                                    <label class="checkbox-item"><input type="checkbox" value="Cocina Equipada"> Cocina Equipada</label>
+                                    <label class="checkbox-item"><input type="checkbox" value="Malla Catamarán"> Malla Catamarán</label>
+                                    <label class="checkbox-item"><input type="checkbox" value="Guía Certificado"> Guía certificado</label>
+                                    <label class="checkbox-item"><input type="checkbox" value="Seguro Médico"> Seguro médico</label>
+                                </div>
+                                <div class="inline-add-control" style="display: flex; gap: 10px; margin-top: 10px;">
+                                    <input type="text" id="edit-add-feature-input" placeholder="Nueva comodidad (Ej: Aire acondicionado)" style="max-width: 320px;">
+                                    <button type="button" id="edit-btn-add-feature" class="btn btn-secondary" style="min-height: auto; padding: 10px 16px;">+ Agregar</button>
+                                </div>
+                            </div>
 
-                        <div class="form-section">
-                            <div>
-                                <div class="form-section-title">Atributos del servicio</div>
-                                <div class="form-section-copy">Selecciona comodidades y servicios adicionales.</div>
+                            <div class="form-group full-width" style="margin-top: 10px;">
+                                <label>Servicios adicionales disponibles</label>
+                                <div class="checkbox-group" id="edit-addons-checkboxes"></div>
+                                <div class="inline-add-control" style="display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap;">
+                                    <input type="text" id="edit-add-addon-name-input" placeholder="Nombre (Ej: Alquiler de Kayak)" style="flex: 2; min-width: 180px; max-width: 320px;">
+                                    <input type="number" id="edit-add-addon-price-input" placeholder="Precio COP" style="flex: 1; min-width: 100px; max-width: 180px;">
+                                    <button type="button" id="edit-btn-add-addon" class="btn btn-secondary" style="min-height: auto; padding: 10px 16px;">+ Agregar adicional</button>
+                                </div>
                             </div>
                         </div>
+                    </div>
 
-                        <div class="form-group full-width">
-                            <label>Comodidades y características *</label>
-                            <div class="checkbox-group" id="edit-features-checkboxes">
-                                <label class="checkbox-item"><input type="checkbox" value="Vista al Lago"> Vista al Lago</label>
-                                <label class="checkbox-item"><input type="checkbox" value="Jacuzzi Privado"> Jacuzzi Privado</label>
-                                <label class="checkbox-item"><input type="checkbox" value="Piscina"> Piscina</label>
-                                <label class="checkbox-item"><input type="checkbox" value="Desayuno Incluido"> Desayuno Incluido</label>
-                                <label class="checkbox-item"><input type="checkbox" value="Wifi Premium"> Wifi Premium</label>
-                                <label class="checkbox-item"><input type="checkbox" value="Cocina Equipada"> Cocina Equipada</label>
-                                <label class="checkbox-item"><input type="checkbox" value="Malla Catamarán"> Malla Catamarán</label>
-                                <label class="checkbox-item"><input type="checkbox" value="Guía Certificado"> Guía certificado</label>
-                                <label class="checkbox-item"><input type="checkbox" value="Seguro Médico"> Seguro médico</label>
-                            </div>
-                            <div class="inline-add-control" style="display: flex; gap: 10px; margin-top: 10px;">
-                                <input type="text" id="edit-add-feature-input" placeholder="Nueva comodidad (Ej: Aire acondicionado)" style="max-width: 320px;">
-                                <button type="button" id="edit-btn-add-feature" class="btn btn-secondary" style="min-height: auto; padding: 10px 16px;">+ Agregar</button>
-                            </div>
-                        </div>
-
-                        <div class="form-group full-width">
-                            <label>Servicios adicionales disponibles</label>
-                            <div class="checkbox-group" id="edit-addons-checkboxes"></div>
-                            <div class="inline-add-control" style="display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap;">
-                                <input type="text" id="edit-add-addon-name-input" placeholder="Nombre (Ej: Alquiler de Kayak)" style="flex: 2; min-width: 180px; max-width: 320px;">
-                                <input type="number" id="edit-add-addon-price-input" placeholder="Precio COP" style="flex: 1; min-width: 100px; max-width: 180px;">
-                                <button type="button" id="edit-btn-add-addon" class="btn btn-secondary" style="min-height: auto; padding: 10px 16px;">+ Agregar adicional</button>
-                            </div>
-                        </div>
-
-                        <div class="form-group full-width form-actions" style="display: flex; gap: 12px; justify-content: flex-end; margin-top: 15px;">
-                            <button type="button" id="cancel-edit-btn" class="btn btn-secondary">Cancelar</button>
-                            <button type="submit" class="btn btn-primary">
-                                <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><path d="M17 21v-8H7v8"></path><path d="M7 3v5h8"></path></svg></span>
-                                Guardar cambios
-                            </button>
-                        </div>
+                    <!-- Botones de Acción -->
+                    <div class="form-group full-width form-actions" style="display: flex; gap: 12px; justify-content: flex-end; margin-top: 15px;">
+                        <button type="button" id="cancel-edit-btn" class="btn btn-secondary">Cancelar</button>
+                        <button type="submit" class="btn btn-primary" style="padding: 12px 24px; border-radius: 12px;">
+                            <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><path d="M17 21v-8H7v8"></path><path d="M7 3v5h8"></path></svg></span>
+                            Guardar cambios
+                        </button>
                     </div>
                 </form>
             </div>
         </section>
-    </main>
+            </div> <!-- End of .workspace-content -->
 
-    <footer>
-        <div class="footer-badges">
-            <span class="meta-pill">Vista administrativa renovada</span>
-            <span class="meta-pill">Interacción más clara</span>
-            <span class="meta-pill">Iconografía profesional</span>
-        </div>
-        <p>&copy; 2026 Eco Conexión Calima. Central de gestión de turismo y alojamiento.</p>
-    </footer>
+            <footer>
+                <div class="footer-badges">
+                    <span class="meta-pill">Socio Principal Activo</span>
+                    <span class="meta-pill">Operaciones Seguras</span>
+                    <span class="meta-pill">Gestión de Catálogo</span>
+                </div>
+                <p>&copy; 2026 Eco Conexión Calima. Central de administración de servicios turísticos.</p>
+            </footer>
+        </main> <!-- End of .workspace-main -->
+    </div> <!-- End of .dashboard-layout -->
 
     <div id="toast" class="toast success" role="status" aria-live="polite">
         <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12l4 4L19 6"></path></svg></span>
@@ -1598,6 +1912,192 @@
                 }, 2600);
             };
 
+            // ── Utilidad de formateo de miles ────────────────────────────
+            const formatThousands = (value) => {
+                const num = parseInt(String(value).replace(/\D/g, ''), 10);
+                if (isNaN(num)) return '';
+                return num.toLocaleString('es-CO').replace(/,/g, '.');
+            };
+
+            const bindPriceInput = (inputId) => {
+                const el = document.getElementById(inputId);
+                if (!el) return;
+                el.addEventListener('input', () => {
+                    const raw = el.value.replace(/\D/g, '');
+                    const cursor = el.selectionStart;
+                    const prevLen = el.value.length;
+                    el.value = raw ? formatThousands(raw) : '';
+                    // Ajustar cursor tras insertar/quitar puntos
+                    const diff = el.value.length - prevLen;
+                    el.setSelectionRange(cursor + diff, cursor + diff);
+                });
+                el.addEventListener('paste', (e) => {
+                    e.preventDefault();
+                    const pasted = (e.clipboardData || window.clipboardData).getData('text');
+                    el.value = formatThousands(pasted.replace(/\D/g, ''));
+                });
+            };
+            bindPriceInput('p-price');
+            bindPriceInput('e-price');
+            // ─────────────────────────────────────────────────────────────
+
+            // Función para compresión de imagen y subida
+            const compressAndUploadImage = async (file, previewContainerId, previewImgId, filenameId, sizeId, urlInputId, statusId) => {
+                const container = document.getElementById(previewContainerId);
+                const previewImg = document.getElementById(previewImgId);
+                const filenameSpan = document.getElementById(filenameId);
+                const sizeSpan = document.getElementById(sizeId);
+                const urlInput = document.getElementById(urlInputId);
+                const statusSpan = document.getElementById(statusId);
+
+                statusSpan.textContent = 'Procesando y comprimiendo...';
+                statusSpan.style.color = 'var(--mint-300)';
+
+                try {
+                    // 1. Cargar archivo en Image object
+                    const image = new Image();
+                    const reader = new FileReader();
+
+                    const loadImagePromise = new Promise((resolve, reject) => {
+                        reader.onload = (e) => {
+                            image.src = e.target.result;
+                            image.onload = () => resolve();
+                            image.onerror = (err) => reject(err);
+                        };
+                        reader.onerror = (err) => reject(err);
+                        reader.readAsDataURL(file);
+                    });
+
+                    await loadImagePromise;
+
+                    // 2. Calcular dimensiones óptimas (máximo 1200px)
+                    const maxDim = 1200;
+                    let width = image.width;
+                    let height = image.height;
+
+                    if (width > maxDim || height > maxDim) {
+                        if (width > height) {
+                            height = Math.round((height * maxDim) / width);
+                            width = maxDim;
+                        } else {
+                            width = Math.round((width * maxDim) / height);
+                            height = maxDim;
+                        }
+                    }
+
+                    // 3. Dibujar en Canvas
+                    const canvas = document.createElement('canvas');
+                    canvas.width = width;
+                    canvas.height = height;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(image, 0, 0, width, height);
+
+                    // 4. Exportar como Blob comprimido (calidad 0.75)
+                    const compressedBlob = await new Promise((resolve) => {
+                        canvas.toBlob((blob) => resolve(blob), 'image/jpeg', 0.75);
+                    });
+
+                    // Estadísticas de compresión
+                    const oldSizeKb = (file.size / 1024).toFixed(1);
+                    const newSizeKb = (compressedBlob.size / 1024).toFixed(1);
+                    console.log(`[Compresión] De ${oldSizeKb}KB a ${newSizeKb}KB. Reducción: ${Math.round((1 - compressedBlob.size / file.size) * 100)}%`);
+
+                    // 5. Enviar al Servidor
+                    const formData = new FormData();
+                    formData.append('image', compressedBlob, file.name);
+
+                    statusSpan.textContent = 'Subiendo al servidor...';
+                    const response = await fetch('backend/api.php?action=upload_image', {
+                        method: 'POST',
+                        body: formData
+                    });
+
+                    const result = await response.json();
+                    if (result.status === 'success') {
+                        urlInput.value = result.url;
+                        previewImg.src = result.url;
+                        filenameSpan.textContent = file.name;
+                        sizeSpan.textContent = `Original: ${oldSizeKb}KB | Comprimido: ${newSizeKb}KB`;
+                        container.style.display = 'flex';
+                        
+                        statusSpan.textContent = '✓ Imagen cargada con éxito';
+                        statusSpan.style.color = 'var(--mint-400)';
+                        showToast('Imagen subida y comprimida correctamente.');
+                    } else {
+                        throw new Error(result.message || 'Error al subir la imagen.');
+                    }
+                } catch (error) {
+                    console.error(error);
+                    statusSpan.textContent = '❌ Error al cargar';
+                    statusSpan.style.color = 'var(--red-400)';
+                    showToast(error.message || 'Error al procesar la imagen.', 'error');
+                }
+            };
+
+            // Inicializar zonas de subida (Registrar)
+            const pUploadZone = document.getElementById('p-upload-zone');
+            const pImageFile = document.getElementById('p-image-file');
+            if (pUploadZone && pImageFile) {
+                pUploadZone.addEventListener('click', () => pImageFile.click());
+                
+                pImageFile.addEventListener('change', (e) => {
+                    const file = e.target.files[0];
+                    if (file) {
+                        compressAndUploadImage(file, 'p-image-preview-container', 'p-image-preview', 'p-preview-filename', 'p-preview-size', 'p-image', 'p-upload-status');
+                    }
+                });
+
+                pUploadZone.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    pUploadZone.classList.add('dragover');
+                });
+
+                pUploadZone.addEventListener('dragleave', () => {
+                    pUploadZone.classList.remove('dragover');
+                });
+
+                pUploadZone.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    pUploadZone.classList.remove('dragover');
+                    const file = e.dataTransfer.files[0];
+                    if (file && file.type.startsWith('image/')) {
+                        compressAndUploadImage(file, 'p-image-preview-container', 'p-image-preview', 'p-preview-filename', 'p-preview-size', 'p-image', 'p-upload-status');
+                    }
+                });
+            }
+
+            // Inicializar zonas de subida (Editar)
+            const eUploadZone = document.getElementById('e-upload-zone');
+            const eImageFile = document.getElementById('e-image-file');
+            if (eUploadZone && eImageFile) {
+                eUploadZone.addEventListener('click', () => eImageFile.click());
+                
+                eImageFile.addEventListener('change', (e) => {
+                    const file = e.target.files[0];
+                    if (file) {
+                        compressAndUploadImage(file, 'e-image-preview-container', 'e-image-preview', 'e-preview-filename', 'e-preview-size', 'e-image', 'e-upload-status');
+                    }
+                });
+
+                eUploadZone.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    eUploadZone.classList.add('dragover');
+                });
+
+                eUploadZone.addEventListener('dragleave', () => {
+                    eUploadZone.classList.remove('dragover');
+                });
+
+                eUploadZone.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    eUploadZone.classList.remove('dragover');
+                    const file = e.dataTransfer.files[0];
+                    if (file && file.type.startsWith('image/')) {
+                        compressAndUploadImage(file, 'e-image-preview-container', 'e-image-preview', 'e-preview-filename', 'e-preview-size', 'e-image', 'e-upload-status');
+                    }
+                });
+            }
+
             if (sessionStorage.getItem('ecocalima_admin_logged') === 'true') {
                 lockScreen.style.opacity = '0';
                 setTimeout(() => {
@@ -1619,9 +2119,18 @@
                 }
             };
 
+            const tabTitles = {
+                listado: 'Servicios registrados',
+                nuevo: 'Registrar nuevo servicio',
+                centros: 'Centros Turísticos',
+                resenas: 'Gestión de Reseñas',
+                desarrollo: 'Exportar base de datos',
+                editar: 'Editar servicio'
+            };
+
             const closeEditView = () => {
-                document.querySelector('.stats-grid').style.display = '';
-                document.querySelector('.tabs-nav').style.display = '';
+                const statsGrid = document.querySelector('.stats-grid');
+                if (statsGrid) statsGrid.style.display = '';
                 editingProductId = null;
                 activateTab('listado');
             };
@@ -1632,12 +2141,14 @@
                 // Rellenar campos del formulario
                 document.getElementById('e-title').value = product.title;
                 document.getElementById('e-category').value = product.category;
+                document.getElementById('e-partner').value = product.partnerId || '';
                 document.getElementById('e-subtitle').value = product.subtitle;
                 document.getElementById('e-image').value = product.image;
-                document.getElementById('e-price').value = product.price;
+                document.getElementById('e-price').value = formatThousands(product.price);
                 document.getElementById('e-pricetype').value = product.priceType;
                 document.getElementById('e-maxguests').value = product.maxGuests;
                 document.getElementById('e-childrate').value = product.childDiscountRate;
+                document.getElementById('e-description').value = product.description || '';
 
                 // Rellenar checkbox de comodidades
                 document.querySelectorAll('#edit-features-checkboxes input').forEach((checkbox) => {
@@ -1649,15 +2160,51 @@
                     checkbox.checked = product.addons && product.addons.includes(checkbox.value);
                 });
 
-                // Ocultar estadísticas y barra de pestañas
-                document.querySelector('.stats-grid').style.display = 'none';
-                document.querySelector('.tabs-nav').style.display = 'none';
+                // Mostrar previsualización de la imagen actual
+                const ePreview = document.getElementById('e-image-preview-container');
+                const ePreviewImg = document.getElementById('e-image-preview');
+                const eFilename = document.getElementById('e-preview-filename');
+                const eSize = document.getElementById('e-preview-size');
+                const eStatus = document.getElementById('e-upload-status');
+                const eImageFile = document.getElementById('e-image-file');
+
+                if (eImageFile) eImageFile.value = '';
+
+                if (ePreview && ePreviewImg) {
+                    if (product.image) {
+                        ePreviewImg.src = product.image;
+                        if (eFilename) {
+                            eFilename.textContent = product.image.substring(product.image.lastIndexOf('/') + 1) || 'imagen';
+                        }
+                        if (eSize) {
+                            eSize.textContent = 'Imagen actual guardada en el servidor';
+                        }
+                        if (eStatus) {
+                            eStatus.textContent = '✓ Imagen cargada';
+                            eStatus.style.color = 'var(--mint-400)';
+                        }
+                        ePreview.style.display = 'flex';
+                    } else {
+                        ePreview.style.display = 'none';
+                        if (eStatus) eStatus.textContent = '';
+                    }
+                }
+
+                // Ocultar estadísticas
+                const statsGrid = document.querySelector('.stats-grid');
+                if (statsGrid) statsGrid.style.display = 'none';
 
                 // Activar pestaña de edición
                 tabContents.forEach((content) => {
                     content.classList.remove('active');
                 });
                 document.getElementById('tab-editar').classList.add('active');
+
+                // Actualizar breadcrumb
+                const crumbActive = document.getElementById('crumb-active-tab');
+                if (crumbActive) {
+                    crumbActive.textContent = tabTitles.editar;
+                }
 
                 // Scroll suave hacia arriba
                 window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -1674,6 +2221,8 @@
                 if (pImage) pImage.value = 'https://images.unsplash.com/photo-1533759413974-9e15f3b745ac?q=80&w=800';
                 if (pMaxguests) pMaxguests.value = '4';
                 if (pChildrate) pChildrate.value = '0.5';
+                const pDescription = document.getElementById('p-description');
+                if (pDescription) pDescription.value = '';
                 
                 document.querySelectorAll('#features-checkboxes input').forEach((checkbox) => {
                     checkbox.checked = ['Vista al Lago', 'Jacuzzi Privado', 'Desayuno Incluido', 'Wifi Premium'].includes(checkbox.value);
@@ -1681,6 +2230,14 @@
                 document.querySelectorAll('#addons-checkboxes input').forEach((checkbox) => {
                     checkbox.checked = false;
                 });
+
+                // Reset de previsualización en registrar
+                const pPreview = document.getElementById('p-image-preview-container');
+                if (pPreview) pPreview.style.display = 'none';
+                const pStatus = document.getElementById('p-upload-status');
+                if (pStatus) pStatus.textContent = '';
+                const pImageFile = document.getElementById('p-image-file');
+                if (pImageFile) pImageFile.value = '';
             };
 
             const activateTab = (tabId) => {
@@ -1692,6 +2249,18 @@
                     content.classList.toggle('active', content.id === `tab-${tabId}`);
                 });
 
+                // Actualizar breadcrumb
+                const crumbActive = document.getElementById('crumb-active-tab');
+                if (crumbActive) {
+                    crumbActive.textContent = tabTitles[tabId] || 'Panel';
+                }
+
+                // Cerrar barra lateral en móviles al navegar
+                const sidebar = document.getElementById('admin-sidebar');
+                if (sidebar) {
+                    sidebar.classList.remove('open');
+                }
+
                 if (tabId === 'desarrollo') {
                     renderJsonOutput();
                 }
@@ -1699,7 +2268,31 @@
                 if (tabId === 'nuevo') {
                     resetFormToCreate();
                 }
+
+                if (tabId === 'centros') {
+                    renderPartnersTable();
+                }
+
+                if (tabId === 'resenas') {
+                    renderReviewsTable();
+                }
             };
+
+            // Mobile sidebar toggle binding
+            const sidebarToggle = document.getElementById('sidebar-toggle');
+            const adminSidebar = document.getElementById('admin-sidebar');
+            if (sidebarToggle && adminSidebar) {
+                sidebarToggle.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    adminSidebar.classList.toggle('open');
+                });
+                
+                document.addEventListener('click', (e) => {
+                    if (adminSidebar.classList.contains('open') && !adminSidebar.contains(e.target) && e.target !== sidebarToggle) {
+                        adminSidebar.classList.remove('open');
+                    }
+                });
+            }
 
             const getFilteredProducts = () => {
                 const products = window.BookingData.getProducts();
@@ -1732,24 +2325,26 @@
                     const categoryText = categoryLabels[product.category] || product.category;
                     const priceTypeText = product.priceType === 'night' ? 'Por noche' : 'Por persona';
 
-                    let actionsHtml = `<button class="btn btn-secondary edit-btn" data-id="${product.id}" style="margin-right: 8px; padding: 6px 12px; min-height: auto; font-size: 0.85rem;"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 1 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg></span>Editar</button>`;
+                    let actionsHtml = `<button class="btn-action edit-btn" data-id="${product.id}" title="Editar servicio"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 1 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg></span></button>`;
 
                     if (isSystem) {
                         if (isOverridden) {
-                            actionsHtml += `<button class="btn btn-secondary reset-btn" data-id="${product.id}" style="padding: 6px 12px; min-height: auto; font-size: 0.85rem; border-color: rgba(219, 163, 95, 0.3); color: var(--sand-300);"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path></svg></span>Reestablecer</button>`;
+                            actionsHtml += `<button class="btn-action reset-btn" data-id="${product.id}" title="Reestablecer valores originales" style="border-color: rgba(234, 179, 8, 0.3); color: var(--sand-300);"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path></svg></span></button>`;
                         } else {
-                            actionsHtml += `<span class="system-tag" style="margin-left: 6px; font-size: 0.82rem;"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3l7 4v5c0 4.5-2.9 8.6-7 9-4.1-.4-7-4.5-7-9V7l7-4z"></path><path d="M9.5 12.5l1.8 1.8 3.7-4.3"></path></svg></span>Servicio del sistema</span>`;
+                            actionsHtml += `<span class="system-tag" title="Servicio por defecto del sistema" style="margin-left: 6px;"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3l7 4v5c0 4.5-2.9 8.6-7 9-4.1-.4-7-4.5-7-9V7l7-4z"></path><path d="M9.5 12.5l1.8 1.8 3.7-4.3"></path></svg></span>Sistema</span>`;
                         }
                     } else {
-                        actionsHtml += `<button class="btn btn-danger delete-btn" data-id="${product.id}" style="padding: 6px 12px; min-height: auto; font-size: 0.85rem;"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 6h18"></path><path d="M8 6V4h8v2"></path><path d="M19 6l-1 14H6L5 6"></path><path d="M10 11v5"></path><path d="M14 11v5"></path></svg></span>Eliminar</button>`;
+                        actionsHtml += `<button class="btn-action delete delete-btn" data-id="${product.id}" title="Eliminar servicio"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 6h18"></path><path d="M8 6V4h8v2"></path><path d="M19 6l-1 14H6L5 6"></path><path d="M10 11v5"></path><path d="M14 11v5"></path></svg></span></button>`;
                     }
 
+                    const partnerLabel = product.partnerName ? `<span style="font-size: 0.75rem; color: var(--mint-300); display: block; margin-top: 2px;">${product.partnerName}</span>` : '';
                     row.innerHTML = `
                         <td><img src="${product.image}" alt="${product.title}" class="col-image"></td>
                         <td>
                             <div class="service-name">
                                 <strong>${product.title}</strong>
                                 <span>${product.subtitle}</span>
+                                ${partnerLabel}
                             </div>
                         </td>
                         <td><span class="col-badge ${product.category}">${categoryText}</span></td>
@@ -1828,6 +2423,283 @@
                 document.getElementById('stat-paquetes').textContent = counts.paquetes;
                 document.getElementById('header-total-count').textContent = `${products.length} servicios activos`;
             };
+
+            // Llenar dropdowns de partners en formularios de producto
+            const populatePartnerDropdowns = async () => {
+                const partners = await window.BookingData.getPartners();
+                const activePartners = partners.filter(p => p.status === 'active');
+                ['p-partner', 'e-partner'].forEach(id => {
+                    const sel = document.getElementById(id);
+                    if (!sel) return;
+                    sel.innerHTML = '<option value="" disabled selected>Selecciona un centro</option>';
+                    activePartners.forEach(pa => {
+                        const opt = document.createElement('option');
+                        opt.value = pa.id;
+                        opt.textContent = pa.name;
+                        sel.appendChild(opt);
+                    });
+                });
+            };
+            populatePartnerDropdowns();
+
+            // Renderizar tabla de reseñas
+            const renderReviewsTable = async () => {
+                const tbody = document.getElementById('reviews-table-body');
+                const emptyState = document.getElementById('reviews-empty-state');
+                const countLbl = document.getElementById('reviews-count-lbl');
+                const searchInput = document.getElementById('reviews-search');
+                const statusFilter = document.getElementById('reviews-status-filter');
+
+                if (!tbody) return;
+
+                const allReviews = await window.BookingData.getReviews(null, null);
+                const searchTerm = searchInput ? searchInput.value.trim().toLowerCase() : '';
+                const selectedStatus = statusFilter ? statusFilter.value : 'all';
+
+                let filtered = allReviews.filter(r => {
+                    const matchesStatus = selectedStatus === 'all' || r.status === selectedStatus;
+                    const product = window.BookingData.getProductById(r.product_id);
+                    const productName = product ? product.title : r.product_id;
+                    const haystack = `${r.author} ${productName} ${r.comment}`.toLowerCase();
+                    const matchesSearch = !searchTerm || haystack.includes(searchTerm);
+                    return matchesStatus && matchesSearch;
+                });
+
+                tbody.innerHTML = '';
+                if (countLbl) countLbl.textContent = `${filtered.length} reseñas`;
+                emptyState.classList.toggle('visible', filtered.length === 0);
+
+                const monthNames = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+                const statusLabels = { approved: 'Aprobada', pending: 'Pendiente', rejected: 'Rechazada' };
+                const statusColors = { approved: 'rgba(110, 231, 183, 0.08)', pending: 'rgba(234, 179, 8, 0.08)', rejected: 'rgba(248, 113, 113, 0.08)' };
+                const statusTextColors = { approved: 'var(--mint-400)', pending: 'var(--sand-400)', rejected: 'var(--red-400)' };
+
+                filtered.forEach(r => {
+                    const product = window.BookingData.getProductById(r.product_id);
+                    const productName = product ? product.title : r.product_id;
+                    const dateObj = new Date(r.date);
+                    const dateStr = `${dateObj.getDate()} ${monthNames[dateObj.getMonth()]} ${dateObj.getFullYear()}`;
+                    const stars = '★'.repeat(Math.round(r.rating)) + '☆'.repeat(5 - Math.round(r.rating));
+                    const commentPreview = r.comment.length > 80 ? r.comment.substring(0, 80) + '...' : r.comment;
+
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td><strong style="color: var(--white);">${r.author}</strong></td>
+                        <td><span style="color: var(--text-soft); font-size: 0.85rem;">${productName}</span></td>
+                        <td><span style="color: var(--accent-gold);">${stars}</span></td>
+                        <td><span style="color: var(--text-soft); font-size: 0.85rem;" title="${r.comment}">${commentPreview}</span></td>
+                        <td><span style="color: var(--text-soft); font-size: 0.85rem;">${dateStr}</span></td>
+                        <td>
+                            <span class="col-badge" style="background: ${statusColors[r.status] || 'rgba(255,255,255,0.04)'}; color: ${statusTextColors[r.status] || 'var(--text-soft)'}; border: 1px solid transparent; font-size: 0.7rem;">
+                                ${statusLabels[r.status] || r.status}
+                            </span>
+                        </td>
+                        <td>
+                            <div style="display: flex; gap: 6px; align-items: center; flex-wrap: wrap;">
+                                ${r.status !== 'approved' ? `<button class="btn-action review-approve-btn" data-id="${r.id}" title="Aprobar" style="border-color: rgba(110, 231, 183, 0.3); color: var(--mint-400);">
+                                    <span class="icon"><svg viewBox="0 0 24 24"><path d="M5 12l4 4L19 6"></path></svg></span>
+                                </button>` : ''}
+                                ${r.status !== 'rejected' ? `<button class="btn-action review-reject-btn" data-id="${r.id}" title="Rechazar" style="border-color: rgba(248, 113, 113, 0.3); color: var(--red-400);">
+                                    <span class="icon"><svg viewBox="0 0 24 24"><path d="M18 6L6 18"></path><path d="M6 6l12 12"></path></svg></span>
+                                </button>` : ''}
+                                <button class="btn-action delete review-delete-btn" data-id="${r.id}" title="Eliminar reseña" style="color: var(--red-400);">
+                                    <span class="icon"><svg viewBox="0 0 24 24"><path d="M3 6h18"></path><path d="M8 6V4h8v2"></path><path d="M19 6l-1 14H6L5 6"></path></svg></span>
+                                </button>
+                            </div>
+                        </td>
+                    `;
+                    tbody.appendChild(row);
+                });
+
+                // Bind approve buttons
+                document.querySelectorAll('.review-approve-btn').forEach(btn => {
+                    btn.addEventListener('click', async () => {
+                        const id = btn.getAttribute('data-id');
+                        await window.BookingData.updateReviewStatus(id, 'approved');
+                        renderReviewsTable();
+                        showToast('Reseña aprobada.');
+                    });
+                });
+
+                // Bind reject buttons
+                document.querySelectorAll('.review-reject-btn').forEach(btn => {
+                    btn.addEventListener('click', async () => {
+                        const id = btn.getAttribute('data-id');
+                        await window.BookingData.updateReviewStatus(id, 'rejected');
+                        renderReviewsTable();
+                        showToast('Reseña rechazada.');
+                    });
+                });
+
+                // Bind delete buttons
+                document.querySelectorAll('.review-delete-btn').forEach(btn => {
+                    btn.addEventListener('click', async () => {
+                        const id = btn.getAttribute('data-id');
+                        if (confirm('¿Eliminar esta reseña permanentemente?')) {
+                            await window.BookingData.deleteReview(id);
+                            renderReviewsTable();
+                            showToast('Reseña eliminada.');
+                        }
+                    });
+                });
+            };
+
+            // Bind search/filter for reviews
+            const reviewsSearch = document.getElementById('reviews-search');
+            const reviewsStatusFilter = document.getElementById('reviews-status-filter');
+            if (reviewsSearch) reviewsSearch.addEventListener('input', renderReviewsTable);
+            if (reviewsStatusFilter) reviewsStatusFilter.addEventListener('change', renderReviewsTable);
+
+            // --- Gestión de Centros Turísticos ---
+            const renderPartnersTable = async () => {
+                const tbody = document.getElementById('partners-table-body');
+                const emptyState = document.getElementById('partners-empty-state');
+                if (!tbody) return;
+
+                const partners = await window.BookingData.getPartners();
+                const allProducts = window.BookingData.getProducts();
+
+                tbody.innerHTML = '';
+                emptyState.classList.toggle('visible', partners.length === 0);
+
+                partners.forEach(pa => {
+                    const serviceCount = allProducts.filter(p => p.partnerId === pa.id).length;
+                    const statusColor = pa.status === 'active' ? 'rgba(110, 231, 183, 0.08)' : 'rgba(248, 113, 113, 0.08)';
+                    const statusTextColor = pa.status === 'active' ? 'var(--mint-400)' : 'var(--red-400)';
+                    const statusLabel = pa.status === 'active' ? 'Activo' : 'Inactivo';
+                    const logoHtml = pa.logo ? `<img src="${pa.logo}" alt="${pa.name}" style="width: 36px; height: 36px; border-radius: 8px; object-fit: cover; margin-right: 10px;">` : '';
+
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>
+                            <div style="display: flex; align-items: center;">
+                                ${logoHtml}
+                                <div>
+                                    <strong style="color: var(--white); display: block;">${pa.name}</strong>
+                                    ${pa.address ? `<span style="font-size: 0.75rem; color: var(--text-soft);">${pa.address}</span>` : ''}
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            ${pa.contactPhone ? `<span style="color: var(--text-soft); font-size: 0.85rem; display: block;">${pa.contactPhone}</span>` : ''}
+                            ${pa.contactEmail ? `<span style="color: var(--text-soft); font-size: 0.8rem;">${pa.contactEmail}</span>` : ''}
+                        </td>
+                        <td><span style="color: var(--text-soft); font-size: 0.85rem;">${pa.rnt || '-'}</span></td>
+                        <td><span style="color: var(--sand-400); font-weight: 700;">${pa.commissionRate}%</span></td>
+                        <td><span style="color: var(--text-soft); font-size: 0.85rem;">${serviceCount} servicios</span></td>
+                        <td>
+                            <span class="col-badge" style="background: ${statusColor}; color: ${statusTextColor}; border: 1px solid transparent; font-size: 0.7rem;">
+                                ${statusLabel}
+                            </span>
+                        </td>
+                        <td>
+                            <div style="display: flex; gap: 6px;">
+                                <button class="btn-action edit-partner-btn" data-id="${pa.id}" title="Editar centro">
+                                    <span class="icon"><svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 1 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg></span>
+                                </button>
+                                <button class="btn-action delete delete-partner-btn" data-id="${pa.id}" title="Eliminar" style="color: var(--red-400);">
+                                    <span class="icon"><svg viewBox="0 0 24 24"><path d="M3 6h18"></path><path d="M8 6V4h8v2"></path><path d="M19 6l-1 14H6L5 6"></path></svg></span>
+                                </button>
+                            </div>
+                        </td>
+                    `;
+                    tbody.appendChild(row);
+                });
+
+                // Edit partner
+                document.querySelectorAll('.edit-partner-btn').forEach(btn => {
+                    btn.addEventListener('click', async () => {
+                        const id = btn.getAttribute('data-id');
+                        const partners = await window.BookingData.getPartners();
+                        const pa = partners.find(p => p.id === id);
+                        if (!pa) return;
+
+                        document.getElementById('centro-modal-title').textContent = 'Editar centro turístico';
+                        document.getElementById('centro-id').value = pa.id;
+                        document.getElementById('centro-name').value = pa.name;
+                        document.getElementById('centro-description').value = pa.description || '';
+                        document.getElementById('centro-logo').value = pa.logo || '';
+                        document.getElementById('centro-cover').value = pa.coverImage || '';
+                        document.getElementById('centro-phone').value = pa.contactPhone || '';
+                        document.getElementById('centro-email').value = pa.contactEmail || '';
+                        document.getElementById('centro-website').value = pa.website || '';
+                        document.getElementById('centro-rnt').value = pa.rnt || '';
+                        document.getElementById('centro-commission').value = pa.commissionRate || 10;
+                        document.getElementById('centro-address').value = pa.address || '';
+                        document.getElementById('centro-status').value = pa.status || 'active';
+
+                        document.getElementById('centro-modal').classList.add('show');
+                    });
+                });
+
+                // Delete partner
+                document.querySelectorAll('.delete-partner-btn').forEach(btn => {
+                    btn.addEventListener('click', async () => {
+                        const id = btn.getAttribute('data-id');
+                        const partners = await window.BookingData.getPartners();
+                        const pa = partners.find(p => p.id === id);
+                        if (confirm(`¿Eliminar "${pa.name}"? Los servicios vinculados quedarán sin centro asignado.`)) {
+                            await window.BookingData.deletePartner(id);
+                            renderPartnersTable();
+                            populatePartnerDropdowns();
+                            showToast('Centro turístico eliminado.');
+                        }
+                    });
+                });
+            };
+
+            // Partner form
+            const centroForm = document.getElementById('centro-form');
+            if (centroForm) {
+                centroForm.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    const id = document.getElementById('centro-id').value || 'partner-' + Date.now();
+                    const partnerData = {
+                        id,
+                        name: document.getElementById('centro-name').value.trim(),
+                        description: document.getElementById('centro-description').value.trim(),
+                        logo: document.getElementById('centro-logo').value.trim(),
+                        coverImage: document.getElementById('centro-cover').value.trim(),
+                        contactPhone: document.getElementById('centro-phone').value.trim(),
+                        contactEmail: document.getElementById('centro-email').value.trim(),
+                        website: document.getElementById('centro-website').value.trim(),
+                        rnt: document.getElementById('centro-rnt').value.trim(),
+                        commissionRate: parseFloat(document.getElementById('centro-commission').value) || 10,
+                        address: document.getElementById('centro-address').value.trim(),
+                        status: document.getElementById('centro-status').value
+                    };
+
+                    const result = await window.BookingData.savePartner(partnerData);
+                    if (result.status === 'success') {
+                        document.getElementById('centro-modal').classList.remove('show');
+                        centroForm.reset();
+                        document.getElementById('centro-id').value = '';
+                        renderPartnersTable();
+                        populatePartnerDropdowns();
+                        showToast('Centro turístico guardado.');
+                    } else {
+                        showToast('Error al guardar el centro.', 'error');
+                    }
+                });
+            }
+
+            // Partner modal controls
+            const centroModal = document.getElementById('centro-modal');
+            if (centroModal) {
+                document.getElementById('btn-nuevo-centro').addEventListener('click', () => {
+                    document.getElementById('centro-modal-title').textContent = 'Nuevo centro turístico';
+                    centroForm.reset();
+                    document.getElementById('centro-id').value = '';
+                    document.getElementById('centro-commission').value = '10';
+                    document.getElementById('centro-status').value = 'active';
+                    centroModal.classList.add('show');
+                });
+                document.getElementById('centro-modal-close').addEventListener('click', () => centroModal.classList.remove('show'));
+                document.getElementById('centro-cancel-btn').addEventListener('click', () => centroModal.classList.remove('show'));
+                centroModal.addEventListener('click', (e) => {
+                    if (e.target === centroModal) centroModal.classList.remove('show');
+                });
+            }
 
             const renderJsonOutput = () => {
                 const textarea = document.getElementById('json-output-area');
@@ -1920,18 +2792,20 @@
                 const imageValue = document.getElementById('p-image').value;
                 const newService = {
                     id: 'custom-' + Date.now(),
+                    partnerId: document.getElementById('p-partner').value,
                     category: document.getElementById('p-category').value,
                     title: document.getElementById('p-title').value,
                     subtitle: document.getElementById('p-subtitle').value,
                     rating: 5,
                     reviewsCount: 1,
-                    price: parseFloat(document.getElementById('p-price').value),
+                    price: parseFloat(document.getElementById('p-price').value.replace(/\./g, '').replace(/,/g, '')) || 0,
                     priceType: document.getElementById('p-pricetype').value,
                     image: imageValue,
                     gallery: [imageValue],
                     features,
                     maxGuests: parseInt(document.getElementById('p-maxguests').value, 10),
                     childDiscountRate: parseFloat(document.getElementById('p-childrate').value),
+                    description: document.getElementById('p-description').value.trim() || null,
                     addons
                 };
 
@@ -1984,18 +2858,20 @@
 
                 const serviceData = {
                     id: editingProductId,
+                    partnerId: document.getElementById('e-partner').value,
                     category: document.getElementById('e-category').value,
                     title: document.getElementById('e-title').value,
                     subtitle: document.getElementById('e-subtitle').value,
                     rating,
                     reviewsCount,
-                    price: parseFloat(document.getElementById('e-price').value),
+                    price: parseFloat(document.getElementById('e-price').value.replace(/\./g, '').replace(/,/g, '')) || 0,
                     priceType: document.getElementById('e-pricetype').value,
                     image: imageValue,
                     gallery,
                     features,
                     maxGuests: parseInt(document.getElementById('e-maxguests').value, 10),
                     childDiscountRate: parseFloat(document.getElementById('e-childrate').value),
+                    description: document.getElementById('e-description').value.trim() || null,
                     addons
                 };
 
@@ -2107,6 +2983,8 @@
             updateStats();
             renderAddonCheckboxes();
             renderJsonOutput();
+            renderReviewsTable();
+            renderPartnersTable();
         });
     </script>
 </body>
