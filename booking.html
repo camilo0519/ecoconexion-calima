@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reserva | Eco Conexión Calima</title>
+    <link rel="icon" type="image/webp" href="assets/LOGO.webp">
+    <meta name="description"
+        content="Completa tu reserva en Eco Conexión Calima desde una vista dedicada, clara y segura.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/styles.css?v=3.3">
+    <style>
+        /* Estilos Premium para el Sistema de Reseñas */
+        .review-form-container {
+            background: var(--bg-card) !important;
+            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+            border-radius: 24px !important;
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.3) !important;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            transition: all 0.3s ease;
+        }
+        
+        .review-form-container:hover {
+            border-color: rgba(255, 255, 255, 0.15) !important;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4) !important;
+        }
+
+        .review-field-input {
+            width: 100%;
+            padding: 12px 16px !important;
+            border-radius: 12px !important;
+            border: 1px solid rgba(255,255,255,0.1) !important;
+            background: rgba(0, 0, 0, 0.35) !important;
+            color: var(--white) !important;
+            font-family: inherit;
+            outline: none;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+        }
+
+        .review-field-input:focus {
+            border-color: rgba(223, 161, 53, 0.5) !important;
+            background: rgba(0, 0, 0, 0.45) !important;
+            box-shadow: 0 0 0 3px rgba(223, 161, 53, 0.15) !important;
+        }
+
+        .star-rating-input span {
+            transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), text-shadow 0.2s ease, color 0.2s ease;
+            display: inline-block;
+            color: rgba(255, 255, 255, 0.15);
+        }
+
+        .star-rating-input span:hover {
+            transform: scale(1.25);
+            text-shadow: 0 0 10px rgba(223, 161, 53, 0.8);
+        }
+
+        .review-comment-card {
+            background: var(--bg-card) !important;
+            border: 1px solid rgba(255, 255, 255, 0.08) !important;
+            border-radius: 16px !important;
+            transition: all 0.3s ease;
+        }
+
+        .review-comment-card:hover {
+            background: rgba(255, 255, 255, 0.04) !important;
+            border-color: rgba(255, 255, 255, 0.12) !important;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+
+        .btn-submit-review {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 44px;
+            padding: 10px 24px !important;
+            border-radius: 12px !important;
+            border: 1px solid rgba(223, 161, 53, 0.2) !important;
+            background: var(--accent-gold) !important;
+            color: #07130a !important;
+            font-family: var(--font-main);
+            font-size: 0.92rem !important;
+            font-weight: 700 !important;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+            box-shadow: 0 4px 14px rgba(223, 161, 53, 0.2) !important;
+            outline: none;
+        }
+
+        .btn-submit-review:hover:not(:disabled) {
+            background: #e5ad3e !important;
+            box-shadow: 0 6px 20px rgba(223, 161, 53, 0.45) !important;
+            transform: translateY(-1.5px) !important;
+        }
+
+        .btn-submit-review:active:not(:disabled) {
+            transform: translateY(0) !important;
+        }
+
+        .btn-submit-review:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none !important;
+            box-shadow: none !important;
+        }
+
+        @media (max-width: 768px) {
+            .reviews-comments-grid {
+                grid-template-columns: 1fr !important;
+                gap: 20px !important;
+            }
+            .review-form-grid {
+                grid-template-columns: 1fr !important;
+                gap: 15px !important;
+            }
+        }
+    </style>
+</head>
+
+<body class="booking-page">
+    <!-- Header & Nav (Sticky/Scrolled) -->
+    <header id="main-header" class="scrolled">
+        <div class="header-container">
+            <div class="logo">
+                <a href="index.html#inicio">
+                    <img src="assets/LOGO.webp" alt="Eco Conexión Calima" class="header-logo">
+                </a>
+            </div>
+            <nav class="main-nav">
+                <button class="mobile-menu-btn" aria-label="Abrir menú">☰</button>
+                <ul class="nav-links">
+                    <li><a href="index.html#inicio">Inicio</a></li>
+                    <li><a href="index.html#pilares">Nosotros</a></li>
+                    <li><a href="index.html#explorar">Buscar Aventuras</a></li>
+                    <li><a href="index.html#faqs">FAQs</a></li>
+                    <li><a href="index.html#contacto" class="nav-cta">Contacto</a></li>
+                </ul>
+                <div class="lang-switcher" id="lang-switcher">
+                    <button class="lang-trigger" id="lang-trigger" aria-label="Cambiar idioma" aria-expanded="false">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                        <span class="lang-current-flag" id="lang-current-flag">🇨🇴</span>
+                        <svg class="lang-chevron" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+                    </button>
+                    <div class="lang-dropdown" id="lang-dropdown" role="listbox">
+                        <div class="lang-dropdown-inner">
+                            <p class="lang-dropdown-title">Seleccionar idioma</p>
+                            <ul class="lang-list">
+                                <li class="lang-option active" data-lang="es" data-flag="🇨🇴" role="option">🇨🇴 <span>Español</span></li>
+                                <li class="lang-option" data-lang="en" data-flag="🇬🇧" role="option">🇬🇧 <span>English</span></li>
+                                <li class="lang-option" data-lang="fr" data-flag="🇫🇷" role="option">🇫🇷 <span>Français</span></li>
+                                <li class="lang-option" data-lang="pt" data-flag="🇧🇷" role="option">🇧🇷 <span>Português</span></li>
+                                <li class="lang-option" data-lang="de" data-flag="🇩🇪" role="option">🇩🇪 <span>Deutsch</span></li>
+                                <li class="lang-option" data-lang="it" data-flag="🇮🇹" role="option">🇮🇹 <span>Italiano</span></li>
+                                <li class="lang-option" data-lang="zh-CN" data-flag="🇨🇳" role="option">🇨🇳 <span>中文</span></li>
+                                <li class="lang-option" data-lang="ja" data-flag="🇯🇵" role="option">🇯🇵 <span>日本語</span></li>
+                                <li class="lang-option" data-lang="ko" data-flag="🇰🇷" role="option">🇰🇷 <span>한국어</span></li>
+                                <li class="lang-option" data-lang="ar" data-flag="🇸🇦" role="option">🇸🇦 <span>العربية</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main class="booking-page-shell" style="padding-top: 100px;">
+        <!-- Contenedor Principal de Detalles al estilo Airbnb -->
+        <div class="airbnb-detail-container" style="margin-top: 10px;">
+            <!-- Cabecera de Producto Estilo Airbnb -->
+            <div class="airbnb-detail-header" style="margin-bottom: 24px;">
+                <h1 class="airbnb-product-title" id="booking-page-product-name"
+                    style="font-size: 2.25rem; font-weight: 800; color: var(--white); margin: 0 0 10px; line-height: 1.2;">
+                    Tu experiencia en Calima</h1>
+                <div class="airbnb-header-meta"
+                    style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; font-size: 0.95rem; color: var(--text-light);">
+                    <div class="airbnb-meta-left" style="display: flex; align-items: center; flex-wrap: wrap;">
+                        <span class="airbnb-meta-rating"
+                            style="font-weight: 700; color: var(--white); display: inline-flex; align-items: center;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+                                fill="currentColor" class="star-icon"
+                                style="color: var(--accent-gold); vertical-align: middle; margin-right: 3px;">
+                                <path
+                                    d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+                            </svg>
+                            <span id="booking-page-rating">4.9</span>
+                            <span class="meta-divider" style="margin: 0 8px; color: rgba(255,255,255,0.25);">·</span>
+                            <span id="booking-page-reviews-count" class="meta-reviews-link"
+                                style="text-decoration: underline; cursor: pointer; font-weight: 600; color: var(--text-light); transition: var(--transition);">38
+                                reseñas</span>
+                        </span>
+                        <span class="meta-divider" style="margin: 0 8px; color: rgba(255,255,255,0.25);">·</span>
+                        <span class="airbnb-meta-location"
+                            style="text-decoration: underline; font-weight: 600; cursor: pointer; color: var(--text-light);">Lago
+                            Calima, Darién, Colombia</span>
+                        <span class="meta-divider" style="margin: 0 8px; color: rgba(255,255,255,0.25);">·</span>
+                        <span id="booking-page-meta-guests" style="color: var(--text-light); font-weight: 600;">4
+                            huéspedes max · Alojamiento</span>
+                    </div>
+                    <div class="airbnb-header-actions" style="display: flex; gap: 15px;">
+                        <button class="header-action-btn" id="btn-share-detail"
+                            style="background: none; border: none; color: var(--text-light); font-family: inherit; font-size: 0.9rem; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; transition: var(--transition);">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" />
+                                <polyline points="16 6 12 2 8 6" />
+                                <line x1="12" y1="2" x2="12" y2="15" />
+                            </svg>
+                            Compartir
+                        </button>
+                        <button class="header-action-btn" id="btn-save-detail"
+                            style="background: none; border: none; color: var(--text-light); font-family: inherit; font-size: 0.9rem; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; transition: var(--transition);">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
+                            </svg>
+                            Guardar
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Grilla de Fotos de 5 Imágenes -->
+            <div class="airbnb-photo-grid" id="booking-photo-grid">
+                <!-- Se inyecta dinámicamente desde JS -->
+                <div class="photo-grid-placeholder"
+                    style="grid-column: span 3; text-align: center; padding: 100px 0; color: var(--text-light);">
+                    Cargando galería de imágenes...</div>
+            </div>
+
+            <!-- Layout de Dos Columnas -->
+            <div class="airbnb-columns-layout" style="display: flex; gap: 50px; margin-top: 30px; position: relative;">
+                <!-- Columna Izquierda (Información y Detalles) -->
+                <div class="airbnb-left-col" style="flex: 1; min-width: 0;">
+                    <div id="details-content" style="transition: opacity 0.3s ease;">
+                        <!-- Host Info -->
+                        <div class="detail-host-section"
+                            style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 25px; border-bottom: 1px solid rgba(255,255,255,0.08); margin-bottom: 25px;">
+                            <div class="host-copy">
+                                <h2
+                                    style="color: var(--white); font-size: 1.35rem; font-weight: 700; margin-bottom: 6px;">
+                                    Experiencia ofrecida por Eco Conexión Calima</h2>
+                                <p class="booking-page-meta-guests-copy"
+                                    style="color: var(--text-light); font-size: 0.95rem;">4 huéspedes · 1 habitación · 1
+                                    baño privado</p>
+                            </div>
+                            <div class="host-avatar"
+                                style="width: 56px; height: 56px; border-radius: 50%; overflow: hidden; border: 2px solid var(--primary-green); flex-shrink: 0;">
+                                <img src="assets/LOGO.webp" alt="Eco Conexión" class="host-avatar-img"
+                                    style="width: 100%; height: 100%; object-fit: contain; background: white;">
+                            </div>
+                        </div>
+
+                        <!-- Highlight Features (USPs) -->
+                        <div class="detail-highlights"
+                            style="display: flex; flex-direction: column; gap: 24px; padding-bottom: 25px; border-bottom: 1px solid rgba(255,255,255,0.08); margin-bottom: 25px;">
+                            <div class="highlight-item" style="display: flex; gap: 16px; align-items: flex-start;">
+                                <div class="highlight-icon" style="color: var(--accent-gold); margin-top: 2px;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                                        <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                                    </svg>
+                                </div>
+                                <div class="highlight-text">
+                                    <strong
+                                        style="display: block; color: var(--white); font-size: 1rem; margin-bottom: 2px;">Llegada
+                                        autónoma</strong>
+                                    <p style="color: var(--text-light); font-size: 0.9rem; margin: 0;">Accede al
+                                        alojamiento fácilmente mediante la cerradura con teclado numérico.</p>
+                                </div>
+                            </div>
+                            <div class="highlight-item" style="display: flex; gap: 16px; align-items: flex-start;">
+                                <div class="highlight-icon" style="color: var(--accent-gold); margin-top: 2px;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                                    </svg>
+                                </div>
+                                <div class="highlight-text">
+                                    <strong
+                                        style="display: block; color: var(--white); font-size: 1rem; margin-bottom: 2px;">Operador
+                                        local certificado</strong>
+                                    <p style="color: var(--text-light); font-size: 0.9rem; margin: 0;">Cumple con las
+                                        normas nacionales de turismo y póliza de seguro médico activa.</p>
+                                </div>
+                            </div>
+                            <div class="highlight-item" style="display: flex; gap: 16px; align-items: flex-start;">
+                                <div class="highlight-icon" style="color: var(--accent-gold); margin-top: 2px;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <path d="M2 12h20" />
+                                        <path d="M20 12v8H4v-8" />
+                                        <path d="m15 5-3-3-3 3h6Z" />
+                                        <path d="M12 2v10" />
+                                    </svg>
+                                </div>
+                                <div class="highlight-text">
+                                    <strong
+                                        style="display: block; color: var(--white); font-size: 1rem; margin-bottom: 2px;">Cancelación
+                                        flexible</strong>
+                                    <p style="color: var(--text-light); font-size: 0.9rem; margin: 0;">Cancela de forma
+                                        gratuita hasta 48 horas antes del inicio de tu experiencia.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Description -->
+                        <div class="detail-description"
+                            style="padding-bottom: 25px; border-bottom: 1px solid rgba(255,255,255,0.08); margin-bottom: 25px;">
+                            <p class="description-lead booking-page-product-subtitle-copy"
+                                style="font-size: 1.1rem; color: var(--white); font-weight: 600; margin-bottom: 15px; line-height: 1.5;">
+                                Cargando subtítulo de la experiencia.</p>
+                            <div id="booking-page-description"></div>
+                        </div>
+
+                        <!-- Amenities (Lo que ofrece) -->
+                        <div class="detail-amenities-section"
+                            style="padding-bottom: 25px; border-bottom: 1px solid rgba(255,255,255,0.08); margin-bottom: 25px;">
+                            <h3 style="color: var(--white); font-size: 1.25rem; font-weight: 700; margin-bottom: 20px;">
+                                Lo que este lugar ofrece</h3>
+                            <div class="amenities-grid" id="booking-page-amenities-grid"
+                                style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                                <!-- Se llena dinámicamente -->
+                            </div>
+                        </div>
+
+                        <!-- Calendario Visual Decorativo -->
+                        <div class="detail-calendar-section"
+                            style="padding-bottom: 25px; border-bottom: 1px solid rgba(255,255,255,0.08); margin-bottom: 25px;">
+                            <h3 style="color: var(--white); font-size: 1.25rem; font-weight: 700; margin-bottom: 6px;">
+                                Fechas seleccionadas</h3>
+                            <p style="color: var(--text-light); font-size: 0.9rem; margin-bottom: 20px;">Verifica las
+                                tarifas y selecciona las fechas de tu viaje para continuar con la reserva.</p>
+                            <div class="mock-calendar-container"
+                                style="background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.05); border-radius: var(--radius-md); padding: 20px;">
+                                <div class="mock-calendar-header"
+                                    style="display: flex; gap: 30px; font-weight: 700; color: var(--white); margin-bottom: 15px; font-size: 0.95rem; position: relative; height: 40px; align-items: center;">
+                                    <!-- Botón Mes Anterior -->
+                                    <button type="button" id="btn-cal-prev" class="cal-nav-btn"
+                                        aria-label="Mes anterior" style="position: absolute; left: 5px;">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                                            stroke-linecap="round" stroke-linejoin="round">
+                                            <polyline points="15 18 9 12 15 6" />
+                                        </svg>
+                                    </button>
+
+                                    <div
+                                        style="flex: 1; text-align: center; display: flex; justify-content: center; align-items: center; height: 100%;">
+                                        <span id="mock-cal-month-1">Mes 1</span>
+                                    </div>
+                                    <div class="mobile-hide"
+                                        style="flex: 1; text-align: center; display: flex; justify-content: center; align-items: center; height: 100%;">
+                                        <span id="mock-cal-month-2">Mes 2</span>
+                                    </div>
+
+                                    <!-- Botón Mes Siguiente -->
+                                    <button type="button" id="btn-cal-next" class="cal-nav-btn"
+                                        aria-label="Mes siguiente" style="position: absolute; right: 5px;">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                                            stroke-linecap="round" stroke-linejoin="round">
+                                            <polyline points="9 18 15 12 9 6" />
+                                        </svg>
+                                    </button>
+                                </div>
+                                <div class="mock-calendar-grids" id="interactive-calendar-grids" style="display: flex; gap: 30px;">
+                                    <!-- Se inyecta dinámicamente desde JS -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Reseñas y Puntuación Detallada -->
+                        <div class="detail-reviews-section" style="margin-bottom: 25px;">
+                            <div class="reviews-header-block"
+                                style="display: flex; align-items: center; gap: 8px; margin-bottom: 25px;">
+                                <h3
+                                    style="color: var(--white); font-size: 1.25rem; font-weight: 700; display: flex; align-items: center; gap: 6px;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                        fill="currentColor" class="star-icon" style="color: var(--accent-gold);">
+                                        <path
+                                            d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+                                    </svg>
+                                    <span id="booking-page-reviews-summary">4.9 · 38 reseñas</span>
+                                </h3>
+                            </div>
+                            <div class="reviews-score-grid"
+                                style="display: grid; grid-template-columns: 1fr 1fr; gap: x 40px; row-gap: 15px; column-gap: 40px; margin-bottom: 30px;">
+                                <div class="score-row"
+                                    style="display: flex; align-items: center; justify-content: space-between; gap: 15px; font-size: 0.9rem;">
+                                    <span style="color: var(--text-dark); min-width: 110px;">Limpieza</span>
+                                    <div class="progress-bar-wrapper"
+                                        style="flex: 1; height: 5px; background: rgba(255,255,255,0.08); border-radius: 5px; overflow: hidden; position: relative;">
+                                        <div class="progress-bar-fill"
+                                            style="width: 98%; height: 100%; background: var(--primary-green-light); border-radius: 5px;">
+                                        </div>
+                                    </div>
+                                    <span class="score-num"
+                                        style="color: var(--white); font-weight: 600; min-width: 25px; text-align: right;">4.9</span>
+                                </div>
+                                <div class="score-row"
+                                    style="display: flex; align-items: center; justify-content: space-between; gap: 15px; font-size: 0.9rem;">
+                                    <span style="color: var(--text-dark); min-width: 110px;">Exactitud</span>
+                                    <div class="progress-bar-wrapper"
+                                        style="flex: 1; height: 5px; background: rgba(255,255,255,0.08); border-radius: 5px; overflow: hidden; position: relative;">
+                                        <div class="progress-bar-fill"
+                                            style="width: 96%; height: 100%; background: var(--primary-green-light); border-radius: 5px;">
+                                        </div>
+                                    </div>
+                                    <span class="score-num"
+                                        style="color: var(--white); font-weight: 600; min-width: 25px; text-align: right;">4.8</span>
+                                </div>
+                                <div class="score-row"
+                                    style="display: flex; align-items: center; justify-content: space-between; gap: 15px; font-size: 0.9rem;">
+                                    <span style="color: var(--text-dark); min-width: 110px;">Check-in</span>
+                                    <div class="progress-bar-wrapper"
+                                        style="flex: 1; height: 5px; background: rgba(255,255,255,0.08); border-radius: 5px; overflow: hidden; position: relative;">
+                                        <div class="progress-bar-fill"
+                                            style="width: 98%; height: 100%; background: var(--primary-green-light); border-radius: 5px;">
+                                        </div>
+                                    </div>
+                                    <span class="score-num"
+                                        style="color: var(--white); font-weight: 600; min-width: 25px; text-align: right;">4.9</span>
+                                </div>
+                                <div class="score-row"
+                                    style="display: flex; align-items: center; justify-content: space-between; gap: 15px; font-size: 0.9rem;">
+                                    <span style="color: var(--text-dark); min-width: 110px;">Comunicación</span>
+                                    <div class="progress-bar-wrapper"
+                                        style="flex: 1; height: 5px; background: rgba(255,255,255,0.08); border-radius: 5px; overflow: hidden; position: relative;">
+                                        <div class="progress-bar-fill"
+                                            style="width: 96%; height: 100%; background: var(--primary-green-light); border-radius: 5px;">
+                                        </div>
+                                    </div>
+                                    <span class="score-num"
+                                        style="color: var(--white); font-weight: 600; min-width: 25px; text-align: right;">4.8</span>
+                                </div>
+                                <div class="score-row"
+                                    style="display: flex; align-items: center; justify-content: space-between; gap: 15px; font-size: 0.9rem;">
+                                    <span style="color: var(--text-dark); min-width: 110px;">Ubicación</span>
+                                    <div class="progress-bar-wrapper"
+                                        style="flex: 1; height: 5px; background: rgba(255,255,255,0.08); border-radius: 5px; overflow: hidden; position: relative;">
+                                        <div class="progress-bar-fill"
+                                            style="width: 98%; height: 100%; background: var(--primary-green-light); border-radius: 5px;">
+                                        </div>
+                                    </div>
+                                    <span class="score-num"
+                                        style="color: var(--white); font-weight: 600; min-width: 25px; text-align: right;">4.9</span>
+                                </div>
+                                <div class="score-row"
+                                    style="display: flex; align-items: center; justify-content: space-between; gap: 15px; font-size: 0.9rem;">
+                                    <span style="color: var(--text-dark); min-width: 110px;">Precio</span>
+                                    <div class="progress-bar-wrapper"
+                                        style="flex: 1; height: 5px; background: rgba(255,255,255,0.08); border-radius: 5px; overflow: hidden; position: relative;">
+                                        <div class="progress-bar-fill"
+                                            style="width: 96%; height: 100%; background: var(--primary-green-light); border-radius: 5px;">
+                                        </div>
+                                    </div>
+                                    <span class="score-num"
+                                        style="color: var(--white); font-weight: 600; min-width: 25px; text-align: right;">4.8</span>
+                                </div>
+                            </div>
+                            <div class="reviews-comments-grid" id="booking-page-reviews-comments"
+                                style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+                                <!-- Se llena dinámicamente -->
+                            </div>
+
+                            <!-- Formulario para dejar una reseña -->
+                            <div class="review-form-container"
+                                style="margin-top: 35px; padding: 25px; border-radius: 16px;">
+                                <h4 style="color: var(--white); font-size: 1.15rem; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.01em;">Deja tu reseña</h4>
+                                <p style="color: var(--text-soft); font-size: 0.88rem; margin-bottom: 20px; opacity: 0.8;">Comparte tu experiencia para ayudar a otros viajeros.</p>
+                                <form id="review-form" style="display: flex; flex-direction: column; gap: 18px;">
+                                    <div class="review-form-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                                        <div style="display: flex; flex-direction: column; gap: 6px;">
+                                            <label style="color: var(--text-soft); font-size: 0.85rem; font-weight: 600;">Tu nombre *</label>
+                                            <input type="text" id="review-author" required class="review-field-input" placeholder="Ej: Juan Pérez">
+                                        </div>
+                                        <div style="display: flex; flex-direction: column; gap: 6px;">
+                                            <label style="color: var(--text-soft); font-size: 0.85rem; font-weight: 600;">Correo electrónico</label>
+                                            <input type="email" id="review-email" class="review-field-input" placeholder="tu@correo.com">
+                                        </div>
+                                    </div>
+                                    <div style="display: flex; flex-direction: column; gap: 6px;">
+                                        <label style="color: var(--text-soft); font-size: 0.85rem; font-weight: 600;">Calificación</label>
+                                        <div class="star-rating-input" id="star-rating-input" style="display: flex; gap: 8px; font-size: 2rem; cursor: pointer; width: max-content;">
+                                            <span data-star="1" style="color: rgba(255,255,255,0.15);">★</span>
+                                            <span data-star="2" style="color: rgba(255,255,255,0.15);">★</span>
+                                            <span data-star="3" style="color: rgba(255,255,255,0.15);">★</span>
+                                            <span data-star="4" style="color: rgba(255,255,255,0.15);">★</span>
+                                            <span data-star="5" style="color: rgba(255,255,255,0.15);">★</span>
+                                        </div>
+                                        <input type="hidden" id="review-rating" value="5">
+                                    </div>
+                                    <div style="display: flex; flex-direction: column; gap: 6px;">
+                                        <label style="color: var(--text-soft); font-size: 0.85rem; font-weight: 600;">Tu comentario *</label>
+                                        <textarea id="review-comment" required rows="4" class="review-field-input" placeholder="Cuéntanos sobre tu experiencia en este lugar..."></textarea>
+                                    </div>
+                                    <div style="display: flex; justify-content: flex-end; gap: 15px; align-items: center; margin-top: 5px;">
+                                        <span id="review-form-feedback" style="font-size: 0.88rem; font-weight: 600; display: none;"></span>
+                                        <button type="submit" class="btn-submit-review">
+                                            Enviar reseña
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Formulario de Reserva Inline -->
+                    <div id="inline-wizard-container" style="display: none; transition: opacity 0.3s ease; opacity: 0;">
+                    </div>
+                </div>
+
+                <!-- Columna Derecha (Tarjeta de Reserva Sticky) -->
+                <div class="airbnb-right-col" style="width: 380px; flex-shrink: 0; position: relative;">
+                    <div class="airbnb-booking-card" id="sticky-booking-card"
+                        style="position: sticky; top: 110px; background: var(--bg-card); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 24px; padding: 24px; box-shadow: 0 16px 40px rgba(0,0,0,0.3); display: flex; flex-direction: column; gap: 20px;">
+                        <div class="card-price-header"
+                            style="display: flex; justify-content: space-between; align-items: flex-end; gap: 15px;">
+                            <div class="price-val" style="display: flex; flex-direction: column; gap: 2px;">
+                                <span class="old-price" id="card-old-price"
+                                    style="text-decoration: line-through; font-size: 0.88rem; color: var(--text-dark); display: none; line-height: 1.2; margin-bottom: 2px;">$0
+                                    COP</span>
+                                <div class="current-price-row"
+                                    style="display: flex; align-items: baseline; gap: 4px; white-space: nowrap;">
+                                    <strong id="card-price-amount"
+                                        style="color: var(--white); font-size: 1.45rem; font-weight: 800; line-height: 1;">$0
+                                        COP</strong>
+                                    <span class="price-unit" id="card-price-unit"
+                                        style="font-size: 0.88rem; color: var(--text-light); font-weight: 400;">/
+                                        noche</span>
+                                </div>
+                            </div>
+                            <div class="rating-val"
+                                style="display: flex; align-items: center; gap: 4px; font-size: 0.88rem; color: var(--white); font-weight: 600; white-space: nowrap; flex-shrink: 0; margin-bottom: 2px;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"
+                                    fill="currentColor" class="star-icon" style="color: var(--accent-gold);">
+                                    <path
+                                        d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+                                </svg>
+                                <span id="card-rating-text" style="white-space: nowrap;">4.9</span>
+                            </div>
+                        </div>
+
+                        <!-- Selector unificado de fechas y huéspedes -->
+                        <div class="booking-fields-box"
+                            style="border: 1px solid rgba(255,255,255,0.15); border-radius: 12px; overflow: hidden; background: rgba(0,0,0,0.3);">
+                            <div class="dates-row-group"
+                                style="display: flex; border-bottom: 1px solid rgba(255,255,255,0.15);">
+                                <div class="field-item date-field" id="card-checkin-wrapper"
+                                    style="flex: 1; padding: 10px 14px; border-right: 1px solid rgba(255,255,255,0.15); display: flex; flex-direction: column; gap: 4px;">
+                                    <label
+                                        style="font-size: 0.65rem; font-weight: 800; color: var(--accent-gold); text-transform: uppercase; letter-spacing: 0.5px;">Llegada</label>
+                                    <input type="date" id="w-card-checkin"
+                                        style="background: transparent; border: none; color: white; font-family: inherit; font-size: 0.88rem; font-weight: 600; outline: none; padding: 0; width: 100%; cursor: pointer;">
+                                </div>
+                                <div class="field-item date-field" id="card-checkout-wrapper"
+                                    style="flex: 1; padding: 10px 14px; display: flex; flex-direction: column; gap: 4px;">
+                                    <label
+                                        style="font-size: 0.65rem; font-weight: 800; color: var(--accent-gold); text-transform: uppercase; letter-spacing: 0.5px;">Salida</label>
+                                    <input type="date" id="w-card-checkout"
+                                        style="background: transparent; border: none; color: white; font-family: inherit; font-size: 0.88rem; font-weight: 600; outline: none; padding: 0; width: 100%; cursor: pointer;">
+                                </div>
+                                <div class="field-item date-field full" id="card-single-date-wrapper"
+                                    style="display: none; width: 100%; padding: 10px 14px; flex-direction: column; gap: 4px;">
+                                    <label
+                                        style="font-size: 0.65rem; font-weight: 800; color: var(--accent-gold); text-transform: uppercase; letter-spacing: 0.5px;">Fecha
+                                        de Experiencia</label>
+                                    <input type="date" id="w-card-singledate"
+                                        style="background: transparent; border: none; color: white; font-family: inherit; font-size: 0.88rem; font-weight: 600; outline: none; padding: 0; width: 100%; cursor: pointer;">
+                                </div>
+                            </div>
+                            <div class="field-item guests-field"
+                                style="padding: 10px 14px; display: flex; flex-direction: column; gap: 4px;">
+                                <label
+                                    style="font-size: 0.65rem; font-weight: 800; color: var(--accent-gold); text-transform: uppercase; letter-spacing: 0.5px;">Huéspedes</label>
+                                <select id="w-card-guests"
+                                    style="background: transparent; border: none; color: white; font-family: inherit; font-size: 0.88rem; font-weight: 600; outline: none; padding: 0; width: 100%; cursor: pointer;">
+                                    <option value="1" style="background-color: #12351d; color: white;">1 persona
+                                    </option>
+                                    <option value="2" selected style="background-color: #12351d; color: white;">2
+                                        personas</option>
+                                    <option value="4" style="background-color: #12351d; color: white;">4 personas
+                                    </option>
+                                    <option value="6" style="background-color: #12351d; color: white;">6 personas
+                                    </option>
+                                    <option value="10" style="background-color: #12351d; color: white;">10+ personas
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Botón Reservar -->
+                        <button type="button" class="btn-reserva-airbnb" id="btn-submit-reserva-sticky"
+                            style="background: var(--accent-gold); color: var(--bg-light); border: none; border-radius: 12px; padding: 14px; font-weight: 700; font-size: 1.05rem; cursor: pointer; transition: var(--transition); text-align: center; width: 100%; box-shadow: 0 4px 15px rgba(223,161,53,0.3);">Reservar</button>
+                        <p class="no-charge-note"
+                            style="text-align: center; font-size: 0.78rem; color: var(--text-light); margin: -5px 0 0;">
+                            No se te cobrará nada todavía</p>
+
+                        <!-- Tabla de desglose de precios dinámico -->
+                        <div class="price-breakdown-table" id="card-price-breakdown"
+                            style="display: flex; flex-direction: column; gap: 12px; margin-top: 10px;">
+                            <div class="breakdown-row"
+                                style="display: flex; justify-content: space-between; font-size: 0.9rem; color: var(--text-dark);">
+                                <span id="breakdown-calc-label">$0 COP x 1 noche</span>
+                                <span id="breakdown-calc-val">$0 COP</span>
+                            </div>
+                            <div class="breakdown-row discount hidden" id="breakdown-discount-row"
+                                style="display: none; justify-content: space-between; font-size: 0.9rem; color: #81c784;">
+                                <span>Descuento niños</span>
+                                <span id="breakdown-discount-val">-$0 COP</span>
+                            </div>
+                            <div class="breakdown-row service-fee"
+                                style="display: flex; justify-content: space-between; font-size: 0.9rem; color: var(--text-dark);">
+                                <span>Tarifa de servicio Eco Conexión</span>
+                                <span class="free-badge"
+                                    style="color: var(--primary-green-light); font-weight: 600;">Gratis</span>
+                            </div>
+                            <div class="breakdown-divider"
+                                style="border-top: 1px solid rgba(255,255,255,0.08); margin: 5px 0;"></div>
+                            <div class="breakdown-row total-row"
+                                style="display: flex; justify-content: space-between; font-size: 1.05rem; color: var(--white);">
+                                <span>Total (antes de adicionales)</span>
+                                <strong id="breakdown-total-val" style="font-weight: 800; color: var(--accent-gold);">$0
+                                    COP</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Barra inferior de reserva para móviles (Bottom Bar) -->
+        <div class="mobile-booking-bottom-bar" id="mobile-bottom-bar" style="display: none;">
+            <div class="m-bar-price">
+                <div class="m-bar-price-row">
+                    <strong id="m-bar-price-amount">$0 COP</strong>
+                    <span id="m-bar-price-unit">/ noche</span>
+                </div>
+                <div class="m-bar-rating">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"
+                        fill="currentColor" class="star-icon">
+                        <path
+                            d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+                    </svg>
+                    <span id="m-bar-rating-val">4.9</span>
+                </div>
+            </div>
+            <button type="button" class="btn-reserva-airbnb mobile-btn" id="btn-submit-reserva-mobile">Reservar</button>
+        </div>
+
+
+    </main>
+
+    <div id="modal-gateway" class="modal">
+        <div class="modal-content" style="max-width: 500px; padding: 30px;">
+            <span class="close-gateway-modal close-modal" style="top: 15px; right: 20px;">&times;</span>
+            <div class="gateway-container">
+                <h2 style="color: var(--white); margin-bottom: 5px; font-weight: 800;">Pasarela de Pago Segura</h2>
+                <p style="font-size: 0.9rem; color: var(--text-light); margin-bottom: 20px;">Eco Conexión - Checkout
+                    Seguro</p>
+
+                <div class="gateway-total-to-pay"
+                    style="background: rgba(0,0,0,0.3); border-radius: var(--radius-md); padding: 15px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; border: 1px solid rgba(255,255,255,0.05);">
+                    <span style="color: var(--text-dark);">Total a pagar:</span>
+                    <strong id="gateway-total-amount" style="color: var(--accent-gold); font-size: 1.3rem;">$0
+                        COP</strong>
+                </div>
+
+                <div class="payment-methods-tabs"
+                    style="display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px;">
+                    <button class="pm-tab active" data-method="card"
+                        style="background: none; border: none; color: var(--white); font-family: inherit; font-size: 0.95rem; font-weight: 600; padding: 5px 10px; cursor: pointer; position: relative;">Tarjeta
+                        de Crédito</button>
+                    <button class="pm-tab" data-method="pse"
+                        style="background: none; border: none; color: var(--text-light); font-family: inherit; font-size: 0.95rem; font-weight: 600; padding: 5px 10px; cursor: pointer;">PSE
+                        / Débito Bancario</button>
+                </div>
+
+                <form id="gateway-card-form" class="gateway-form active"
+                    style="display: flex; flex-direction: column; gap: 15px;">
+                    <div class="form-group" style="display: flex; flex-direction: column; gap: 6px;">
+                        <label style="font-size: 0.85rem; color: var(--text-light);">Número de Tarjeta</label>
+                        <input type="text" placeholder="4000 1234 5678 9010" required maxlength="19" id="gw-card-num"
+                            style="padding: 10px 14px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.4); color: white;">
+                    </div>
+                    <div class="form-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                        <div class="form-group" style="display: flex; flex-direction: column; gap: 6px;">
+                            <label style="font-size: 0.85rem; color: var(--text-light);">Vencimiento</label>
+                            <input type="text" placeholder="MM/AA" required maxlength="5" id="gw-card-expiry"
+                                style="padding: 10px 14px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.4); color: white;">
+                        </div>
+                        <div class="form-group" style="display: flex; flex-direction: column; gap: 6px;">
+                            <label style="font-size: 0.85rem; color: var(--text-light);">CVC</label>
+                            <input type="password" placeholder="123" required maxlength="4" id="gw-card-cvc"
+                                style="padding: 10px 14px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.4); color: white;">
+                        </div>
+                    </div>
+                    <div class="form-group" style="display: flex; flex-direction: column; gap: 6px;">
+                        <label style="font-size: 0.85rem; color: var(--text-light);">Nombre del Titular</label>
+                        <input type="text" placeholder="Ej: Juan Pérez" required id="gw-card-name"
+                            style="padding: 10px 14px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.4); color: white;">
+                    </div>
+                    <button type="submit" class="btn btn-gold"
+                        style="width: 100%; margin-top: 10px; padding: 12px; font-weight: 700; border-radius: 8px; border: none; cursor: pointer; background: var(--accent-gold); color: var(--bg-light);"
+                        id="gw-card-submit-btn">Pagar ahora</button>
+                </form>
+
+                <form id="gateway-pse-form" class="gateway-form"
+                    style="display: none; flex-direction: column; gap: 15px;">
+                    <div class="form-group" style="display: flex; flex-direction: column; gap: 6px;">
+                        <label style="font-size: 0.85rem; color: var(--text-light);">Banco</label>
+                        <select required id="gw-pse-bank"
+                            style="padding: 10px 14px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.4); color: white;">
+                            <option value="" disabled selected>Selecciona tu banco</option>
+                            <option value="bancolombia">Bancolombia</option>
+                            <option value="davivienda">Davivienda</option>
+                            <option value="nequi">Nequi</option>
+                            <option value="daviplata">Daviplata</option>
+                            <option value="bogota">Banco de Bogotá</option>
+                            <option value="bbva">BBVA Colombia</option>
+                        </select>
+                    </div>
+                    <div class="form-group" style="display: flex; flex-direction: column; gap: 6px;">
+                        <label style="font-size: 0.85rem; color: var(--text-light);">Tipo de Cliente</label>
+                        <select required id="gw-pse-client"
+                            style="padding: 10px 14px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.4); color: white;">
+                            <option value="persona">Persona Natural</option>
+                            <option value="empresa">Persona Jurídica</option>
+                        </select>
+                    </div>
+                    <div class="form-group" style="display: flex; flex-direction: column; gap: 6px;">
+                        <label style="font-size: 0.85rem; color: var(--text-light);">Nombre del Titular</label>
+                        <input type="text" placeholder="Ej: Juan Pérez" required id="gw-pse-name"
+                            style="padding: 10px 14px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.4); color: white;">
+                    </div>
+                    <button type="submit" class="btn btn-gold"
+                        style="width: 100%; margin-top: 10px; padding: 12px; font-weight: 700; border-radius: 8px; border: none; cursor: pointer; background: var(--accent-gold); color: var(--bg-light);"
+                        id="gw-pse-submit-btn">Ir a mi banco</button>
+                </form>
+
+                <div id="gateway-loading" class="gateway-loader hidden"
+                    style="display: none; flex-direction: column; align-items: center; text-align: center; padding: 30px 10px;">
+                    <div class="spinner"
+                        style="width: 50px; height: 50px; border: 4px solid rgba(255,255,255,0.1); border-top-color: var(--accent-gold); border-radius: 50%; animation: spin 1s infinite linear;">
+                    </div>
+                    <h3 style="color: var(--white); margin-top: 20px; margin-bottom: 10px; font-weight: 600;">Procesando
+                        pago seguro</h3>
+                    <p style="color: var(--text-light); font-size: 0.9rem;">Verificando fondos y reservando tu
+                        experiencia...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-voucher" class="modal">
+        <div class="modal-content" style="max-width: 500px; padding: 0; background: transparent; box-shadow: none;">
+            <span class="close-voucher-modal close-modal"
+                style="color: white; z-index: 10; right: 20px; top: 15px;">&times;</span>
+
+            <div class="voucher-ticket"
+                style="background: linear-gradient(135deg, #12331d 0%, #07130a 100%); border-radius: var(--radius-lg); overflow: hidden; border: 1px solid rgba(255,255,255,0.1); box-shadow: var(--shadow-lg); font-family: var(--font-main);">
+                <div class="ticket-header"
+                    style="background: rgba(102, 187, 106, 0.1); padding: 25px; border-bottom: 2px dashed rgba(255,255,255,0.15); display: flex; justify-content: space-between; align-items: center; position: relative;">
+                    <div
+                        style="position: absolute; bottom: -10px; left: -10px; width: 20px; height: 20px; background: var(--bg-light); border-radius: 50%; z-index: 2;">
+                    </div>
+                    <div
+                        style="position: absolute; bottom: -10px; right: -10px; width: 20px; height: 20px; background: var(--bg-light); border-radius: 50%; z-index: 2;">
+                    </div>
+
+                    <img src="assets/LOGO.webp" alt="Logo" class="ticket-logo" style="height: 60px;">
+                    <div style="text-align: right;">
+                        <h2
+                            style="color: var(--white); font-size: 1.2rem; font-weight: 800; letter-spacing: 1px; margin-bottom: 3px;">
+                            TICKET DE RESERVA</h2>
+                        <span id="ticket-id"
+                            style="color: var(--accent-gold); font-weight: 600; font-size: 0.95rem;">EC-847291</span>
+                    </div>
+                </div>
+                <div class="ticket-body"
+                    style="padding: 25px; color: var(--text-dark); display: flex; flex-direction: column; gap: 15px;">
+                    <div class="ticket-row" style="display: flex; flex-direction: column; gap: 4px;">
+                        <span class="t-label"
+                            style="font-size: 0.75rem; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.5px;">Aventura
+                            / Hotel</span>
+                        <strong id="t-title" class="t-val" style="color: var(--white); font-size: 1.15rem;">Glamping
+                            Altavista</strong>
+                    </div>
+                    <div class="ticket-grid-3"
+                        style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; background: rgba(0,0,0,0.2); border-radius: var(--radius-md); padding: 12px; border: 1px solid rgba(255,255,255,0.03);">
+                        <div style="display: flex; flex-direction: column; gap: 4px;">
+                            <span class="t-label"
+                                style="font-size: 0.70rem; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.5px;">Fecha</span>
+                            <span id="t-date" class="t-val"
+                                style="color: var(--white); font-weight: 600; font-size: 0.85rem;">15/06/2026</span>
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 4px;">
+                            <span class="t-label"
+                                style="font-size: 0.70rem; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.5px;">Personas</span>
+                            <span id="t-guests" class="t-val"
+                                style="color: var(--white); font-weight: 600; font-size: 0.85rem;">2 Adultos</span>
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 4px;">
+                            <span class="t-label"
+                                style="font-size: 0.70rem; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.5px;">Tipo</span>
+                            <span id="t-category" class="t-val"
+                                style="color: var(--white); font-weight: 600; font-size: 0.85rem; text-transform: capitalize;">Alojamiento</span>
+                        </div>
+                    </div>
+
+                    <div class="ticket-row" style="display: flex; justify-content: space-between; gap: 15px;">
+                        <div style="display: flex; flex-direction: column; gap: 4px;">
+                            <span class="t-label"
+                                style="font-size: 0.75rem; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.5px;">Cliente</span>
+                            <span id="t-client" class="t-val" style="color: var(--white); font-weight: 600;">Juan
+                                Pérez</span>
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 4px; text-align: right;">
+                            <span class="t-label"
+                                style="font-size: 0.75rem; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.5px;">Contacto</span>
+                            <span id="t-contact" class="t-val" style="color: var(--white); font-weight: 600;">+57 312
+                                345 6789</span>
+                        </div>
+                    </div>
+                    <div class="ticket-row" id="t-addons-row" style="display: flex; flex-direction: column; gap: 4px;">
+                        <span class="t-label"
+                            style="font-size: 0.75rem; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.5px;">Servicios
+                            Adicionales</span>
+                        <span id="t-addons" class="t-val" style="color: var(--white); font-size: 0.85rem;">Transporte,
+                            Almuerzo Premium</span>
+                    </div>
+
+                    <div style="border-top: 1px dashed rgba(255,255,255,0.15); margin: 5px 0;"></div>
+
+                    <div class="ticket-footer-row"
+                        style="display: flex; justify-content: space-between; align-items: center; gap: 15px;">
+                        <div class="ticket-price-block" style="display: flex; flex-direction: column; gap: 4px;">
+                            <span class="t-label"
+                                style="font-size: 0.75rem; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.5px;">Estado
+                                de Reserva</span>
+                            <strong
+                                style="color: var(--primary-green-light); font-weight: 800; font-size: 0.9rem; text-transform: uppercase;">Pagado
+                                y confirmado</strong>
+                            <strong id="t-price" class="t-total"
+                                style="color: var(--white); font-size: 1.3rem; font-weight: 800; margin-top: 5px;">$320.000
+                                COP</strong>
+                        </div>
+                        <div class="ticket-qr-block"
+                            style="background: white; border-radius: 8px; padding: 8px; display: flex; align-items: center; justify-content: center; width: 90px; height: 90px;">
+                            <img id="t-qr" src="" alt="Código QR de Reserva"
+                                style="width: 100%; height: 100%; object-fit: contain;">
+                        </div>
+                    </div>
+                </div>
+                <div class="ticket-actions"
+                    style="padding: 20px; background: rgba(0,0,0,0.2); border-top: 1px solid rgba(255,255,255,0.05);">
+                    <button class="btn btn-gold" id="btn-print-ticket"
+                        style="width: 100%; padding: 12px; font-weight: 700; border-radius: 8px; border: none; cursor: pointer; background: var(--accent-gold); color: var(--bg-light);">Imprimir
+                        / Guardar PDF</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Lightbox Modal for Photo Gallery -->
+    <div id="modal-gallery-lightbox" class="lightbox-modal">
+        <!-- Glassmorphic Header -->
+        <div class="lightbox-header">
+            <button id="close-gallery-lightbox" class="lightbox-back-btn" aria-label="Cerrar galería">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18" />
+                    <line x1="6" y1="6" x2="18" y2="18" />
+                </svg>
+            </button>
+            <div id="lightbox-header-title" class="lightbox-header-title">Cargando...</div>
+            <div id="lightbox-header-counter" class="lightbox-header-counter">0 / 0</div>
+        </div>
+
+        <button id="lightbox-prev" class="lightbox-nav-btn prev" aria-label="Foto anterior">&#10094;</button>
+        <button id="lightbox-next" class="lightbox-nav-btn next" aria-label="Siguiente foto">&#10095;</button>
+
+        <div class="lightbox-content-wrapper">
+            <div class="lightbox-image-container">
+                <img id="lightbox-img" class="lightbox-image" src="" alt="Lightbox Image">
+            </div>
+            <div id="lightbox-thumbs" class="lightbox-thumbs"></div>
+        </div>
+    </div>
+
+    <!-- Google Translate Widget -->
+    <div id="google_translate_element" style="position: fixed; bottom: 20px; left: 20px; z-index: 9999;"></div>
+    <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateInit"></script>
+    <script>
+        function googleTranslateInit() {
+            new google.translate.TranslateElement({
+                pageLanguage: 'es',
+                includedLanguages: 'en,fr,pt,de,it,ja,zh-CN,ko,ru,ar',
+                layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+                autoDisplay: false
+            }, 'google_translate_element');
+        }
+    </script>
+
+    <div id="google_translate_element" style="display:none;visibility:hidden;width:0;height:0;overflow:hidden;"></div>
+    <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateInit"></script>
+    <script src="assets/js/lang-switcher.js"></script>
+    <script src="assets/js/booking-data.js"></script>
+    <script src="assets/js/script.js"></script>
+</body>
+
+</html>

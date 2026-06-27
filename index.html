@@ -4,30 +4,136 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Eco Conexión | Agencia Operadora Turística</title>
+
+    <!-- SEO Principal -->
+    <title>Eco Conexión Calima | Pasadías y Turismo en el Lago Calima</title>
+    <link rel="icon" type="image/webp" href="assets/LOGO.webp">
     <meta name="description"
-        content="Vive una aventura natural en el Lago Calima. Pasadías y paquetes inmersivos que renuevan cuerpo, mente y espíritu.">
+        content="Disfruta de los mejores pasadías y paquetes turísticos en el Lago Calima. Tours ecológicos, deportes acuáticos, baños de bosque y alojamiento en Calima Darién.">
+    <meta name="keywords"
+        content="lago calima, pasadias lago calima, turismo lago calima, calima el darien, paquetes turisticos calima, deportes acuaticos calima, senderismo calima, hotel calima, ecoturismo valle del cauca, planes calima">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://conexioneco.com/">
+
+    <!-- Open Graph / Compartir en WhatsApp, Facebook, Instagram -->
+    <meta property="og:title" content="Eco Conexión Calima | Pasadías y Ecoturismo en el Lago Calima">
+    <meta property="og:description"
+        content="Tours ecológicos, pasadías todo incluido, baños de bosque y deportes de aventura en Calima el Darién. Vive la magia de la naturaleza con guías locales certificados.">
+    <meta property="og:image" content="https://conexioneco.com/assets/LOGO.webp">
+    <meta property="og:url" content="https://conexioneco.com/">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="es_CO">
+    <meta property="og:site_name" content="Eco Conexión Calima">
+
+    <!-- Twitter Cards (X) -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Eco Conexión Calima | Pasadías y Ecoturismo">
+    <meta name="twitter:description"
+        content="Tours ecológicos, pasadías y bienestar en el Lago Calima, Valle del Cauca.">
+    <meta name="twitter:image" content="https://conexioneco.com/assets/LOGO.webp">
+
+    <!-- Datos Estructurados de Google (Schema.org JSON-LD) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "TravelAgency",
+      "name": "Eco Conexión Calima",
+      "image": "https://conexioneco.com/assets/LOGO.webp",
+      "@id": "https://conexioneco.com/",
+      "url": "https://conexioneco.com/",
+      "telephone": "+573158191414",
+      "priceRange": "$$",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Carrera 7 # 8-20, Segundo Piso, Calima el Darién",
+        "addressLocality": "Calima el Darién",
+        "addressRegion": "Valle del Cauca",
+        "addressCountry": "CO"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 3.8967,
+        "longitude": -76.4881
+      },
+      "openingHoursSpecification": {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday",
+          "Sunday"
+        ],
+        "opens": "08:00",
+        "closes": "20:00"
+      },
+      "sameAs": [
+        "https://www.facebook.com/conexionecocalima",
+        "https://www.instagram.com/conexionecocalima"
+      ]
+    }
+    </script>
+
     <!-- Google Fonts for modern typography -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="assets/css/styles.css?v=3.2">
 </head>
 
-<body>
+<body data-catalog-mode="featured">
     <!-- Header & Nav (Sticky) -->
     <header id="main-header">
         <div class="header-container">
-            <div class="logo">Eco Conexión</div>
+            <div class="logo">
+                <a href="#inicio">
+                    <img src="assets/LOGO.webp" alt="Eco Conexión Calima | Agencia Operadora Turística Lago Calima"
+                        class="header-logo">
+                </a>
+            </div>
             <nav class="main-nav">
                 <button class="mobile-menu-btn" aria-label="Abrir menú">☰</button>
                 <ul class="nav-links">
                     <li><a href="#inicio">Inicio</a></li>
-                    <li><a href="#pasadias">Pasadías</a></li>
-                    <li><a href="#paquetes-2-dias">Paquetes 2 Días</a></li>
-                    <li><a href="#paquete-3-dias">Paquete 3 Días</a></li>
-                    <li><a href="#nosotros">Nosotros</a></li>
+                    <li><a href="#pilares">Nosotros</a></li>
+                    <li><a href="#explorar">Buscar Aventuras</a></li>
+                    <li><a href="#faqs">FAQs</a></li>
+                    <li><a href="#contacto" class="nav-cta">Contacto</a></li>
                 </ul>
+
+                <!-- Selector de idioma premium -->
+                <div class="lang-switcher" id="lang-switcher">
+                    <button class="lang-trigger" id="lang-trigger" aria-label="Cambiar idioma" aria-expanded="false">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"/>
+                            <line x1="2" y1="12" x2="22" y2="12"/>
+                            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+                        </svg>
+                        <span class="lang-current-flag" id="lang-current-flag">🇨🇴</span>
+                        <svg class="lang-chevron" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                            <polyline points="6 9 12 15 18 9"/>
+                        </svg>
+                    </button>
+                    <div class="lang-dropdown" id="lang-dropdown" role="listbox" aria-label="Seleccionar idioma">
+                        <div class="lang-dropdown-inner">
+                            <p class="lang-dropdown-title">Seleccionar idioma</p>
+                            <ul class="lang-list">
+                                <li class="lang-option active" data-lang="es" data-flag="🇨🇴" role="option">🇨🇴 <span>Español</span></li>
+                                <li class="lang-option" data-lang="en" data-flag="🇬🇧" role="option">🇬🇧 <span>English</span></li>
+                                <li class="lang-option" data-lang="fr" data-flag="🇫🇷" role="option">🇫🇷 <span>Français</span></li>
+                                <li class="lang-option" data-lang="pt" data-flag="🇧🇷" role="option">🇧🇷 <span>Português</span></li>
+                                <li class="lang-option" data-lang="de" data-flag="🇩🇪" role="option">🇩🇪 <span>Deutsch</span></li>
+                                <li class="lang-option" data-lang="it" data-flag="🇮🇹" role="option">🇮🇹 <span>Italiano</span></li>
+                                <li class="lang-option" data-lang="zh-CN" data-flag="🇨🇳" role="option">🇨🇳 <span>中文</span></li>
+                                <li class="lang-option" data-lang="ja" data-flag="🇯🇵" role="option">🇯🇵 <span>日本語</span></li>
+                                <li class="lang-option" data-lang="ko" data-flag="🇰🇷" role="option">🇰🇷 <span>한국어</span></li>
+                                <li class="lang-option" data-lang="ar" data-flag="🇸🇦" role="option">🇸🇦 <span>العربية</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
             </nav>
         </div>
     </header>
@@ -40,165 +146,521 @@
         </video>
         <div class="hero-overlay"></div>
         <div class="hero-content">
-            <h1>Conectamos tu Corazón con la Magia de la Naturaleza</h1>
-            <h3>Vive una aventura natural que renueva cuerpo, mente y espíritu.</h3>
-            <a href="#pasadias" class="cta-button">Reserva tu Aventura</a>
+            <h1><span class="hero-brand-tag">Eco Conexión Calima</span>Conectamos tu Corazón con la Magia de la
+                Naturaleza</h1>
+            <h3>Vive una aventura natural que renueva cuerpo, mente y espíritu en el Lago Calima.</h3>
+            <a href="#explorar" class="cta-button">Reserva tu Aventura</a>
+        </div>
+        <div class="scroll-down">
+            <span class="mouse">
+                <span class="wheel"></span>
+            </span>
+            <span class="arrow"></span>
         </div>
     </section>
 
-    <!-- Pasadías Section (CSS Grid) -->
-    <section id="pasadias" class="pasadias-section">
+    <!-- Buscador Principal Estilo Airbnb/Booking -->
+    <div class="search-bar-wrapper">
         <div class="container">
-            <h2 class="section-title">Nuestros Pasadías en el Lago Calima</h2>
-            <div class="grid-4-cols">
-                <!-- Pasadía 1 -->
-                <div class="card">
-                    <div class="card-image">
-                        <img src="https://images.unsplash.com/photo-1545562083-a600704fa486?q=80&w=800&auto=format&fit=crop"
-                            alt="Pasadía Museo y Pontón">
-                    </div>
-                    <div class="card-content">
-                        <h4>Pasadía 1</h4>
-                        <p class="includes">Museo, Almuerzo, Pontón (40 Min), Seguro Médico.</p>
-                        <p class="price">$69.900</p>
-                        <div class="badges">
-                            <span class="badge naturaleza">Naturaleza</span>
-                        </div>
-                    </div>
+            <form id="airbnb-search-bar" class="search-bar-container">
+                <!-- Columna 1: ¿Qué buscas? -->
+                <div class="search-col">
+                    <label for="search-input">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none"
+                            stroke="var(--accent-gold)" stroke-width="2.5" stroke-linecap="round"
+                            stroke-linejoin="round" class="search-icon-svg">
+                            <circle cx="11" cy="11" r="8" />
+                            <path d="m21 21-4.3-4.3" />
+                        </svg>
+                        ¿Qué buscas?
+                    </label>
+                    <input type="text" id="search-input" placeholder="Ej: Glamping, Cascadas, Kayak..."
+                        autocomplete="off">
                 </div>
-                <!-- Pasadía 2 -->
-                <div class="card">
-                    <div class="card-image">
-                        <img src="https://images.unsplash.com/photo-1499696010180-025ef6e1a8f9?q=80&w=800&auto=format&fit=crop"
-                            alt="Pasadía Centro Campestre">
-                    </div>
-                    <div class="card-content">
-                        <h4>Pasadía 2</h4>
-                        <p class="includes">Centro Campestre, Museo, Almuerzo, Pontón (40 Min), Seguro Médico.</p>
-                        <p class="price">$107.900</p>
-                        <div class="badges">
-                            <span class="badge naturaleza">Naturaleza</span>
-                        </div>
-                    </div>
+                <!-- Columna 2: Categoría -->
+                <div class="search-col">
+                    <label for="search-category">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none"
+                            stroke="var(--accent-gold)" stroke-width="2.5" stroke-linecap="round"
+                            stroke-linejoin="round" class="search-icon-svg">
+                            <path
+                                d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z" />
+                            <circle cx="7.5" cy="7.5" r=".5" fill="currentColor" />
+                        </svg>
+                        Tipo
+                    </label>
+                    <select id="search-category">
+                        <option value="todos">Todos los servicios</option>
+                        <option value="alojamiento">Alojamientos</option>
+                        <option value="pasadia">Pasadías Ecoturismo</option>
+                        <option value="deportes">Aventura y Agua</option>
+                        <option value="paquetes">Paquetes Completos</option>
+                    </select>
                 </div>
-                <!-- Pasadía 3 -->
-                <div class="card">
-                    <div class="card-image">
-                        <img src="https://images.unsplash.com/photo-1544605963-3168233a116b?q=80&w=800&auto=format&fit=crop"
-                            alt="Pasadía Paddle y Pontón">
-                    </div>
-                    <div class="card-content">
-                        <h4>Pasadía 3</h4>
-                        <p class="includes">Paddle, Pontón (40 Min), Almuerzo, Centro Campestre, Seguro Médico.</p>
-                        <p class="price">$158.900</p>
-                        <div class="badges">
-                            <span class="badge deportivo">Deportivo</span>
-                        </div>
-                    </div>
+                <!-- Columna 3: Fecha -->
+                <div class="search-col">
+                    <label for="search-date">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none"
+                            stroke="var(--accent-gold)" stroke-width="2.5" stroke-linecap="round"
+                            stroke-linejoin="round" class="search-icon-svg">
+                            <path d="M8 2v4" />
+                            <path d="M16 2v4" />
+                            <rect width="18" height="18" x="3" y="4" rx="2" />
+                            <path d="M3 10h18" />
+                        </svg>
+                        Fecha de Viaje
+                    </label>
+                    <input type="date" id="search-date">
                 </div>
-                <!-- Pasadía 4 -->
-                <div class="card">
-                    <div class="card-image">
-                        <img src="https://images.unsplash.com/photo-1519504547900-20516ff9a9b6?q=80&w=800&auto=format&fit=crop"
-                            alt="Pasadía Kayak y Jetsky">
-                    </div>
-                    <div class="card-content">
-                        <h4>Pasadía 4</h4>
-                        <p class="includes">Kayak, Jetsky (20 Min - 1 Moto x Pareja), Almuerzo, Seguro Médico.</p>
-                        <p class="price">$151.900</p>
-                        <div class="badges">
-                            <span class="badge deportivo">Deportivo</span>
-                        </div>
-                    </div>
+                <!-- Columna 4: Personas -->
+                <div class="search-col">
+                    <label for="search-guests">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none"
+                            stroke="var(--accent-gold)" stroke-width="2.5" stroke-linecap="round"
+                            stroke-linejoin="round" class="search-icon-svg">
+                            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+                            <circle cx="9" cy="7" r="4" />
+                            <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                        </svg>
+                        Personas
+                    </label>
+                    <select id="search-guests">
+                        <option value="1">1 Persona</option>
+                        <option value="2" selected>2 Personas</option>
+                        <option value="4">4 Personas</option>
+                        <option value="6">6 Personas</option>
+                        <option value="10">10+ Personas</option>
+                    </select>
                 </div>
-            </div>
-            <div class="pasadias-note">
-                <p><strong>Nota:</strong> Contamos también con Pasadías Naturaleza (Cascadas el Encanto, Mirador
-                    Tribunas, Caminata Calima) y Pasadías Deportivos (MTB los 2 Rios, MTB El Encanto).</p>
-            </div>
+                <!-- Botón Buscar -->
+                <button type="submit" class="search-submit-btn" aria-label="Buscar aventuras">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                    <span>Buscar</span>
+                </button>
+            </form>
         </div>
-    </section>
+    </div>
 
-    <!-- Paquetes Inmersivos - 2 Días (Flexbox) -->
-    <section id="paquetes-2-dias" class="paquetes-section">
+    <!-- Sección Pilares (¿Por qué elegirnos?) -->
+    <section id="pilares" class="pilares-section">
         <div class="container">
-            <h2 class="section-title">Paquetes Inmersivos - 2 Días</h2>
-            <div class="flex-2-cols">
-                <!-- Tarjeta 1 -->
-                <div class="package-card horizontal">
-                    <div class="pkg-image">
-                        <img src="https://images.unsplash.com/photo-1433086966358-54859d0ed716?q=80&w=800&auto=format&fit=crop"
-                            alt="Paquete Lago y Rio Bravo">
-                    </div>
-                    <div class="pkg-info">
-                        <h3>PAQUETE LAGO Y RIO BRAVO (2 Noches - 2 Días)</h3>
-                        <p class="pkg-subtitle">2 días para descubrir la esencia cultural, natural y sensorial de
-                            Calima. Naturaleza · Aventura suave · cultura local · bienestar.</p>
-                        <div class="pkg-details">
-                            <p><strong>Qué incluye:</strong> Alojamiento 2 Noches en Hotel, Intérprete Local, 1
-                                Almuerzo, 2 Refrigerios, 2 Desayunos, Transporte Local (1 Día), Póliza Médica, Souvenir
-                                (Gorra Exclusiva).</p>
-                            <p><strong>Experiencias:</strong> Pueblo Mágico, Museo Arqueológico, Mirador Guadualito,
-                                Paddle (1h), Muro Represa, Cascada Rio Bravo, Pontón (40 Min), Práctica de Shinrin-Yoku
-                                (Baño de Bosque).</p>
+            <h2 class="section-title">¿Por qué conectar con nosotros?</h2>
+            <div class="grid-3-cols">
+                <div class="pilar-card">
+                    <div class="pilar-card-bg" style="background-image: url('https://images.unsplash.com/photo-1501555088652-021faa106b9b?q=80&w=1200&auto=format&fit=crop');"></div>
+                    <div class="pilar-card-overlay"></div>
+                    <div class="pilar-card-content">
+                        <div class="pilar-icon-container">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
+                                class="pilar-svg">
+                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                            </svg>
                         </div>
-                        <button class="btn-outline" onclick="openModal('modal-lago-rio')">Ver Itinerario</button>
+                        <h3>Aventura Segura</h3>
+                        <p>Contamos con guías e intérpretes locales certificados y póliza de asistencia médica para que
+                            vivas la experiencia con total tranquilidad.</p>
                     </div>
                 </div>
-                <!-- Tarjeta 2 -->
-                <div class="package-card horizontal">
-                    <div class="pkg-image">
-                        <img src="https://images.unsplash.com/photo-1432405972818-f55469ca6741?q=80&w=800&auto=format&fit=crop"
-                            alt="Las 12 Cascadas del Duende">
-                    </div>
-                    <div class="pkg-info">
-                        <h3>LAS 12 CASCADAS DEL DUENDE (2 Noches - 2 Días)</h3>
-                        <p class="pkg-subtitle">Experiencia eco-wellness de aventura. Dos días de conexión profunda con
-                            la naturaleza entre cascadas ocultas.</p>
-                        <div class="pkg-details">
-                            <p><strong>Qué incluye:</strong> Alojamiento 2 Noches, Intérprete Local, 2 Almuerzos, 2
-                                Refrigerios, 2 Desayunos, Transporte Local, Póliza Médica, Souvenir.</p>
-                            <p><strong>Experiencias:</strong> Baño de Bosque, Circuito por 10 Cascadas, 2 Caminatas
-                                Ecológicas Conscientes, Mirador el Castillo, Río Calima, Cascadas el Caimo y el Encanto.
-                            </p>
+                <div class="pilar-card">
+                    <div class="pilar-card-bg" style="background-image: url('https://images.unsplash.com/photo-1473448912268-2022ce9509d8?q=80&w=1200&auto=format&fit=crop');"></div>
+                    <div class="pilar-card-overlay"></div>
+                    <div class="pilar-card-content">
+                        <div class="pilar-icon-container">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
+                                class="pilar-svg">
+                                <path d="m17 14-5-5-5 5h10Z" />
+                                <path d="m18 9-6-6-6 6h12Z" />
+                                <path d="M12 14v8" />
+                            </svg>
                         </div>
-                        <button class="btn-outline" onclick="openModal('modal-cascadas')">Ver Itinerario</button>
+                        <h3>Turismo Sostenible</h3>
+                        <p>Respetamos y protegemos el ecosistema del Lago Calima. Promovemos prácticas que reducen el
+                            impacto ambiental y apoyan la comunidad local.</p>
+                    </div>
+                </div>
+                <div class="pilar-card">
+                    <div class="pilar-card-bg" style="background-image: url('https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=1200&auto=format&fit=crop');"></div>
+                    <div class="pilar-card-overlay"></div>
+                    <div class="pilar-card-content">
+                        <div class="pilar-icon-container">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
+                                class="pilar-svg">
+                                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+                            </svg>
+                        </div>
+                        <h3>Conexión & Bienestar</h3>
+                        <p>Nuestros planes van más allá de la aventura; integramos baños de bosque (Shinrin-Yoku) y
+                            caminatas conscientes para renovar cuerpo, mente y alma.</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Experiencia Premium - 3 Días -->
-    <section id="paquete-3-dias" class="premium-section">
-        <div class="premium-container">
-            <div class="premium-content">
-                <h2>PAQUETE CALIMA (2 Noches - 3 Días)</h2>
-                <h4 class="premium-subtitle">Experiencia slow adventure en Calima Darién. Tres días de inmersión
-                    sensorial entre agua, montaña, bosque y cultura local.</h4>
-                <p><strong>Perfil del viajero:</strong> Viajeros interesados en naturaleza activa con componente
-                    cultural.<br><strong>Nivel de exigencia física:</strong> Bajo a moderado.</p>
-                <ul class="premium-days">
-                    <li><strong>Día 1:</strong> Cultura y paisaje (Conecta con la memoria cultural, historias y
-                        paisajes).</li>
-                    <li><strong>Día 2:</strong> Agua y naturaleza (El cuerpo cambia de ritmo, viento y silencio).</li>
-                    <li><strong>Día 3:</strong> Senderismo y bienestar (Pausa consciente para escuchar y respirar).</li>
-                </ul>
-                <button class="cta-button" onclick="openModal('modal-calima')">Ver Itinerario Completo</button>
+    <!-- Sección Categorías Principales (Servicios) -->
+    <section id="servicios" class="servicios-section">
+        <div class="container">
+            <div class="grid-3-cols">
+                <!-- Tarjeta Pasadías -->
+                <div class="servicio-card">
+                    <img src="https://images.unsplash.com/photo-1433086966358-54859d0ed716?q=80&w=1200&auto=format&fit=crop"
+                        alt="Pasadías de aventura y ecoturismo en el Lago Calima" class="servicio-bg">
+                    <div class="servicio-overlay"></div>
+                    <div class="servicio-brand-badge">
+                        <img src="assets/LOGO.webp" alt="Eco Conexión Calima" class="brand-badge-logo-img">
+                    </div>
+                    <div class="servicio-content">
+                        <h3>PASADÍAS</h3>
+                        <a href="pasadias.html" class="servicio-btn">SABER MÁS →</a>
+                    </div>
+                </div>
+                <!-- Tarjeta Alojamiento -->
+                <div class="servicio-card">
+                    <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=1200&auto=format&fit=crop"
+                        alt="Hoteles y opciones de alojamiento en Calima Darién" class="servicio-bg">
+                    <div class="servicio-overlay"></div>
+                    <div class="servicio-brand-badge">
+                        <img src="assets/LOGO.webp" alt="Eco Conexión Calima" class="brand-badge-logo-img">
+                    </div>
+                    <div class="servicio-content">
+                        <h3>ALOJAMIENTO</h3>
+                        <a href="alojamientos.html" class="servicio-btn">SABER MÁS →</a>
+                    </div>
+                </div>
+                <!-- Tarjeta Paquetes -->
+                <div class="servicio-card">
+                    <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=1200&auto=format&fit=crop"
+                        alt="Paquetes turísticos con todo incluido en el Lago Calima" class="servicio-bg">
+                    <div class="servicio-overlay"></div>
+                    <div class="servicio-brand-badge">
+                        <img src="assets/LOGO.webp" alt="Eco Conexión Calima" class="brand-badge-logo-img">
+                    </div>
+                    <div class="servicio-content">
+                        <h3>PAQUETES</h3>
+                        <a href="paquetes.html" class="servicio-btn">SABER MÁS →</a>
+                    </div>
+                </div>
+                <!-- Tarjeta Aventura -->
+                <div class="servicio-card">
+                    <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1200&auto=format&fit=crop"
+                        alt="Experiencias de aventura y agua en el Lago Calima" class="servicio-bg">
+                    <div class="servicio-overlay"></div>
+                    <div class="servicio-brand-badge">
+                        <img src="assets/LOGO.webp" alt="Eco Conexión Calima" class="brand-badge-logo-img">
+                    </div>
+                    <div class="servicio-content">
+                        <h3>AVENTURA Y AGUA</h3>
+                        <a href="aventura.html" class="servicio-btn">SABER MÁS →</a>
+                    </div>
+                </div>
             </div>
-            <div class="premium-image">
-                <img src="https://images.unsplash.com/photo-1506501139174-099022df5260?q=80&w=1200&auto=format&fit=crop"
-                    alt="Paquete Calima Premium">
+        </div>
+    </section>
+
+    <!-- Sección Catálogo Explorer Estilo Booking/Airbnb -->
+    <section id="explorar" class="explorer-section">
+        <div class="container">
+            <h2 class="section-title">Experiencias destacadas para empezar</h2>
+            <p class="section-subtitle"
+                style="text-align: center; color: var(--text-light); margin-top: -15px; margin-bottom: 40px; font-size: 1.1rem;">
+                La home funciona como vitrina. Aquí ves una selección curada y desde cada categoría puedes explorar el
+                catálogo completo.
+            </p>
+            <div class="home-catalog-links">
+                <a href="alojamientos.html" class="home-catalog-link">Ver todos los alojamientos</a>
+                <a href="pasadias.html" class="home-catalog-link">Ver todos los pasadías</a>
+                <a href="aventura.html" class="home-catalog-link">Ver toda la aventura y agua</a>
+                <a href="paquetes.html" class="home-catalog-link">Ver todos los paquetes</a>
+            </div>
+
+            <!-- Filtros de Categoría Rápidos -->
+            <div class="category-tabs-wrapper">
+                <div class="category-tabs" id="category-tabs-list">
+                    <!-- Inyectado dinámicamente desde JS -->
+                </div>
+            </div>
+
+            <!-- Grilla Dinámica de Tarjetas (Airbnb Style) -->
+            <div class="explorer-grid" id="explorer-grid-container">
+                <!-- Inyectado dinámicamente desde JS -->
+            </div>
+
+            <!-- Mensaje de no resultados -->
+            <div id="no-results-msg" class="no-results hidden">
+                <div class="no-results-icon">🔍</div>
+                <h3>No se encontraron resultados</h3>
+                <p>Intenta cambiar los términos de búsqueda o selecciona otra categoría.</p>
+            </div>
+
+            <div class="home-catalog-footer">
+                <a href="alojamientos.html" class="btn-outline">Explorar alojamientos</a>
+                <a href="pasadias.html" class="btn-outline">Explorar pasadías</a>
+                <a href="aventura.html" class="btn-outline">Explorar aventura y agua</a>
+                <a href="paquetes.html" class="btn-outline">Explorar paquetes</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección Galería de Experiencias -->
+    <section id="galeria" class="gallery-section">
+        <div class="container">
+            <h2 class="section-title">Galería de Experiencias</h2>
+            <div class="gallery-grid">
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?q=80&w=900&auto=format&fit=crop"
+                        alt="Hermoso paisaje natural de las montañas y agua del Lago Calima">
+                    <div class="gallery-overlay">
+                        <span>Lago Calima</span>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?q=80&w=900&auto=format&fit=crop"
+                        alt="Senderismo guiado y baños de bosque Shinrin-Yoku en Calima">
+                    <div class="gallery-overlay">
+                        <span>Senderos Verdes</span>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1433086966358-54859d0ed716?q=80&w=900&auto=format&fit=crop"
+                        alt="Turista disfrutando de una cascada oculta en la naturaleza">
+                    <div class="gallery-overlay">
+                        <span>Cascadas Sagradas</span>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=900&auto=format&fit=crop"
+                        alt="Actividad de paddle board stand up en el Lago Calima">
+                    <div class="gallery-overlay">
+                        <span>Paddle Board</span>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1516483638261-f4dbaf036963?q=80&w=900&auto=format&fit=crop"
+                        alt="Turistas navegando en kayak deportivo sobre el lago">
+                    <div class="gallery-overlay">
+                        <span>Kayak Aventura</span>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1500375592092-40eb2168fd21?q=80&w=900&auto=format&fit=crop"
+                        alt="Bote navegando en el Lago Calima Darién durante el atardecer">
+                    <div class="gallery-overlay">
+                        <span>Atardecer Mágico</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección Testimonios -->
+    <section id="testimonios" class="testimonios-section">
+        <div class="container">
+            <h2 class="section-title">Lo que dicen nuestros viajeros</h2>
+            <div class="slider-controls">
+                <button class="slider-arrow prev-testimonios" aria-label="Reseñas anteriores">◀</button>
+                <div class="scroll-hint">Desliza o toca</div>
+                <button class="slider-arrow next-testimonios" aria-label="Siguientes reseñas">▶</button>
+            </div>
+            <div class="grid-3-cols" id="testimonios-slider">
+                <div class="testimonial-card">
+                    <div class="rating">⭐⭐⭐⭐⭐</div>
+                    <p class="comment">"Una experiencia inolvidable. El Baño de Bosque y la caminata por las cascadas me
+                        renovaron por completo. Los guías explican la historia local con mucha pasión."</p>
+                    <div class="user-info">
+                        <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=150&auto=format&fit=crop"
+                            alt="Sandra Milena" class="avatar">
+                        <div>
+                            <h4 class="name">Sandra Milena Ramos</h4>
+                            <span class="location">Cali, Colombia</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="rating">⭐⭐⭐⭐⭐</div>
+                    <p class="comment">"Hicimos el pasadía 3 con paddle y pontón en familia. Todo estuvo súper
+                        organizado y la seguridad fue excelente. ¡Los almuerzos tradicionales son deliciosos!"</p>
+                    <div class="user-info">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=150&auto=format&fit=crop"
+                            alt="Carlos Andrés" class="avatar">
+                        <div>
+                            <h4 class="name">Carlos Andrés Tobón</h4>
+                            <span class="location">Medellín, Colombia</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="rating">⭐⭐⭐⭐⭐</div>
+                    <p class="comment">"El paquete de 2 días de Lago y Río Bravo superó mis expectativas. Conectar con
+                        el bosque, el sonido de la cascada y el paddle al amanecer fue mágico."</p>
+                    <div class="user-info">
+                        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=150&auto=format&fit=crop"
+                            alt="Maria Fernanda" class="avatar">
+                        <div>
+                            <h4 class="name">María Fernanda Gómez</h4>
+                            <span class="location">Bogotá, Colombia</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección FAQs (Preguntas Frecuentes) -->
+    <section id="faqs" class="faq-section">
+        <div class="container">
+            <h2 class="section-title">Preguntas Frecuentes</h2>
+            <p class="faq-tip">*(Toca cualquier pregunta para ver la respuesta)*</p>
+            <div class="faq-accordion">
+                <div class="faq-item">
+                    <button class="faq-question">¿Cuál es el nivel de exigencia física de las caminatas? <span
+                            class="faq-icon">+</span></button>
+                    <div class="faq-answer">
+                        <p>Nuestros planes varían desde exigencia baja a moderada. Los senderos de las cascadas tienen
+                            algunas pendientes cortas pero se realizan a un ritmo lento y consciente (Slow Adventure),
+                            apto para personas de todas las edades con movilidad básica.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">¿Qué equipamiento o ropa debo llevar? <span
+                            class="faq-icon">+</span></button>
+                    <div class="faq-answer">
+                        <p>Recomendamos llevar ropa cómoda de secado rápido, calzado cerrado con buen agarre (tenis o
+                            botas de senderismo), protector solar, repelente de mosquitos, gorra, impermeable liviano y
+                            una muda de ropa adicional para cambiarte al finalizar las actividades acuáticas.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">¿Qué sucede en caso de lluvia? <span class="faq-icon">+</span></button>
+                    <div class="faq-answer">
+                        <p>Las actividades al aire libre se disfrutan incluso con lluvia leve. En caso de tormentas
+                            eléctricas o alertas climáticas que comprometan la seguridad en el agua o los senderos,
+                            reprogramaremos las actividades o adaptaremos el itinerario priorizando siempre tu
+                            bienestar.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">¿Cómo realizo una reserva y cuáles son los métodos de pago? <span
+                            class="faq-icon">+</span></button>
+                    <div class="faq-answer">
+                        <p>Puedes reservar completando el formulario de contacto de abajo o haciendo clic en el enlace
+                            de WhatsApp. Aceptamos transferencias bancarias (Bancolombia, Nequi, Daviplata), tarjetas de
+                            crédito y pagos PSE.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección Formulario de Reserva/Contacto -->
+    <section id="contacto" class="contact-section">
+        <div class="container">
+            <div class="contact-grid">
+                <div class="contact-info">
+                    <h2>¿Listo para vivir la aventura?</h2>
+                    <p class="contact-lead">Reserva tu pasadía o paquete personalizado. Escríbenos y diseñamos tu
+                        itinerario de conexión natural a la medida.</p>
+                    <div class="contact-details">
+                        <div class="detail-item">
+                            <span class="detail-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                                    <circle cx="12" cy="10" r="3" />
+                                </svg>
+                            </span>
+                            <p><strong>Ubicación:</strong> Carrera 7 # 8-20, Segundo Piso, Calima el Darién, Valle del
+                                Cauca, Colombia</p>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <rect x="5" y="2" width="14" height="20" rx="2" ry="2" />
+                                    <line x1="12" y1="18" x2="12.01" y2="18" />
+                                </svg>
+                            </span>
+                            <p><strong>WhatsApp / Tel:</strong> Comercial: +57 315 819 1414 | Corp: +57 318 350 8602</p>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <path
+                                        d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                                    <polyline points="22,6 12,13 2,6" />
+                                </svg>
+                            </span>
+                            <p><strong>Correo:</strong> reservas@conexioneco.com</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="contact-form-container">
+                    <form id="booking-form" class="contact-form">
+                        <div class="form-group">
+                            <label for="form-name">Nombre Completo</label>
+                            <input type="text" id="form-name" required placeholder="Ej: Juan Pérez">
+                        </div>
+                        <div class="form-group">
+                            <label for="form-email">Correo Electrónico</label>
+                            <input type="email" id="form-email" required placeholder="Ej: juan.perez@gmail.com">
+                        </div>
+                        <div class="form-group">
+                            <label for="form-plan">Plan de Interés</label>
+                            <select id="form-plan" required>
+                                <option value="" disabled selected>Selecciona una opción</option>
+                                <option value="pasadia-1">Pasadía 1: Museo y Pontón</option>
+                                <option value="pasadia-2">Pasadía 2: Centro Campestre</option>
+                                <option value="pasadia-3">Pasadía 3: Paddle y Pontón</option>
+                                <option value="pasadia-4">Pasadía 4: Kayak y Jetsky</option>
+                                <option value="paquete-lago-rio">Paquete Lago y Río Bravo (2 Días)</option>
+                                <option value="paquete-cascadas">Paquete 12 Cascadas del Duende (2 Días)</option>
+                                <option value="paquete-calima">Paquete Calima Premium (3 Días)</option>
+                                <option value="personalizado">Plan Personalizado / Otro</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="form-message">Mensaje / Requerimientos Especiales</label>
+                            <textarea id="form-message" rows="4"
+                                placeholder="Ej: Viajamos mi pareja, mi hijo de 6 años y yo. Queremos ir el próximo sábado. ¿Tienen disponibilidad?"></textarea>
+                        </div>
+                        <button type="submit" class="cta-button" style="width: 100%;">Enviar Solicitud de
+                            Reserva</button>
+                    </form>
+                    <div id="form-feedback" class="form-feedback hidden">
+                        <div class="success-icon">✓</div>
+                        <h3>¡Solicitud Recibida!</h3>
+                        <p>Tu solicitud ha sido enviada con éxito. Nos pondremos en contacto contigo por correo o
+                            WhatsApp en menos de 24 horas.</p>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
     <!-- Información para el Viajero -->
-    <section class="info-section" id="nosotros">
+    <section class="info-section" id="recomendaciones">
         <div class="container">
             <div class="info-grid">
                 <div class="info-box">
-                    <div class="icon">🚫</div>
+                    <div class="icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="icon-svg danger">
+                            <circle cx="12" cy="12" r="10" />
+                            <line x1="15" y1="9" x2="9" y2="15" />
+                        </svg>
+                    </div>
                     <h3>No incluye</h3>
                     <ul>
                         <li>Transporte de llegada al destino</li>
@@ -207,7 +669,14 @@
                     </ul>
                 </div>
                 <div class="info-box">
-                    <div class="icon">✅</div>
+                    <div class="icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="icon-svg success">
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                            <polyline points="22 4 12 14.01 9 11.01" />
+                        </svg>
+                    </div>
                     <h3>Recomendaciones</h3>
                     <ul>
                         <li>Ropa cómoda de secado rápido</li>
@@ -225,22 +694,47 @@
     <footer class="main-footer">
         <div class="container footer-content">
             <div class="footer-brand">
-                <h2>Eco Conexión</h2>
+                <img src="assets/LOGO.webp" alt="Logo de Eco Conexión Calima | Agencia Operadora de Viajes"
+                    class="footer-logo">
                 <p>Conectamos tu corazón con la magia de la naturaleza en el hermoso Lago Calima.</p>
             </div>
             <div class="footer-links">
                 <h3>Enlaces Rápidos</h3>
                 <ul>
                     <li><a href="#inicio">Inicio</a></li>
+                    <li><a href="#pilares">¿Por qué nosotros?</a></li>
                     <li><a href="#pasadias">Pasadías</a></li>
                     <li><a href="#paquetes-2-dias">Paquetes</a></li>
+                    <li><a href="#faqs">FAQs</a></li>
+                    <li><a href="#contacto">Contacto</a></li>
                 </ul>
             </div>
             <div class="footer-contact">
                 <h3>Contacto</h3>
-                <p>📍 Calima el Darién, Valle del Cauca</p>
-                <p>📱 +57 300 123 4567</p>
-                <p>✉️ info@ecoconexion.com</p>
+                <p class="footer-contact-item">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                        <circle cx="12" cy="10" r="3" />
+                    </svg>
+                    <span>Carrera 7 # 8-20, Segundo Piso, Calima el Darién</span>
+                </p>
+                <p class="footer-contact-item">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="5" y="2" width="14" height="20" rx="2" ry="2" />
+                        <line x1="12" y1="18" x2="12.01" y2="18" />
+                    </svg>
+                    <span>Comercial: +57 315 819 1414<br>Corporativa: +57 318 350 8602</span>
+                </p>
+                <p class="footer-contact-item">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                        <polyline points="22,6 12,13 2,6" />
+                    </svg>
+                    <span>reservas@conexioneco.com</span>
+                </p>
             </div>
         </div>
         <div class="footer-bottom">
@@ -258,7 +752,419 @@
         </div>
     </div>
 
-    <script src="script.js"></script>
+    <!-- Modal Pasarela de Pago Simulada -->
+    <div id="modal-gateway" class="modal">
+        <div class="modal-content" style="max-width: 500px; padding: 30px;">
+            <span class="close-gateway-modal close-modal" style="top: 15px; right: 20px;">&times;</span>
+            <div class="gateway-container">
+                <h2 style="color: var(--white); margin-bottom: 5px; font-weight: 800;">Pasarela de Pago Segura</h2>
+                <p style="font-size: 0.9rem; color: var(--text-light); margin-bottom: 20px;">Eco Conexión - Checkout
+                    Seguro</p>
+
+                <div class="gateway-total-to-pay"
+                    style="background: rgba(0,0,0,0.3); border-radius: var(--radius-md); padding: 15px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; border: 1px solid rgba(255,255,255,0.05);">
+                    <span style="color: var(--text-dark);">Total a pagar:</span>
+                    <strong id="gateway-total-amount" style="color: var(--accent-gold); font-size: 1.3rem;">$0
+                        COP</strong>
+                </div>
+
+                <div class="payment-methods-tabs"
+                    style="display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px;">
+                    <button class="pm-tab active" data-method="card"
+                        style="background: none; border: none; color: var(--white); font-family: inherit; font-size: 0.95rem; font-weight: 600; padding: 5px 10px; cursor: pointer; position: relative;">💳
+                        Tarjeta de Crédito</button>
+                    <button class="pm-tab" data-method="pse"
+                        style="background: none; border: none; color: var(--text-light); font-family: inherit; font-size: 0.95rem; font-weight: 600; padding: 5px 10px; cursor: pointer;">🏦
+                        PSE / Débito Bancario</button>
+                </div>
+
+                <!-- Tarjeta Form -->
+                <form id="gateway-card-form" class="gateway-form active"
+                    style="display: flex; flex-direction: column; gap: 15px;">
+                    <div class="form-group" style="display: flex; flex-direction: column; gap: 6px;">
+                        <label style="font-size: 0.85rem; color: var(--text-light);">Número de Tarjeta</label>
+                        <input type="text" placeholder="4000 1234 5678 9010" required maxlength="19" id="gw-card-num"
+                            style="padding: 10px 14px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.4); color: white;">
+                    </div>
+                    <div class="form-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                        <div class="form-group" style="display: flex; flex-direction: column; gap: 6px;">
+                            <label style="font-size: 0.85rem; color: var(--text-light);">Vencimiento</label>
+                            <input type="text" placeholder="MM/AA" required maxlength="5" id="gw-card-expiry"
+                                style="padding: 10px 14px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.4); color: white;">
+                        </div>
+                        <div class="form-group" style="display: flex; flex-direction: column; gap: 6px;">
+                            <label style="font-size: 0.85rem; color: var(--text-light);">CVC</label>
+                            <input type="password" placeholder="123" required maxlength="4" id="gw-card-cvc"
+                                style="padding: 10px 14px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.4); color: white;">
+                        </div>
+                    </div>
+                    <div class="form-group" style="display: flex; flex-direction: column; gap: 6px;">
+                        <label style="font-size: 0.85rem; color: var(--text-light);">Nombre del Titular</label>
+                        <input type="text" placeholder="Ej: Juan Pérez" required id="gw-card-name"
+                            style="padding: 10px 14px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.4); color: white;">
+                    </div>
+                    <button type="submit" class="btn btn-gold"
+                        style="width: 100%; margin-top: 10px; padding: 12px; font-weight: 700; border-radius: 8px; border: none; cursor: pointer; background: var(--accent-gold); color: var(--bg-light);"
+                        id="gw-card-submit-btn">Pagar Ahora</button>
+                </form>
+
+                <!-- PSE Form -->
+                <form id="gateway-pse-form" class="gateway-form"
+                    style="display: none; flex-direction: column; gap: 15px;">
+                    <div class="form-group" style="display: flex; flex-direction: column; gap: 6px;">
+                        <label style="font-size: 0.85rem; color: var(--text-light);">Banco</label>
+                        <select required id="gw-pse-bank"
+                            style="padding: 10px 14px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.4); color: white;">
+                            <option value="" disabled selected>Selecciona tu banco</option>
+                            <option value="bancolombia">Bancolombia</option>
+                            <option value="davivienda">Davivienda</option>
+                            <option value="nequi">Nequi</option>
+                            <option value="daviplata">Daviplata</option>
+                            <option value="bogota">Banco de Bogotá</option>
+                            <option value="bbva">BBVA Colombia</option>
+                        </select>
+                    </div>
+                    <div class="form-group" style="display: flex; flex-direction: column; gap: 6px;">
+                        <label style="font-size: 0.85rem; color: var(--text-light);">Tipo de Cliente</label>
+                        <select required id="gw-pse-client"
+                            style="padding: 10px 14px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.4); color: white;">
+                            <option value="persona">Persona Natural</option>
+                            <option value="empresa">Persona Jurídica</option>
+                        </select>
+                    </div>
+                    <div class="form-group" style="display: flex; flex-direction: column; gap: 6px;">
+                        <label style="font-size: 0.85rem; color: var(--text-light);">Nombre del Titular</label>
+                        <input type="text" placeholder="Ej: Juan Pérez" required id="gw-pse-name"
+                            style="padding: 10px 14px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.4); color: white;">
+                    </div>
+                    <button type="submit" class="btn btn-gold"
+                        style="width: 100%; margin-top: 10px; padding: 12px; font-weight: 700; border-radius: 8px; border: none; cursor: pointer; background: var(--accent-gold); color: var(--bg-light);"
+                        id="gw-pse-submit-btn">Ir a mi Banco</button>
+                </form>
+
+                <!-- Procesando loader -->
+                <div id="gateway-loading" class="gateway-loader hidden"
+                    style="display: none; flex-direction: column; align-items: center; text-align: center; padding: 30px 10px;">
+                    <div class="spinner"
+                        style="width: 50px; height: 50px; border: 4px solid rgba(255,255,255,0.1); border-top-color: var(--accent-gold); border-radius: 50%; animation: spin 1s infinite linear;">
+                    </div>
+                    <h3 style="color: var(--white); margin-top: 20px; margin-bottom: 10px; font-weight: 600;">Procesando
+                        Pago Seguro</h3>
+                    <p style="color: var(--text-light); font-size: 0.9rem;">Verificando fondos y reservando tu
+                        aventura...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Voucher Boleto Digital -->
+    <div id="modal-voucher" class="modal">
+        <div class="modal-content" style="max-width: 500px; padding: 0; background: transparent; box-shadow: none;">
+            <span class="close-voucher-modal close-modal"
+                style="color: white; z-index: 10; right: 20px; top: 15px;">&times;</span>
+
+            <div class="voucher-ticket"
+                style="background: linear-gradient(135deg, #12331d 0%, #07130a 100%); border-radius: var(--radius-lg); overflow: hidden; border: 1px solid rgba(255,255,255,0.1); box-shadow: var(--shadow-lg); font-family: var(--font-main);">
+                <!-- Header -->
+                <div class="ticket-header"
+                    style="background: rgba(102, 187, 106, 0.1); padding: 25px; border-bottom: 2px dashed rgba(255,255,255,0.15); display: flex; justify-content: space-between; align-items: center; position: relative;">
+                    <!-- Recortes circulares tipo boleto -->
+                    <div
+                        style="position: absolute; bottom: -10px; left: -10px; width: 20px; height: 20px; background: var(--bg-light); border-radius: 50%; z-index: 2;">
+                    </div>
+                    <div
+                        style="position: absolute; bottom: -10px; right: -10px; width: 20px; height: 20px; background: var(--bg-light); border-radius: 50%; z-index: 2;">
+                    </div>
+
+                    <img src="assets/LOGO.webp" alt="Logo" class="ticket-logo" style="height: 60px;">
+                    <div style="text-align: right;">
+                        <h2
+                            style="color: var(--white); font-size: 1.2rem; font-weight: 800; letter-spacing: 1px; margin-bottom: 3px;">
+                            TICKET DE RESERVA</h2>
+                        <span id="ticket-id"
+                            style="color: var(--accent-gold); font-weight: 600; font-size: 0.95rem;">EC-847291</span>
+                    </div>
+                </div>
+                <!-- Body -->
+                <div class="ticket-body"
+                    style="padding: 25px; color: var(--text-dark); display: flex; flex-direction: column; gap: 15px;">
+                    <div class="ticket-row" style="display: flex; flex-direction: column; gap: 4px;">
+                        <span class="t-label"
+                            style="font-size: 0.75rem; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.5px;">Aventura
+                            / Hotel</span>
+                        <strong id="t-title" class="t-val" style="color: var(--white); font-size: 1.15rem;">Glamping
+                            Altavista</strong>
+                    </div>
+                    <div class="ticket-grid-3"
+                        style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; background: rgba(0,0,0,0.2); border-radius: var(--radius-md); padding: 12px; border: 1px solid rgba(255,255,255,0.03);">
+                        <div style="display: flex; flex-direction: column; gap: 4px;">
+                            <span class="t-label"
+                                style="font-size: 0.70rem; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.5px;">Fecha</span>
+                            <span id="t-date" class="t-val"
+                                style="color: var(--white); font-weight: 600; font-size: 0.85rem;">15/06/2026</span>
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 4px;">
+                            <span class="t-label"
+                                style="font-size: 0.70rem; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.5px;">Personas</span>
+                            <span id="t-guests" class="t-val"
+                                style="color: var(--white); font-weight: 600; font-size: 0.85rem;">2 Adultos</span>
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 4px;">
+                            <span class="t-label"
+                                style="font-size: 0.70rem; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.5px;">Tipo</span>
+                            <span id="t-category" class="t-val"
+                                style="color: var(--white); font-weight: 600; font-size: 0.85rem; text-transform: capitalize;">Alojamiento</span>
+                        </div>
+                    </div>
+
+                    <div class="ticket-row" style="display: flex; justify-content: space-between; gap: 15px;">
+                        <div style="display: flex; flex-direction: column; gap: 4px;">
+                            <span class="t-label"
+                                style="font-size: 0.75rem; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.5px;">Cliente</span>
+                            <span id="t-client" class="t-val" style="color: var(--white); font-weight: 600;">Juan
+                                Pérez</span>
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 4px; text-align: right;">
+                            <span class="t-label"
+                                style="font-size: 0.75rem; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.5px;">Contacto</span>
+                            <span id="t-contact" class="t-val" style="color: var(--white); font-weight: 600;">+57 312
+                                345 6789</span>
+                        </div>
+                    </div>
+                    <div class="ticket-row" id="t-addons-row" style="display: flex; flex-direction: column; gap: 4px;">
+                        <span class="t-label"
+                            style="font-size: 0.75rem; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.5px;">Servicios
+                            Adicionales</span>
+                        <span id="t-addons" class="t-val" style="color: var(--white); font-size: 0.85rem;">Transporte,
+                            Almuerzo Premium</span>
+                    </div>
+
+                    <div style="border-top: 1px dashed rgba(255,255,255,0.15); margin: 5px 0;"></div>
+
+                    <div class="ticket-footer-row"
+                        style="display: flex; justify-content: space-between; align-items: center; gap: 15px;">
+                        <div class="ticket-price-block" style="display: flex; flex-direction: column; gap: 4px;">
+                            <span class="t-label"
+                                style="font-size: 0.75rem; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.5px;">Estado
+                                de Reserva</span>
+                            <strong
+                                style="color: var(--primary-green-light); font-weight: 800; font-size: 0.9rem; text-transform: uppercase;">✓
+                                PAGADO Y CONFIRMADO</strong>
+                            <strong id="t-price" class="t-total"
+                                style="color: var(--white); font-size: 1.3rem; font-weight: 800; margin-top: 5px;">$320.000
+                                COP</strong>
+                        </div>
+                        <div class="ticket-qr-block"
+                            style="background: white; border-radius: 8px; padding: 8px; display: flex; align-items: center; justify-content: center; width: 90px; height: 90px;">
+                            <img id="t-qr" src="" alt="Código QR de Reserva"
+                                style="width: 100%; height: 100%; object-fit: contain;">
+                        </div>
+                    </div>
+                </div>
+                <!-- Footer buttons -->
+                <div class="ticket-actions"
+                    style="padding: 20px; background: rgba(0,0,0,0.2); border-top: 1px solid rgba(255,255,255,0.05);">
+                    <button class="btn btn-gold" id="btn-print-ticket"
+                        style="width: 100%; padding: 12px; font-weight: 700; border-radius: 8px; border: none; cursor: pointer; background: var(--accent-gold); color: var(--bg-light);">Imprimir
+                        / Guardar PDF</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Botón Flotante de WhatsApp -->
+    <a href="https://wa.link/9h7zbs" class="whatsapp-float" target="_blank" rel="noopener noreferrer"
+        aria-label="Chatear con un Asesor">
+        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" viewBox="0 0 448 512">
+            <path
+                d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z" />
+        </svg>
+    </a>
+
+    <!-- Google Translate (oculto - solo para funcionalidad) -->
+    <div id="google_translate_element" style="display:none;visibility:hidden;width:0;height:0;overflow:hidden;"></div>
+    <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateInit"></script>
+    <script>
+        /* ── Suprimir la barra azul nativa de Google Translate ── */
+        (function suppressGoogleBar() {
+            const style = document.createElement('style');
+            style.textContent = [
+                '.goog-te-banner-frame, .goog-te-menu-frame { display:none !important; }',
+                'body { top: 0 !important; }',
+                '.skiptranslate { display:none !important; }',
+                '#\\:1\\.container { display:none !important; }'
+            ].join('');
+            document.head.appendChild(style);
+        })();
+
+        function googleTranslateInit() {
+            new google.translate.TranslateElement({
+                pageLanguage: 'es',
+                includedLanguages: 'en,fr,pt,de,it,ja,zh-CN,ko,ru,ar',
+                layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+                autoDisplay: false
+            }, 'google_translate_element');
+        }
+
+        /* ── Selector de idioma premium ── */
+        (function initLangSwitcher() {
+            const trigger  = document.getElementById('lang-trigger');
+            const dropdown = document.getElementById('lang-dropdown');
+            const flagSpan = document.getElementById('lang-current-flag');
+            const switcher = document.getElementById('lang-switcher');
+
+            if (!trigger) return;
+
+            /* Abrir / cerrar */
+            trigger.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const open = switcher.classList.toggle('open');
+                trigger.setAttribute('aria-expanded', open);
+            });
+
+            /* Cerrar al hacer clic fuera */
+            document.addEventListener('click', () => {
+                switcher.classList.remove('open');
+                trigger.setAttribute('aria-expanded', 'false');
+            });
+
+            /* Seleccionar idioma */
+            document.querySelectorAll('.lang-option').forEach(opt => {
+                opt.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const lang = opt.dataset.lang;
+                    const flag = opt.dataset.flag;
+
+                    /* Actualizar estado visual */
+                    document.querySelectorAll('.lang-option').forEach(o => o.classList.remove('active'));
+                    opt.classList.add('active');
+                    flagSpan.textContent = flag;
+
+                    /* Cerrar dropdown */
+                    switcher.classList.remove('open');
+                    trigger.setAttribute('aria-expanded', 'false');
+
+                    /* Aplicar traducción via Google Translate cookie */
+                    if (lang === 'es') {
+                        /* Restaurar idioma original */
+                        const iframe = document.querySelector('.goog-te-banner-frame');
+                        if (iframe) {
+                            const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+                            const restore = iframeDoc.querySelector('.goog-te-banner-frame-restore') ||
+                                            iframeDoc.querySelector('[id$="0.restore"]');
+                            if (restore) restore.click();
+                        }
+                        /* Alternativa: borrar cookie y recargar */
+                        document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/';
+                        document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=' + location.hostname;
+                        location.reload();
+                        return;
+                    }
+
+                    /* Setear cookie de Google Translate y recargar */
+                    const cookieVal = '/es/' + lang;
+                    document.cookie = 'googtrans=' + cookieVal + '; path=/';
+                    document.cookie = 'googtrans=' + cookieVal + '; path=/; domain=' + location.hostname;
+                    location.reload();
+                });
+            });
+
+            /* Detectar idioma activo desde la cookie al cargar */
+            const match = document.cookie.match(/googtrans=\/[a-z-]+\/([a-z-CN]+)/);
+            if (match) {
+                const activeLang = match[1];
+                const activeOpt = document.querySelector(`.lang-option[data-lang="${activeLang}"]`);
+                if (activeOpt) {
+                    document.querySelectorAll('.lang-option').forEach(o => o.classList.remove('active'));
+                    activeOpt.classList.add('active');
+                    flagSpan.textContent = activeOpt.dataset.flag;
+                }
+            }
+        })();
+
+        /* ── Auto-detección de idioma por país ──────────────────────── */
+        (async function autoDetectLanguage() {
+            // Solo actúa si el usuario nunca ha tenido un idioma aplicado
+            const alreadyDetected = localStorage.getItem('eco_lang_detected');
+            const hasLangCookie   = document.cookie.includes('googtrans=');
+
+            // Si ya detectamos antes O el usuario tiene cookie activa → no hacemos nada
+            if (alreadyDetected || hasLangCookie) return;
+
+            // Mapa: código de país ISO 3166-1 alpha-2 → código de idioma de Google Translate
+            const countryToLang = {
+                // Inglés
+                US:'en', GB:'en', AU:'en', CA:'en', NZ:'en', IE:'en',
+                ZA:'en', IN:'en', PH:'en', SG:'en', MY:'en', NG:'en',
+                GH:'en', KE:'en', UG:'en', TZ:'en',
+                // Portugués
+                BR:'pt', PT:'pt', AO:'pt', MZ:'pt', CV:'pt',
+                // Francés
+                FR:'fr', BE:'fr', CH:'fr', CI:'fr', SN:'fr',
+                CM:'fr', ML:'fr', BF:'fr', NE:'fr', TG:'fr',
+                // Alemán
+                DE:'de', AT:'de', LI:'de', LU:'de',
+                // Italiano
+                IT:'it', SM:'it', VA:'it',
+                // Chino
+                CN:'zh-CN', TW:'zh-CN', HK:'zh-CN', MO:'zh-CN',
+                // Japonés
+                JP:'ja',
+                // Coreano
+                KR:'ko',
+                // Árabe
+                SA:'ar', AE:'ar', EG:'ar', MA:'ar', DZ:'ar',
+                TN:'ar', JO:'ar', LB:'ar', KW:'ar', QA:'ar',
+                BH:'ar', OM:'ar', IQ:'ar', SY:'ar', SD:'ar',
+                LY:'ar', YE:'ar', MR:'ar',
+                // Ruso
+                RU:'ru', BY:'ru', KZ:'ru',
+            };
+
+            // Países hispanohablantes → sin cambio (ya está en español)
+            const spanishCountries = new Set([
+                'CO','MX','ES','AR','CL','PE','VE','EC','BO','PY',
+                'UY','CR','PA','HN','GT','SV','DO','CU','NI','PR','GQ'
+            ]);
+
+            try {
+                // Timeout de 3 s para no bloquear la carga si la API tarda
+                const controller = new AbortController();
+                const timeout    = setTimeout(() => controller.abort(), 3000);
+
+                const res  = await fetch('https://ipapi.co/json/', { signal: controller.signal });
+                clearTimeout(timeout);
+
+                if (!res.ok) return;
+                const data = await res.json();
+                const country = (data.country_code || '').toUpperCase();
+
+                // Marcar que ya intentamos la detección (aunque sea español)
+                localStorage.setItem('eco_lang_detected', '1');
+
+                // Si es español → no hacer nada
+                if (!country || spanishCountries.has(country)) return;
+
+                const lang = countryToLang[country];
+                if (!lang) return; // País no mapeado → dejamos español por defecto
+
+                // Aplicar traducción: setear cookie y recargar
+                const cookieVal = '/es/' + lang;
+                document.cookie = 'googtrans=' + cookieVal + '; path=/';
+                document.cookie = 'googtrans=' + cookieVal + '; path=/; domain=' + location.hostname;
+                location.reload();
+
+            } catch (err) {
+                // Si falla la API (sin internet, CORS, timeout) → no hacemos nada
+                localStorage.setItem('eco_lang_detected', '1'); // evitar reintentos
+            }
+        })();
+        /* ─────────────────────────────────────────────────────────────── */
+    </script>
+
+    <script src="assets/js/lang-switcher.js"></script>
+    <script src="assets/js/booking-data.js"></script>
+    <script src="assets/js/script.js"></script>
 </body>
 
 </html>
