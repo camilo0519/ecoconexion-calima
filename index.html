@@ -41,7 +41,7 @@
       "image": "https://conexioneco.com/assets/LOGO.webp",
       "@id": "https://conexioneco.com/",
       "url": "https://conexioneco.com/",
-      "telephone": "+573158191414",
+      "telephone": "+573168251303",
       "priceRange": "$$",
       "address": {
         "@type": "PostalAddress",
@@ -973,7 +973,7 @@
     </div>
 
     <!-- Botón Flotante de WhatsApp -->
-    <a href="https://wa.link/9h7zbs" class="whatsapp-float" target="_blank" rel="noopener noreferrer"
+    <a href="https://api.whatsapp.com/send?phone=573168251303" class="whatsapp-float" target="_blank" rel="noopener noreferrer"
         aria-label="Chatear con un Asesor">
         <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" viewBox="0 0 448 512">
             <path
@@ -983,186 +983,8 @@
 
     <!-- Google Translate (oculto - solo para funcionalidad) -->
     <div id="google_translate_element" style="display:none;visibility:hidden;width:0;height:0;overflow:hidden;"></div>
-    <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateInit"></script>
-    <script>
-        /* ── Suprimir la barra azul nativa de Google Translate ── */
-        (function suppressGoogleBar() {
-            const style = document.createElement('style');
-            style.textContent = [
-                '.goog-te-banner-frame, .goog-te-menu-frame { display:none !important; }',
-                'body { top: 0 !important; }',
-                '.skiptranslate { display:none !important; }',
-                '#\\:1\\.container { display:none !important; }'
-            ].join('');
-            document.head.appendChild(style);
-        })();
-
-        function googleTranslateInit() {
-            new google.translate.TranslateElement({
-                pageLanguage: 'es',
-                includedLanguages: 'en,fr,pt,de,it,ja,zh-CN,ko,ru,ar',
-                layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
-                autoDisplay: false
-            }, 'google_translate_element');
-        }
-
-        /* ── Selector de idioma premium ── */
-        (function initLangSwitcher() {
-            const trigger  = document.getElementById('lang-trigger');
-            const dropdown = document.getElementById('lang-dropdown');
-            const flagSpan = document.getElementById('lang-current-flag');
-            const switcher = document.getElementById('lang-switcher');
-
-            if (!trigger) return;
-
-            /* Abrir / cerrar */
-            trigger.addEventListener('click', (e) => {
-                e.stopPropagation();
-                const open = switcher.classList.toggle('open');
-                trigger.setAttribute('aria-expanded', open);
-            });
-
-            /* Cerrar al hacer clic fuera */
-            document.addEventListener('click', () => {
-                switcher.classList.remove('open');
-                trigger.setAttribute('aria-expanded', 'false');
-            });
-
-            /* Seleccionar idioma */
-            document.querySelectorAll('.lang-option').forEach(opt => {
-                opt.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    const lang = opt.dataset.lang;
-                    const flag = opt.dataset.flag;
-
-                    /* Actualizar estado visual */
-                    document.querySelectorAll('.lang-option').forEach(o => o.classList.remove('active'));
-                    opt.classList.add('active');
-                    flagSpan.textContent = flag;
-
-                    /* Cerrar dropdown */
-                    switcher.classList.remove('open');
-                    trigger.setAttribute('aria-expanded', 'false');
-
-                    /* Aplicar traducción via Google Translate cookie */
-                    if (lang === 'es') {
-                        /* Restaurar idioma original */
-                        const iframe = document.querySelector('.goog-te-banner-frame');
-                        if (iframe) {
-                            const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
-                            const restore = iframeDoc.querySelector('.goog-te-banner-frame-restore') ||
-                                            iframeDoc.querySelector('[id$="0.restore"]');
-                            if (restore) restore.click();
-                        }
-                        /* Alternativa: borrar cookie y recargar */
-                        document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/';
-                        document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=' + location.hostname;
-                        location.reload();
-                        return;
-                    }
-
-                    /* Setear cookie de Google Translate y recargar */
-                    const cookieVal = '/es/' + lang;
-                    document.cookie = 'googtrans=' + cookieVal + '; path=/';
-                    document.cookie = 'googtrans=' + cookieVal + '; path=/; domain=' + location.hostname;
-                    location.reload();
-                });
-            });
-
-            /* Detectar idioma activo desde la cookie al cargar */
-            const match = document.cookie.match(/googtrans=\/[a-z-]+\/([a-z-CN]+)/);
-            if (match) {
-                const activeLang = match[1];
-                const activeOpt = document.querySelector(`.lang-option[data-lang="${activeLang}"]`);
-                if (activeOpt) {
-                    document.querySelectorAll('.lang-option').forEach(o => o.classList.remove('active'));
-                    activeOpt.classList.add('active');
-                    flagSpan.textContent = activeOpt.dataset.flag;
-                }
-            }
-        })();
-
-        /* ── Auto-detección de idioma por país ──────────────────────── */
-        (async function autoDetectLanguage() {
-            // Solo actúa si el usuario nunca ha tenido un idioma aplicado
-            const alreadyDetected = localStorage.getItem('eco_lang_detected');
-            const hasLangCookie   = document.cookie.includes('googtrans=');
-
-            // Si ya detectamos antes O el usuario tiene cookie activa → no hacemos nada
-            if (alreadyDetected || hasLangCookie) return;
-
-            // Mapa: código de país ISO 3166-1 alpha-2 → código de idioma de Google Translate
-            const countryToLang = {
-                // Inglés
-                US:'en', GB:'en', AU:'en', CA:'en', NZ:'en', IE:'en',
-                ZA:'en', IN:'en', PH:'en', SG:'en', MY:'en', NG:'en',
-                GH:'en', KE:'en', UG:'en', TZ:'en',
-                // Portugués
-                BR:'pt', PT:'pt', AO:'pt', MZ:'pt', CV:'pt',
-                // Francés
-                FR:'fr', BE:'fr', CH:'fr', CI:'fr', SN:'fr',
-                CM:'fr', ML:'fr', BF:'fr', NE:'fr', TG:'fr',
-                // Alemán
-                DE:'de', AT:'de', LI:'de', LU:'de',
-                // Italiano
-                IT:'it', SM:'it', VA:'it',
-                // Chino
-                CN:'zh-CN', TW:'zh-CN', HK:'zh-CN', MO:'zh-CN',
-                // Japonés
-                JP:'ja',
-                // Coreano
-                KR:'ko',
-                // Árabe
-                SA:'ar', AE:'ar', EG:'ar', MA:'ar', DZ:'ar',
-                TN:'ar', JO:'ar', LB:'ar', KW:'ar', QA:'ar',
-                BH:'ar', OM:'ar', IQ:'ar', SY:'ar', SD:'ar',
-                LY:'ar', YE:'ar', MR:'ar',
-                // Ruso
-                RU:'ru', BY:'ru', KZ:'ru',
-            };
-
-            // Países hispanohablantes → sin cambio (ya está en español)
-            const spanishCountries = new Set([
-                'CO','MX','ES','AR','CL','PE','VE','EC','BO','PY',
-                'UY','CR','PA','HN','GT','SV','DO','CU','NI','PR','GQ'
-            ]);
-
-            try {
-                // Timeout de 3 s para no bloquear la carga si la API tarda
-                const controller = new AbortController();
-                const timeout    = setTimeout(() => controller.abort(), 3000);
-
-                const res  = await fetch('https://ipapi.co/json/', { signal: controller.signal });
-                clearTimeout(timeout);
-
-                if (!res.ok) return;
-                const data = await res.json();
-                const country = (data.country_code || '').toUpperCase();
-
-                // Marcar que ya intentamos la detección (aunque sea español)
-                localStorage.setItem('eco_lang_detected', '1');
-
-                // Si es español → no hacer nada
-                if (!country || spanishCountries.has(country)) return;
-
-                const lang = countryToLang[country];
-                if (!lang) return; // País no mapeado → dejamos español por defecto
-
-                // Aplicar traducción: setear cookie y recargar
-                const cookieVal = '/es/' + lang;
-                document.cookie = 'googtrans=' + cookieVal + '; path=/';
-                document.cookie = 'googtrans=' + cookieVal + '; path=/; domain=' + location.hostname;
-                location.reload();
-
-            } catch (err) {
-                // Si falla la API (sin internet, CORS, timeout) → no hacemos nada
-                localStorage.setItem('eco_lang_detected', '1'); // evitar reintentos
-            }
-        })();
-        /* ─────────────────────────────────────────────────────────────── */
-    </script>
-
     <script src="assets/js/lang-switcher.js"></script>
+    <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateInit"></script>
     <script src="assets/js/booking-data.js"></script>
     <script src="assets/js/script.js"></script>
 </body>

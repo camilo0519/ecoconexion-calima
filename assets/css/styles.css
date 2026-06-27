@@ -1878,11 +1878,11 @@ h4 {
     }
 
     .lang-switcher {
-        order: 2; /* lang-switcher a la derecha del hamburguesa */
+        order: 1; /* lang-switcher a la izquierda */
     }
 
     .mobile-menu-btn {
-        order: 1;
+        order: 2; /* hamburguesa a la derecha */
     }
 
     .nav-links {

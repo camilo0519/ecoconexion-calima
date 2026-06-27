@@ -2072,21 +2072,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     // Renderizar wizard directamente en el contenedor inline
                     renderBookingWizard(product.id, inlineContainer, 'inline');
 
-                    // Avanzar programáticamente al Paso 2 (Adicionales) en ambos dispositivos
-                    const step1Content = document.getElementById('w-step-1');
-                    const step2Content = document.getElementById('w-step-2');
-                    const ind1 = document.getElementById('w-step-ind-1');
-                    const ind2 = document.getElementById('w-step-ind-2');
-
-                    if (step1Content) step1Content.style.display = 'none';
-                    if (step2Content) step2Content.style.display = 'block';
-                    if (ind1) {
-                        ind1.classList.remove('active');
-                        ind1.classList.add('completed');
-                    }
-                    if (ind2) ind2.classList.add('active');
-
-                    // Renderizar los adicionales del Paso 2
+                    // Renderizar los adicionales del Paso 2 (preparados por si avanza)
                     renderAddonsStep();
 
                     setTimeout(() => {
@@ -2291,7 +2277,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         // 1. Confirmación vía WhatsApp
         document.getElementById('w-btn-whatsapp').addEventListener('click', () => {
-            const companyNumber = "573158191414"; // Número del main-header/footer
+            const companyNumber = "573168251303"; // Número del main-header/footer
 
             let message = `¡Hola *Eco Conexión Calima*! Deseo realizar una reserva:\n\n`;
             message += `*Servicio:* ${product.title}\n`;
