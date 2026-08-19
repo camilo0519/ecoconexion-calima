@@ -1,7 +1,7 @@
 /**
  * lang-switcher.js
  * Selector de idioma premium + auto-detección por IP
- * Eco Conexión Calima – compartido en todas las páginas públicas
+ * Conexión Eco Calima – compartido en todas las páginas públicas
  */
 
 /* ── 1. Suprimir barra nativa de Google Translate ── */

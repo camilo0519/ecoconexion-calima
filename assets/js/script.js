@@ -1,5 +1,5 @@
 /**
- * Eco Conexión Calima - Lógica del Buscador, Catálogo Dinámico y Motor de Reservas (Airbnb Style)
+ * Conexión Eco Calima - Lógica del Buscador, Catálogo Dinámico y Motor de Reservas (Airbnb Style)
  */
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -526,35 +526,108 @@ document.addEventListener('DOMContentLoaded', async () => {
         products.forEach(p => {
             const card = document.createElement('div');
             card.className = 'explorer-card';
+            card.style.setProperty('--card-bg-img', `url('${p.image}')`);
+            card.style.cursor = 'pointer';
 
-            const featuresHtml = p.features.slice(0, 3).map(f => `<span class="card-feature-tag">${f}</span>`).join('');
-            const ratingHtml = `⭐ ${p.rating.toFixed(1)} (${p.reviewsCount})`;
+            const categoryLabel = p.category === 'pasadia' ? 'Pasadía' : (p.category === 'paquetes' ? 'Paquete' : (p.category === 'alojamiento' ? 'Alojamiento' : p.category));
+            const locationLabel = p.id.includes('caminata') || p.id.includes('encanto') ? 'Alto Calima, Darién' : 'Lago Calima, Darién';
+
+            // Extraer duración si está especificada en las comodidades (features)
+            let durationHtml = '';
+            if (p.features) {
+                const durationFeature = p.features.find(f => f.toLowerCase().includes('hora'));
+                if (durationFeature) {
+                    const match = durationFeature.match(/(\d+(?:\.\d+)?)\s*Hora/i);
+                    if (match) {
+                        durationHtml = `
+                            <div class="card-duration">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <polyline points="12 6 12 12 16 14"></polyline>
+                                </svg>
+                                <span>${match[1]} h</span>
+                            </div>
+                        `;
+                    }
+                }
+            }
+            if (!durationHtml && p.category === 'pasadia') {
+                durationHtml = `
+                    <div class="card-duration">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <polyline points="12 6 12 12 16 14"></polyline>
+                        </svg>
+                        <span>1 día</span>
+                    </div>
+                `;
+            }
+
+            const reviewsCount = p.reviews_count || p.reviewsCount || 35;
+            const priceLabel = p.priceType === 'night' ? 'noche' : 'persona';
 
             card.innerHTML = `
                 <div class="card-img-wrapper">
                     <img src="${p.image}" alt="${p.title}" loading="lazy">
-                    <span class="card-category-badge">${p.category}</span>
-                    <span class="card-rating-badge">${ratingHtml}</span>
-                </div>
-                <div class="card-details-wrapper">
-                    <h3>${p.title}</h3>
-                    <p class="card-subtitle">${p.subtitle}</p>
-                    <div class="card-features-row">
-                        ${featuresHtml}
-                        ${p.features.length > 3 ? `<span class="card-feature-tag">+${p.features.length - 3} m&aacute;s</span>` : ''}
+                    <div class="card-image-overlays">
+                        ${p.rating >= 4.9 ? `<span class="card-featured-badge">Destacado</span>` : ''}
+                        <button class="wishlist-btn" aria-label="Guardar en favoritos">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#717171" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="heart-icon">
+                                <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>
+                            </svg>
+                        </button>
                     </div>
-                    <div class="card-price-row">
-                        <div class="price">
-                            $${p.price.toLocaleString('es-CO')}
-                            <span>/ ${p.priceType === 'night' ? 'noche' : 'persona'}</span>
+                </div>
+                <div class="card-footer-details">
+                    <div class="card-meta-row">
+                        <span class="card-category-tag ${p.category}">${categoryLabel}</span>
+                        <span class="card-rating-stars">⭐ ${p.rating.toFixed(1)} (${reviewsCount})</span>
+                    </div>
+                    <h3 class="card-title-footer">${p.title}</h3>
+                    <div class="card-location-row">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path>
+                            <circle cx="12" cy="10" r="3"></circle>
+                        </svg>
+                        <span>${locationLabel}</span>
+                    </div>
+                    <p class="card-footer-desc">${p.subtitle}</p>
+                    <div class="card-price-duration-row">
+                        <div class="card-price-info">
+                            <span class="price-prefix">Desde</span>
+                            <div class="price-val-wrapper">
+                                <span class="price-val">$${p.price.toLocaleString('es-CO')}</span>
+                                <span class="price-suffix">/ ${priceLabel}</span>
+                            </div>
                         </div>
-                        <button class="cta-button btn-book-now" data-id="${p.id}" style="padding: 10px 20px; font-size: 0.9rem;">Reservar</button>
+                        ${durationHtml}
                     </div>
                 </div>
             `;
 
-            // Agregar evento de click al botón reservar
-            card.querySelector('.btn-book-now').addEventListener('click', () => {
+            // Detectar si la imagen es vertical para aplicar estilos de afiche
+            const imgElement = card.querySelector('.card-img-wrapper img');
+            if (imgElement) {
+                imgElement.addEventListener('load', () => {
+                    if (imgElement.naturalHeight > imgElement.naturalWidth) {
+                        card.classList.add('has-vertical-image');
+                    }
+                });
+                if (imgElement.complete) {
+                    if (imgElement.naturalHeight > imgElement.naturalWidth) {
+                        card.classList.add('has-vertical-image');
+                    }
+                }
+            }
+
+            // Click listener en toda la tarjeta
+            card.addEventListener('click', (e) => {
+                if (e.target.closest('.wishlist-btn')) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    e.target.closest('.wishlist-btn').classList.toggle('active');
+                    return;
+                }
                 window.location.href = buildBookingPageUrl(p.id);
             });
 
@@ -584,7 +657,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Variables de estado del calendario interactivo
     let currentCalendarMonth = new Date();
-    let renderInteractiveCalendar = () => {};
+    let renderInteractiveCalendar = () => { };
 
     const renderBookingWizard = (productId, mountNode, mode = 'modal') => {
         const product = window.BookingData.getProductById(productId);
@@ -1188,23 +1261,304 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
         }
 
-        // Renderizar descripción detallada del servicio
+        // Renderizar Highlights (USPs) dinámicos en tarjetas según la categoría
+        const highlightsContainer = document.getElementById('booking-page-highlights');
+        if (highlightsContainer) {
+            let highlightsData = [];
+
+            if (product.category === 'pasadia') {
+                highlightsData = [
+                    {
+                        icon: `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>`,
+                        title: "Experiencia Guiada & Todo Incluido",
+                        desc: "Punto de encuentro en Calima Darién con acompañamiento de guías locales certificados y logística garantizada."
+                    },
+                    {
+                        icon: `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>`,
+                        title: "Operador Certificado & Póliza Médica",
+                        desc: "Cumple con las normas RNT de ecoturismo e incluye seguro médico activo contra todo riesgo."
+                    },
+                    {
+                        icon: `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>`,
+                        title: "Cancelación Flexible",
+                        desc: "Cancela o reprograma de forma gratuita hasta 48 horas antes del inicio de tu pasadía."
+                    }
+                ];
+            } else if (product.category === 'deportes') {
+                highlightsData = [
+                    {
+                        icon: `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>`,
+                        title: "Instructores Profesionales & Equipo Completo",
+                        desc: "Equipo náutico de última generación, chalecos salvavidas e instrucción técnica en agua."
+                    },
+                    {
+                        icon: `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>`,
+                        title: "Seguridad Náutica & Póliza de Seguro",
+                        desc: "Lancha de apoyo continuo y cobertura médica completa de asistencia en agua."
+                    },
+                    {
+                        icon: `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/></svg>`,
+                        title: "Garantía Climática de Reprogramación",
+                        desc: "Reprogramación sin costo en caso de condiciones de viento o lluvia no aptas."
+                    }
+                ];
+            } else if (product.category === 'paquetes') {
+                highlightsData = [
+                    {
+                        icon: `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`,
+                        title: "Paquete Multiexperiencia Integrado",
+                        desc: "Combina estancia, tours en pontón por el lago, gastronomía típica y guianza arqueológica."
+                    },
+                    {
+                        icon: `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>`,
+                        title: "Reserva Garantizada & Cobertura Total",
+                        desc: "Atención personalizada 24/7 de nuestro equipo local y seguro de asistencia de viaje."
+                    },
+                    {
+                        icon: `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>`,
+                        title: "Cancelación Flexible",
+                        desc: "Cancela de forma gratuita hasta 48 horas antes del inicio de tu paquete."
+                    }
+                ];
+            } else {
+                highlightsData = [
+                    {
+                        icon: `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>`,
+                        title: "Alojamiento Verificado & Confort Premium",
+                        desc: "Propiedad inspeccionada con excelentes comodidades, privacidad y vistas privilegiadas al Lago Calima."
+                    },
+                    {
+                        icon: `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>`,
+                        title: "Operador Certificado",
+                        desc: "Cumple con las normas nacionales de turismo y protocolos de bioseguridad y protección al viajero."
+                    },
+                    {
+                        icon: `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>`,
+                        title: "Cancelación Flexible",
+                        desc: "Cancela de forma gratuita hasta 48 horas antes del check-in."
+                    }
+                ];
+            }
+
+            highlightsContainer.innerHTML = highlightsData.map(h => `
+                <div class="highlight-item-card" style="display: flex; gap: 16px; align-items: flex-start; padding: 14px 18px; background: rgba(255,255,255,0.025); border-radius: 12px; transition: transform 0.2s ease;">
+                    <div class="highlight-icon-wrapper" style="width: 42px; height: 42px; border-radius: 10px; background: rgba(251,191,36,0.12); display: flex; align-items: center; justify-content: center; color: var(--accent-gold); flex-shrink: 0; box-shadow: 0 4px 12px rgba(251,191,36,0.15);">
+                        ${h.icon}
+                    </div>
+                    <div class="highlight-text" style="flex: 1;">
+                        <strong style="display: block; color: var(--white); font-size: 0.98rem; font-weight: 700; margin-bottom: 3px;">${h.title}</strong>
+                        <p style="color: rgba(255,255,255,0.7); font-size: 0.86rem; margin: 0; line-height: 1.45;">${h.desc}</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Renderizar descripción detallada del servicio con diseño enriquecido
         const descriptionContainer = document.getElementById('booking-page-description');
         if (descriptionContainer) {
-            const defaultDescription = "Disfruta de una estadía espectacular en el Lago Calima. Este lugar ha sido especialmente diseñado para conectarte con la biodiversidad local, ofreciendo vistas inigualables y la comodidad necesaria para un descanso reparador o una aventura deportiva inolvidable.\n\nUbicado en una zona privilegiada de Calima Darién, tendrás acceso directo a actividades ecoturísticas, deportes acuáticos, zonas de avistamiento y senderos naturales guiados por operadores calificados de la región.";
-            const descriptionText = product.description || defaultDescription;
-            descriptionContainer.innerHTML = descriptionText
-                .split(/\n+/)
-                .map(para => {
-                    const cleanPara = para.trim();
-                    if (!cleanPara) return '';
-                    return `<p class="description-body" style="color: var(--text-dark); font-size: 0.95rem; margin-bottom: 15px; line-height: 1.6;">${cleanPara}</p>`;
-                })
-                .join('');
-            
-            const lastPara = descriptionContainer.querySelector('p:last-child');
-            if (lastPara) {
-                lastPara.style.marginBottom = '0';
+            const defaultDescription = "Disfruta de una estadía espectacular en el Lago Calima. Este lugar ha sido especialmente diseñado para conectarte con la biodiversidad local, ofreciendo vistas inigualables y la comodidad necesaria para un descanso reparador o una aventura deportiva inolvidable.\n\nUbicado en una zona privileged de Calima Darién, tendrás acceso directo a actividades ecoturísticas, deportes acuáticos, zonas de avistamiento y senderos naturales guiados por operadores calificados de la región.";
+            let descriptionText = product.description || defaultDescription;
+
+            const normalizeText = (str) => (str || '').toLowerCase().replace(/\s+/g, ' ').replace(/[.,;:!\-]/g, '').trim();
+            const cleanSubNorm = normalizeText(product.subtitle);
+
+            // Parser Inteligente de Secciones (Ficha Técnica, Incluye, No incluye, Recomendaciones)
+            const parseRichDescription = (rawText) => {
+                const lines = rawText.split('\n').map(l => l.trim()).filter(l => l.length > 0);
+
+                let timeGeneral = '';
+                let perfil = '';
+                let exigencia = '';
+                let incluyeList = [];
+                let noIncluyeList = [];
+                let recomendacionesList = [];
+                let generalParagraphs = [];
+
+                let currentSec = 'general';
+
+                lines.forEach(line => {
+                    const lower = line.toLowerCase();
+                    const lineNorm = normalizeText(line);
+
+                    // Evitar repetir la frase del subtítulo si viene al inicio del cuerpo
+                    if (cleanSubNorm && (lineNorm === cleanSubNorm || lineNorm.startsWith(cleanSubNorm) || cleanSubNorm.startsWith(lineNorm))) {
+                        return;
+                    }
+
+                    if (lower.includes('horario general') || lower.startsWith('⏱')) {
+                        timeGeneral = line.replace(/^[⏱\s]*horario\s*general[:\-]?\s*/i, '').trim();
+                        return;
+                    }
+                    if (lower.includes('perfil del viajero') || lower.startsWith('👤')) {
+                        perfil = line.replace(/^[👤\s]*perfil\s*del\s*viajero[:\-]?\s*/i, '').trim();
+                        return;
+                    }
+                    if (lower.includes('exigencia física') || lower.startsWith('💪')) {
+                        exigencia = line.replace(/^[💪\s]*exigencia\s*física[:\-]?\s*/i, '').trim();
+                        return;
+                    }
+
+                    // Detectar encabezados de sección (verificar 'no incluye' antes de 'incluye')
+                    if (lower.includes('no incluye') || lower.includes('no-incluye') || lower.startsWith('❌') || lower.includes('exclusiones')) {
+                        currentSec = 'no_incluye';
+                        return;
+                    }
+                    if (lower.includes('incluye') || lower.startsWith('✅') || lower.includes('experiencias incluidas') || lower.includes('servicios incluidos')) {
+                        currentSec = 'incluye';
+                        return;
+                    }
+                    if (lower.includes('recomendacion') || lower.startsWith('💡')) {
+                        currentSec = 'recomendaciones';
+                        return;
+                    }
+
+                    if (currentSec === 'incluye') {
+                        const clean = line.replace(/^[\-•✅✓\s]+/, '').trim();
+                        if (clean) incluyeList.push(clean);
+                    } else if (currentSec === 'no_incluye') {
+                        const clean = line.replace(/^[\-•❌✕\s]+/, '').trim();
+                        if (clean) noIncluyeList.push(clean);
+                    } else if (currentSec === 'recomendaciones') {
+                        const clean = line.replace(/^[\-•💡\s]+/, '').trim();
+                        if (clean) recomendacionesList.push(clean);
+                    } else {
+                        generalParagraphs.push(line);
+                    }
+                });
+
+                let html = '';
+
+                // 1. Párrafos generales introductorios
+                if (generalParagraphs.length > 0) {
+                    html += `<div style="margin-bottom: 22px;">${generalParagraphs.map(p => `<p class="description-body" style="font-size: 0.96rem; color: rgba(255,255,255,0.85); line-height: 1.6; margin-bottom: 12px;">${p}</p>`).join('')}</div>`;
+                }
+
+                // 2. Ficha Técnica Rápida en Layout Equilibrado (Sin bordes de tarjeta)
+                if (timeGeneral || perfil || exigencia) {
+                    html += `<div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 25px;">`;
+
+                    // Fila 1: Horario + Exigencia Física (Lado a Lado)
+                    if (timeGeneral || exigencia) {
+                        html += `
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px;">
+                            ${timeGeneral ? `
+                                <div style="background: rgba(255,255,255,0.03); border-radius: 14px; padding: 14px 18px; display: flex; align-items: center; gap: 14px; box-shadow: 0 4px 14px rgba(0,0,0,0.15);">
+                                    <div style="width: 44px; height: 44px; border-radius: 12px; background: rgba(251,191,36,0.12); display: flex; align-items: center; justify-content: center; color: #fbbf24; flex-shrink: 0; box-shadow: 0 4px 12px rgba(251,191,36,0.15);">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                                    </div>
+                                    <div>
+                                        <span style="display: block; font-size: 0.72rem; color: #fbbf24; text-transform: uppercase; font-weight: 800; letter-spacing: 0.8px; margin-bottom: 2px;">Horario General</span>
+                                        <strong style="font-size: 0.95rem; color: #fff; font-weight: 700;">${timeGeneral}</strong>
+                                    </div>
+                                </div>` : ''}
+                            ${exigencia ? `
+                                <div style="background: rgba(255,255,255,0.03); border-radius: 14px; padding: 14px 18px; display: flex; align-items: center; gap: 14px; box-shadow: 0 4px 14px rgba(0,0,0,0.15);">
+                                    <div style="width: 44px; height: 44px; border-radius: 12px; background: rgba(251,191,36,0.12); display: flex; align-items: center; justify-content: center; color: #fbbf24; flex-shrink: 0; box-shadow: 0 4px 12px rgba(251,191,36,0.15);">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                                    </div>
+                                    <div>
+                                        <span style="display: block; font-size: 0.72rem; color: #fbbf24; text-transform: uppercase; font-weight: 800; letter-spacing: 0.8px; margin-bottom: 2px;">Exigencia Física</span>
+                                        <strong style="font-size: 0.95rem; color: #fff; font-weight: 700;">${exigencia}</strong>
+                                    </div>
+                                </div>` : ''}
+                        </div>`;
+                    }
+
+                    // Fila 2: Perfil del Viajero (Tarjeta Ancha)
+                    if (perfil) {
+                        html += `
+                        <div style="background: rgba(255,255,255,0.03); border-radius: 14px; padding: 14px 18px; display: flex; align-items: center; gap: 14px; box-shadow: 0 4px 14px rgba(0,0,0,0.15);">
+                            <div style="width: 44px; height: 44px; border-radius: 12px; background: rgba(52,211,153,0.12); display: flex; align-items: center; justify-content: center; color: #34d399; flex-shrink: 0; box-shadow: 0 4px 12px rgba(52,211,153,0.15);">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                            </div>
+                            <div style="flex: 1;">
+                                <span style="display: block; font-size: 0.72rem; color: #34d399; text-transform: uppercase; font-weight: 800; letter-spacing: 0.8px; margin-bottom: 2px;">Perfil del Viajero</span>
+                                <span style="font-size: 0.93rem; color: #e4e4e7; font-weight: 600; line-height: 1.4;">${perfil}</span>
+                            </div>
+                        </div>`;
+                    }
+
+                    html += `</div>`;
+                }
+
+                // 3. Experiencias & Qué Incluye (Tono de fondo uniforme)
+                if (incluyeList.length > 0) {
+                    html += `
+                    <div style="margin-bottom: 25px;">
+                        <h4 style="font-size: 1rem; font-weight: 700; color: #fff; margin-bottom: 12px; display: flex; align-items: center; gap: 10px;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                            Experiencias & Servicios Incluidos
+                        </h4>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 10px;">
+                            ${incluyeList.map(item => `
+                                <div style="background: rgba(255,255,255,0.025); border-radius: 10px; padding: 12px 16px; display: flex; align-items: center; gap: 12px;">
+                                    <span style="width: 22px; height: 22px; border-radius: 50%; background: rgba(16,185,129,0.2); color: #10b981; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                                    </span>
+                                    <span style="font-size: 0.88rem; color: #e4e4e7; font-weight: 500;">${item}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>`;
+                }
+
+                // 4. No Incluye (Tono de fondo uniforme)
+                if (noIncluyeList.length > 0) {
+                    html += `
+                    <div style="margin-bottom: 25px;">
+                        <h4 style="font-size: 1rem; font-weight: 700; color: rgba(255,255,255,0.8); margin-bottom: 12px; display: flex; align-items: center; gap: 10px;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+                            No Incluye
+                        </h4>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 10px;">
+                            ${noIncluyeList.map(item => `
+                                <div style="background: rgba(255,255,255,0.025); border-radius: 10px; padding: 12px 16px; display: flex; align-items: center; gap: 12px;">
+                                    <span style="width: 22px; height: 22px; border-radius: 50%; background: rgba(239,68,68,0.18); color: #ef4444; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                                    </span>
+                                    <span style="font-size: 0.86rem; color: rgba(255,255,255,0.7);">${item}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>`;
+                }
+
+                // 5. Recomendaciones para el Viajero (Tono de fondo uniforme)
+                if (recomendacionesList.length > 0) {
+                    html += `
+                    <div style="background: rgba(255,255,255,0.025); border-radius: 14px; padding: 16px 20px; margin-bottom: 20px;">
+                        <h4 style="font-size: 0.95rem; font-weight: 800; color: #fbbf24; margin: 0 0 12px 0; display: flex; align-items: center; gap: 8px;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>
+                            Recomendaciones para el Viajero
+                        </h4>
+                        <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+                            ${recomendacionesList.map(rec => `
+                                <span style="background: rgba(255,255,255,0.04); border-radius: 20px; padding: 6px 14px; font-size: 0.84rem; color: #fef08a; font-weight: 500; display: inline-flex; align-items: center; gap: 8px;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+                                    ${rec}
+                                </span>
+                            `).join('')}
+                        </div>
+                    </div>`;
+                }
+
+                return html;
+            };
+
+            const formattedHtml = parseRichDescription(descriptionText);
+
+            if (formattedHtml) {
+                descriptionContainer.innerHTML = formattedHtml;
+                if (descriptionContainer.parentElement) {
+                    descriptionContainer.parentElement.style.display = 'block';
+                }
+            } else {
+                descriptionContainer.innerHTML = '';
+                if (descriptionContainer.parentElement) {
+                    descriptionContainer.parentElement.style.borderBottom = 'none';
+                    descriptionContainer.parentElement.style.paddingBottom = '0';
+                    descriptionContainer.parentElement.style.marginBottom = '15px';
+                }
             }
         }
 
@@ -1218,23 +1572,29 @@ document.addEventListener('DOMContentLoaded', async () => {
             node.textContent = guestText;
         });
 
-
         // Precios sticky card
         if (cardPriceAmount) cardPriceAmount.textContent = `$${product.price.toLocaleString('es-CO')} COP`;
         if (cardOldPrice) {
             cardOldPrice.textContent = `$${Math.round(product.price * 1.25).toLocaleString('es-CO')} COP`;
             cardOldPrice.style.display = 'inline';
         }
-        const unitText = product.priceType === 'night' ? '/ noche' : '/ persona';
+        const unitText = (product.priceType === 'night' && product.category === 'alojamiento') ? '/ noche' : '/ persona';
         if (cardPriceUnit) cardPriceUnit.textContent = unitText;
         if (cardRatingText) cardRatingText.textContent = `${product.rating.toFixed(1)} (${product.reviewsCount})`;
+
+        const calcLabel = document.getElementById('breakdown-calc-label');
+        const calcVal = document.getElementById('breakdown-calc-val');
+        const unitWord = (product.priceType === 'night' && product.category === 'alojamiento') ? 'noche' : 'persona';
+        if (calcLabel) calcLabel.textContent = `$${product.price.toLocaleString('es-CO')} COP x 1 ${unitWord}`;
+        if (calcVal) calcVal.textContent = `$${product.price.toLocaleString('es-CO')} COP`;
 
         // Mobile bar
         if (mBarPriceAmount) mBarPriceAmount.textContent = `$${product.price.toLocaleString('es-CO')} COP`;
         if (mBarPriceUnit) mBarPriceUnit.textContent = unitText;
+        if (mBarPriceUnit) mBarPriceUnit.textContent = unitText;
         if (mBarRatingVal) mBarRatingVal.textContent = product.rating.toFixed(1);
 
-        document.title = `Reservar ${product.title} | Eco Conexión Calima`;
+        document.title = `Reservar ${product.title} | Conexión Eco Calima`;
 
         // Renderizar fotos del grid
         const photoGrid = document.getElementById('booking-photo-grid');
@@ -1246,7 +1606,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (images.length === 0) {
                 images.push(product.image);
             }
-            
+
             // Si el servicio es personalizado, no agregamos imágenes de relleno del sistema
             const isCustom = product.id && product.id.startsWith('custom-');
             if (!isCustom) {
@@ -1577,6 +1937,642 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
         }
 
+        // Renderizar Itinerario Journey Stories
+        const itineraryContainer = document.getElementById('journey-stories-container');
+        if (itineraryContainer) {
+            const getTagIconSvg = (tagName) => {
+                const clean = (tagName || '').toLowerCase();
+                if (clean.includes('transporte') || clean.includes('traslado')) {
+                    return `<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.5 2.8C2.1 10.9 2 11.4 2 12v4c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/></svg>`;
+                }
+                if (clean.includes('shinrin') || clean.includes('bosque') || clean.includes('naturaleza') || clean.includes('conexión')) {
+                    return `<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.4 19 2c1 2 2 4.1 2 7 0 6-4.5 11-10 11z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg>`;
+                }
+                if (clean.includes('cascada') || clean.includes('río') || clean.includes('baño') || clean.includes('agua')) {
+                    return `<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>`;
+                }
+                if (clean.includes('gastronomía') || clean.includes('sabor') || clean.includes('almuerzo') || clean.includes('refrigerio') || clean.includes('desayuno')) {
+                    return `<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/></svg>`;
+                }
+                if (clean.includes('cultura') || clean.includes('historia') || clean.includes('museo')) {
+                    return `<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="21" x2="21" y2="21"/><line x1="3" y1="10" x2="21" y2="10"/><polyline points="12 3 2 10 22 10 12 3"/><line x1="6" y1="10" x2="6" y2="21"/><line x1="10" y1="10" x2="10" y2="21"/><line x1="14" y1="10" x2="14" y2="21"/><line x1="18" y1="10" x2="18" y2="21"/></svg>`;
+                }
+                if (clean.includes('lago') || clean.includes('pontón') || clean.includes('navegación')) {
+                    return `<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 21c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/><path d="M19.38 20A11.6 11.6 0 0 0 21 14l-9-4-9 4c0 2.9.94 5.34 2.81 6"/><path d="M12 10V4.5"/><path d="M12 4.5 15.5 7"/></svg>`;
+                }
+                if (clean.includes('inicio') || clean.includes('recepción') || clean.includes('welcome') || clean.includes('briefing')) {
+                    return `<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`;
+                }
+                if (clean.includes('yoga') || clean.includes('meditación') || clean.includes('bienestar')) {
+                    return `<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>`;
+                }
+                if (clean.includes('atardecer') || clean.includes('sol') || clean.includes('vista')) {
+                    return `<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="M2 12h2"/><path d="M20 12h2"/></svg>`;
+                }
+                return `<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`;
+            };
+
+            const PRODUCT_ITINERARIES = {
+                'pasadia-paraiso-lago-calima': [
+                    {
+                        step: "01",
+                        time: "09:00 AM • 3.0 Horas",
+                        tag: "Registro & Arqueología",
+                        title: "01 • Registro y Recorrido Museo Arqueológico Calima y Jardines",
+                        description: "Llegada y registro oficial entre 9:00 AM y 12:00 M. Recorrido guiado por las salas prehispánicas del Museo Arqueológico Calima para conocer el legado histórico de la región y paseo por los jardines botánicos.",
+                        highlights: ["Registro Oficial", "Entrada Museo Arqueológico", "Jardines Botánicos"],
+                        image: "https://conexioneco.com/wp-content/uploads/2026/06/PONTON.webp",
+                        subImage: "https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=600&auto=format&fit=crop",
+                        badge: "Cultura & Arqueología"
+                    },
+                    {
+                        step: "02",
+                        time: "12:00 PM • 2.0 Horas",
+                        tag: "Gastronomía",
+                        title: "02 • Almuerzo Típico Tradicional de la Región",
+                        description: "Almuerzo típico tradicional servido entre 12:00 PM y 2:00 PM, preparado con ingredientes autóctonos en un ambiente fresco y acogedor.",
+                        highlights: ["Almuerzo Típico Incluido", "Bebida Natural", "Espacio de Descanso"],
+                        image: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1200&auto=format&fit=crop",
+                        subImage: "https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=600&auto=format&fit=crop",
+                        badge: "Gastronomía Típica"
+                    },
+                    {
+                        step: "03",
+                        time: "02:00 PM • 2.0 Horas",
+                        tag: "Navegación Náutica",
+                        title: "03 • Recorrido Panorámico en Pontón por el Lago Calima (40 Min)",
+                        description: "Navegación en embarcación pontón (40 min de recorrido náutico) por las aguas cristalinas del Lago Calima entre 2:00 PM y 4:00 PM con brisa constante y paisajes espectaculares.",
+                        highlights: ["Pontón Náutico 40 Min", "Vistas Panorámicas", "Póliza Médica Incluida"],
+                        image: "https://conexioneco.com/wp-content/uploads/2026/06/PONTON.webp",
+                        subImage: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=600&auto=format&fit=crop",
+                        badge: "Aventura Náutica"
+                    },
+                    {
+                        step: "04",
+                        time: "04:00 PM • 1.0 Hora",
+                        tag: "Cierre & Fotografía",
+                        title: "04 • Tiempo Libre para Recuerdos & Cierre de Expedición",
+                        description: "Tiempo libre para fotografías panorámicas, descanso final y despedida del pasadía finalizando a las 5:00 PM.",
+                        highlights: ["Fotos Panorámicas", "Cierre de Jornada", "Memorias Inolvidables"],
+                        image: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=1200&auto=format&fit=crop",
+                        subImage: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=600&auto=format&fit=crop",
+                        badge: "Final del Pasadía"
+                    }
+                ],
+                'caminata-ecologica-cascadas-el-encanto': [
+                    {
+                        step: "01",
+                        time: "08:00 AM • 45 Min",
+                        tag: "Transporte Local",
+                        title: "01 • Encuentro y Traslado al Bosque de Niebla",
+                        description: "Nos encontramos en el punto de partida en Calima Darién. Abordamos nuestro transporte especializado rumbo al Cañón de La Cristalina rodeados de vistas panorámicas y aire puro de la cordillera.",
+                        highlights: ["Transporte I/V Incluido", "Check-in & Kit Ecoturista", "Charla de Seguridad"],
+                        image: product.image || "https://conexioneco.com/wp-content/uploads/2026/07/19-JULIO.webp",
+                        subImage: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=600&auto=format&fit=crop",
+                        badge: "Salida Guiada"
+                    },
+                    {
+                        step: "02",
+                        time: "09:00 AM • 2.0 Horas",
+                        tag: "Shinrin-Yoku",
+                        title: "02 • Senderismo Ecológico de 7 Km & Baño de Bosque",
+                        description: "Caminata guiada por el sendero nativo. Realizamos paradas de Shinrin-yoku (Baño de Bosque) con guías locales expertos para abrir los 5 sentidos y despejar la mente con los aromas de la vegetación.",
+                        highlights: ["Sendero Nativo 7 Km", "Baño de Bosque Consciente", "Guía Local Experto"],
+                        image: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?q=80&w=1200&auto=format&fit=crop",
+                        subImage: "https://images.unsplash.com/photo-1511497584788-876761011935?q=80&w=600&auto=format&fit=crop",
+                        badge: "Inmersión Natural"
+                    },
+                    {
+                        step: "03",
+                        time: "11:30 AM • 1.5 Horas",
+                        tag: "Cascadas",
+                        title: "03 • Descubrimiento Cascadas El Caimo y El Encanto",
+                        description: "Llegada al epicentro de la travesía: dos impresionantes cascadas naturales. Podrás tomar fotografías increíbles en el Mirador El Castillo y recibir la brisa revitalizante del salto de agua.",
+                        highlights: ["2 Cascadas Místicas", "Mirador El Castillo", "Fotografía Panorámica"],
+                        image: "https://images.unsplash.com/photo-1433086966358-54859d0ed716?q=80&w=1200&auto=format&fit=crop",
+                        subImage: "https://images.unsplash.com/photo-1546182990-dffeafbe841d?q=80&w=600&auto=format&fit=crop",
+                        badge: "Punto Estrella"
+                    },
+                    {
+                        step: "04",
+                        time: "01:00 PM • 1.5 Horas",
+                        tag: "Baño & Gastronomía",
+                        title: "04 • Baño en el Río Calima & Refrigerio Tradicional",
+                        description: "Disfrutaremos de un rejuvenecedor baño en el agua pura del Río Calima. Posteriormente degustaremos un delicioso refrigerio artesanal de la región (bebida caliente reconfortante + galleta campestre).",
+                        highlights: ["Baño de Río Cristalino", "Refrigerio Tradicional", "Póliza Médica Incluida"],
+                        image: "https://images.unsplash.com/photo-1500375592092-40eb2168fd21?q=80&w=1200&auto=format&fit=crop",
+                        subImage: "https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=600&auto=format&fit=crop",
+                        badge: "Gastronomía & Relax"
+                    },
+                    {
+                        step: "05",
+                        time: "03:00 PM • 30 Min",
+                        tag: "Cierre & Memorias",
+                        title: "05 • Retorno Victorioso & Despedida",
+                        description: "Abordamos el transporte de regreso a Calima Darién. Te llevarás la cámara llena de recuerdos únicos, la mente relajada y la satisfacción de conquistar un lugar extraordinario.",
+                        highlights: ["Retorno Seguro", "Comunidad Ecoturista", "Memorias Inolvidables"],
+                        image: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=1200&auto=format&fit=crop",
+                        subImage: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=600&auto=format&fit=crop",
+                        badge: "Final de Expedición"
+                    }
+                ],
+                'paquete-lago-rio-bravo': [
+                    {
+                        step: "01",
+                        time: "Día 1 • 09:00 AM",
+                        tag: "Cultura & Historia",
+                        title: "01 • Bienvenida & Visita al Museo Arqueológico Yotoco",
+                        description: "Inicia la travesía explorando las raíces precolombinas de la cultura Calima. Disfruta de una guianza arqueológica interactiva antes del check-in.",
+                        highlights: ["Entrada a Museo", "Guía Arqueológico", "Welcome Drink"],
+                        image: "https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=1200&auto=format&fit=crop",
+                        subImage: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=600&auto=format&fit=crop",
+                        badge: "Patrimonio Cultural"
+                    },
+                    {
+                        step: "02",
+                        time: "Día 1 • 04:30 PM",
+                        tag: "Navegación en Lago",
+                        title: "02 • Tour en Pontón al Atardecer por el Lago",
+                        description: "Zarpamos en una moderna embarcación pontón para recorrer las aguas del Lago Calima mientras el sol se oculta en el horizonte entre brisas perfectas.",
+                        highlights: ["Navegación en Pontón", "Atardecer Panorámico", "Coctel de Bienvenida"],
+                        image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1200&auto=format&fit=crop",
+                        subImage: "https://images.unsplash.com/photo-1500375592092-40eb2168fd21?q=80&w=600&auto=format&fit=crop",
+                        badge: "Experiencia Náutica"
+                    },
+                    {
+                        step: "03",
+                        time: "Día 2 • 08:30 AM",
+                        tag: "Expedición Río Bravo",
+                        title: "03 • Senderismo a la Cascada de Río Bravo & Almuerzo Típico",
+                        description: "Expedición guiada por el cañón de Río Bravo, baño en pocetas naturales de cristalina belleza y un almuerzo campestre tradicional de la región.",
+                        highlights: ["Senderismo de Montaña", "Baño en Pocetas", "Almuerzo Típico Incluido"],
+                        image: "https://images.unsplash.com/photo-1433086966358-54859d0ed716?q=80&w=1200&auto=format&fit=crop",
+                        subImage: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?q=80&w=600&auto=format&fit=crop",
+                        badge: "Aventura Salvaje"
+                    }
+                ],
+                'pasadia-duende': [
+                    {
+                        step: "01",
+                        time: "08:30 AM • 1.0 Hr",
+                        tag: "Recepción & Inducción",
+                        title: "01 • Recepción e Inducción a la Reserva Cascadas del Duende",
+                        description: "Bienvenida en el parador ecotragos con infusión silvestre, entrega de bastones de apoyo y briefing del circuito.",
+                        highlights: ["Infusión de Bienvenida", "Equipo de Caminata", "Seguro de Asistencia"],
+                        image: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?q=80&w=1200&auto=format&fit=crop",
+                        subImage: "https://images.unsplash.com/photo-1511497584788-876761011935?q=80&w=600&auto=format&fit=crop",
+                        badge: "Bienvenida"
+                    },
+                    {
+                        step: "02",
+                        time: "10:00 AM • 2.5 Hrs",
+                        tag: "Circuito Cascadas",
+                        title: "02 • Circuito de Cascadas & Hidromasaje Natural",
+                        description: "Caminata entre la selva subandina descendiendo a las místicas cascadas del Duende para una sesión de hidromasaje bajo los chorros de agua de montaña.",
+                        highlights: ["3 Caídas de Agua", "Hidromasaje Natural", "Avistamiento de Aves"],
+                        image: "https://images.unsplash.com/photo-1433086966358-54859d0ed716?q=80&w=1200&auto=format&fit=crop",
+                        subImage: "https://images.unsplash.com/photo-1546182990-dffeafbe841d?q=80&w=600&auto=format&fit=crop",
+                        badge: "Agua Vital"
+                    },
+                    {
+                        step: "03",
+                        time: "01:30 PM • 1.5 Hrs",
+                        tag: "Gastronomía Campestre",
+                        title: "03 • Almuerzo Campestre & Descanso en Zona de Hamacas",
+                        description: "Delicioso almuerzo preparado en leña por cocineras locales y espacio libre para relajarte meciéndote en hamacas rodeadas de colibríes.",
+                        highlights: ["Almuerzo en Leña", "Zona de Hamacas", "Café de Origen"],
+                        image: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1200&auto=format&fit=crop",
+                        subImage: "https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=600&auto=format&fit=crop",
+                        badge: "Sostenible & Típico"
+                    }
+                ],
+                'pasadia-shinrin-yoku': [
+                    {
+                        step: "01",
+                        time: "09:00 AM • 1.5 Hrs",
+                        tag: "Conexión Natural",
+                        title: "01 • Caminata Consciente & Desconexión Digital",
+                        description: "Iniciamos el paseo en silencio pausado a través del bosque húmedo, invitando a la mente a soltar el estrés urbano y conectar con los aromas de la tierra.",
+                        highlights: ["Terapeuta Guía", "Desconexión Digital", "Respiración Guiada"],
+                        image: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?q=80&w=1200&auto=format&fit=crop",
+                        subImage: "https://images.unsplash.com/photo-1511497584788-876761011935?q=80&w=600&auto=format&fit=crop",
+                        badge: "Bienestar"
+                    },
+                    {
+                        step: "02",
+                        time: "11:00 AM • 1.5 Hrs",
+                        tag: "Yoga & Meditación",
+                        title: "02 • Sesión de Yoga al Aire Libre & Infusión Herbal",
+                        description: "Estiramiento suave sobre praderas nativas, meditación con cuencos o sonidos del agua e infusión artesanal reconfortante.",
+                        highlights: ["Yoga al Aire Libre", "Infusión Herbal", "Paz Interior"],
+                        image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=1200&auto=format&fit=crop",
+                        subImage: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=600&auto=format&fit=crop",
+                        badge: "Sanación"
+                    }
+                ],
+                'deporte-windsurf-kitesurf': [
+                    {
+                        step: "01",
+                        time: "09:30 AM • 45 Min",
+                        tag: "Instrucción Técnica",
+                        title: "01 • Clínica de Viento, Ventana de Vuelo & Seguridad",
+                        description: "Aprende los principios del viento en Calima, armaje del equipo, uso de arnés y protocolos de seguridad con instructor certificado internacional.",
+                        highlights: ["Instructor Certificado", "Equipo Completo", "Armado Teórico"],
+                        image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1200&auto=format&fit=crop",
+                        subImage: "https://images.unsplash.com/photo-1500375592092-40eb2168fd21?q=80&w=600&auto=format&fit=crop",
+                        badge: "Inducción Pro"
+                    },
+                    {
+                        step: "02",
+                        time: "10:30 AM • 1.5 Hrs",
+                        tag: "Práctica en Agua",
+                        title: "02 • Inmersión en Agua con Lancha de Apoyo & Radio-Casco",
+                        description: "Despliegue al agua con lancha de soporte continuo. Recibes correcciones en tiempo real vía intercom de casco mientras sientes la propulsión del viento.",
+                        highlights: ["Lancha de Apoyo 100%", "Radio-Casco Intercom", "Práctica Adaptativa"],
+                        image: "https://images.unsplash.com/photo-1500375592092-40eb2168fd21?q=80&w=1200&auto=format&fit=crop",
+                        subImage: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=600&auto=format&fit=crop",
+                        badge: "Adrenalina Máxima"
+                    }
+                ],
+                'glamping-altavista': [
+                    {
+                        step: "01",
+                        time: "03:00 PM",
+                        tag: "Recepción VIP",
+                        title: "01 • Check-in VIP & Cóctel de Bienvenida",
+                        description: "Recibimiento exclusivo con bebida de la casa. Ingresa a tu domo de lujo con ambientación térmica y vista despejada de 180° al Lago Calima.",
+                        highlights: ["Welcome Drink", "Vista Panorámica 180°", "Privacidad Total"],
+                        image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=1200&auto=format&fit=crop",
+                        subImage: "https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=600&auto=format&fit=crop",
+                        badge: "Exclusivo"
+                    },
+                    {
+                        step: "02",
+                        time: "06:00 PM",
+                        tag: "Puesta de Sol",
+                        title: "02 • Relax en Malla Catamarán & Fogata bajo las Estrellas",
+                        description: "Recuéstate en la malla suspendida para observar la puesta de sol sobre las montañas. Al caer la noche encendemos la fogata con nubes de azúcar.",
+                        highlights: ["Malla Catamarán VIP", "Fogata Guiada", "Cielo Estrellado"],
+                        image: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1200&auto=format&fit=crop",
+                        subImage: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=600&auto=format&fit=crop",
+                        badge: "Romántico & Mágico"
+                    },
+                    {
+                        step: "03",
+                        time: "08:00 AM",
+                        tag: "Desayuno & Jacuzzi",
+                        title: "03 • Jacuzzi Privado de Agua Caliente & Desayuno Artesanal",
+                        description: "Despierta con la brisa matutina, disfruta del Jacuzzi privado con hidromasaje y recibe tu desayuno fresco servido en tu terraza privada.",
+                        highlights: ["Jacuzzi Climatizado", "Desayuno a la Carta", "Check-out Relaxed"],
+                        image: "https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=1200&auto=format&fit=crop",
+                        subImage: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=600&auto=format&fit=crop",
+                        badge: "Lujo Natural"
+                    }
+                ]
+            };
+
+            let steps = product.itinerary || PRODUCT_ITINERARIES[product.id];
+
+            if (!steps || !Array.isArray(steps) || steps.length === 0) {
+                const features = product.features || ["Experiencia Guiada", "Logística Incluida", "Naturaleza & Aventura"];
+                const categoryImages = {
+                    alojamiento: [
+                        "https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=1200&auto=format&fit=crop",
+                        "https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=1200&auto=format&fit=crop",
+                        "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1200&auto=format&fit=crop"
+                    ],
+                    pasadia: [
+                        "https://images.unsplash.com/photo-1433086966358-54859d0ed716?q=80&w=1200&auto=format&fit=crop",
+                        "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?q=80&w=1200&auto=format&fit=crop",
+                        "https://images.unsplash.com/photo-1500375592092-40eb2168fd21?q=80&w=1200&auto=format&fit=crop"
+                    ],
+                    deportes: [
+                        "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1200&auto=format&fit=crop",
+                        "https://images.unsplash.com/photo-1500375592092-40eb2168fd21?q=80&w=1200&auto=format&fit=crop",
+                        "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=1200&auto=format&fit=crop"
+                    ],
+                    paquetes: [
+                        "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=1200&auto=format&fit=crop",
+                        "https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=1200&auto=format&fit=crop",
+                        "https://images.unsplash.com/photo-1433086966358-54859d0ed716?q=80&w=1200&auto=format&fit=crop"
+                    ]
+                };
+
+                const imgs = categoryImages[product.category] || categoryImages.pasadia;
+
+                steps = features.slice(0, 4).map((feat, idx) => {
+                    const stepNum = String(idx + 1).padStart(2, '0');
+                    return {
+                        step: stepNum,
+                        time: `Etapa ${idx + 1} • Tiempo Flexible`,
+                        tag: "Actividad Destacada",
+                        title: `Paso ${stepNum}: ${feat}`,
+                        description: `Disfruta plenamente de ${feat.toLowerCase()} con la máxima seguridad, comodidad y acompañamiento que solo Conexión Eco Calima ofrece.`,
+                        highlights: [feat, "Atención Personalizada", "Seguridad Garantizada"],
+                        image: product.gallery && product.gallery[idx] ? product.gallery[idx] : (imgs[idx % imgs.length] || product.image),
+                        subImage: product.gallery && product.gallery[(idx + 1) % product.gallery.length] ? product.gallery[(idx + 1) % product.gallery.length] : (imgs[(idx + 1) % imgs.length] || product.image),
+                        badge: "Experiencia Incluida"
+                    };
+                });
+            }
+
+            const carouselEl = document.getElementById('stories-carousel');
+            const timelineGridEl = document.getElementById('booking-page-timeline-grid');
+
+            if (carouselEl) {
+                // Renderizar Pestañas Interactivas Superiores de Pasos
+                const stepTabsEl = document.getElementById('journey-step-tabs');
+                if (stepTabsEl) {
+                    stepTabsEl.innerHTML = steps.map((s, i) => {
+                        const shortTitle = s.title.replace(/^(Paso\s*\d+:|\d+\s*•)\s*/i, '').split(' ')[0] || s.tag || `Actividad ${i + 1}`;
+                        return `
+                            <button class="journey-tab-btn ${i === 0 ? 'active' : ''}" data-tab="${i}">
+                                <span class="tab-num">${s.step}</span>
+                                <span class="tab-name">${shortTitle}</span>
+                            </button>
+                        `;
+                    }).join('');
+                }
+
+                // Renderizar Barra de Progreso por Segmentos
+                const progressBarEl = document.getElementById('stories-progress-bar');
+                if (progressBarEl) {
+                    progressBarEl.innerHTML = steps.map((_, i) => `
+                        <div class="story-progress-segment ${i === 0 ? 'active' : ''}" data-segment="${i}">
+                            <div class="fill"></div>
+                        </div>
+                    `).join('');
+                }
+
+                // Renderizar Puntos (Dots)
+                const dotsEl = document.getElementById('stories-dots');
+                if (dotsEl) {
+                    dotsEl.innerHTML = steps.map((_, i) => `
+                        <button class="story-dot ${i === 0 ? 'active' : ''}" data-dot="${i}" aria-label="Actividad ${i + 1}"></button>
+                    `).join('');
+                }
+
+                // Renderizar Diapositivas Holográficas tipo Cyber-Lux Expedition HUD
+                carouselEl.innerHTML = steps.map((s, idx) => {
+                    const highlightsHtml = (s.highlights || []).map(h => `
+                        <span class="story-highlight">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                            ${h}
+                        </span>
+                    `).join('');
+
+                    const titleText = s.title.replace(/^(Paso\s*\d+:|\d+\s*•)\s*/i, '');
+                    const isLast = idx === steps.length - 1;
+
+                    return `
+                        <div class="story-slide ${idx === 0 ? 'active' : ''}" data-slide="${idx}">
+                            <img class="story-slide-bg" src="${s.image}" alt="${s.title}" loading="lazy">
+                            <div class="story-hud-top">
+                                <span class="story-badge-pulse">
+                                    <span class="pulse-dot"></span>
+                                    EXPEDICIÓN • ${s.step}/${String(steps.length).padStart(2, '0')}
+                                </span>
+                            </div>
+                            <div class="story-content-card">
+                                <div class="story-meta">
+                                    <span class="story-time">${s.time}</span>
+                                    <span class="story-tag">${getTagIconSvg(s.tag)} ${s.tag}</span>
+                                </div>
+                                <h4 class="story-title"><span class="story-num-chip">${s.step}</span> ${titleText}</h4>
+                                <p class="story-description">${s.description}</p>
+                                <div class="story-highlights">
+                                    ${highlightsHtml}
+                                </div>
+                                <div class="story-card-footer">
+                                    <button class="story-next-step-btn" data-next="${isLast ? 0 : idx + 1}">
+                                        ${isLast ? 'Reiniciar Recorrido' : 'Siguiente Actividad'}
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+
+                // Control del Carousel y Autoplay
+                let currentSlide = 0;
+                const totalSlides = steps.length;
+                let autoPlayTimer = null;
+                let isPlaying = false;
+
+                const goToSlide = (index) => {
+                    if (index < 0) index = 0;
+                    if (index >= totalSlides) index = totalSlides - 1;
+                    currentSlide = index;
+
+                    const slides = carouselEl.querySelectorAll('.story-slide');
+                    slides.forEach((slide, i) => {
+                        slide.classList.toggle('active', i === currentSlide);
+                    });
+
+                    const targetSlide = slides[currentSlide];
+                    if (targetSlide) {
+                        carouselEl.scrollTo({
+                            left: targetSlide.offsetLeft - (carouselEl.offsetWidth - targetSlide.offsetWidth) / 2,
+                            behavior: 'smooth'
+                        });
+                    }
+
+                    const segments = progressBarEl ? progressBarEl.querySelectorAll('.story-progress-segment') : [];
+                    segments.forEach((seg, i) => seg.classList.toggle('active', i <= currentSlide));
+
+                    const dots = dotsEl ? dotsEl.querySelectorAll('.story-dot') : [];
+                    dots.forEach((dot, i) => dot.classList.toggle('active', i === currentSlide));
+
+                    const tabs = stepTabsEl ? stepTabsEl.querySelectorAll('.journey-tab-btn') : [];
+                    tabs.forEach((tab, i) => tab.classList.toggle('active', i === currentSlide));
+                };
+
+                // Click en Pestañas Superiores
+                if (stepTabsEl) {
+                    stepTabsEl.onclick = (e) => {
+                        const btn = e.target.closest('.journey-tab-btn');
+                        if (btn) {
+                            const idx = parseInt(btn.dataset.tab);
+                            if (!isNaN(idx)) goToSlide(idx);
+                        }
+                    };
+                }
+
+                // Click en Siguiente Paso dentro de la Card
+                carouselEl.onclick = (e) => {
+                    const btn = e.target.closest('.story-next-step-btn');
+                    if (btn) {
+                        const idx = parseInt(btn.dataset.next);
+                        if (!isNaN(idx)) goToSlide(idx);
+                    }
+                };
+
+                const prevBtn = document.getElementById('story-prev');
+                const nextBtn = document.getElementById('story-next');
+                if (prevBtn) prevBtn.onclick = () => goToSlide(currentSlide - 1);
+                if (nextBtn) nextBtn.onclick = () => goToSlide(currentSlide + 1);
+
+                if (dotsEl) {
+                    dotsEl.onclick = (e) => {
+                        const btn = e.target.closest('.story-dot');
+                        if (btn) {
+                            const idx = parseInt(btn.dataset.dot);
+                            if (!isNaN(idx)) goToSlide(idx);
+                        }
+                    };
+                }
+
+                const autoPlayBtn = document.getElementById('journey-autoplay-btn');
+                if (autoPlayBtn) {
+                    autoPlayBtn.onclick = () => {
+                        if (isPlaying) {
+                            clearInterval(autoPlayTimer);
+                            isPlaying = false;
+                            autoPlayBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg> Ver recorrido completo`;
+                        } else {
+                            isPlaying = true;
+                            autoPlayBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg> Pausar recorrido`;
+                            autoPlayTimer = setInterval(() => {
+                                if (currentSlide < totalSlides - 1) {
+                                    goToSlide(currentSlide + 1);
+                                } else {
+                                    goToSlide(0);
+                                }
+                            }, 4500);
+                        }
+                    };
+                }
+
+                carouselEl.onscroll = () => {
+                    const slideWidth = carouselEl.offsetWidth;
+                    if (slideWidth > 0) {
+                        const newIndex = Math.round(carouselEl.scrollLeft / slideWidth);
+                        if (newIndex !== currentSlide && newIndex >= 0 && newIndex < totalSlides) {
+                            currentSlide = newIndex;
+                            const segments = progressBarEl ? progressBarEl.querySelectorAll('.story-progress-segment') : [];
+                            segments.forEach((seg, i) => seg.classList.toggle('active', i <= currentSlide));
+                            const dots = dotsEl ? dotsEl.querySelectorAll('.story-dot') : [];
+                            dots.forEach((dot, i) => dot.classList.toggle('active', i === currentSlide));
+                            const tabs = stepTabsEl ? stepTabsEl.querySelectorAll('.journey-tab-btn') : [];
+                            tabs.forEach((tab, i) => tab.classList.toggle('active', i === currentSlide));
+                        }
+                    }
+                };
+            }
+
+            if (timelineGridEl) {
+                timelineGridEl.innerHTML = steps.map((s) => {
+                    const highlightsHtml = (s.highlights || []).map(h => `
+                        <span class="step-highlight-tag">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                            ${h}
+                        </span>
+                    `).join('');
+
+                    return `
+                        <div class="timeline-step-item" data-step="${s.step}">
+                            <div class="step-node-marker">${s.step}</div>
+                            <div class="step-info-col">
+                                <div class="step-meta-row">
+                                    <span class="step-time-pill">${s.time}</span>
+                                    <span class="step-tag-pill">${getTagIconSvg(s.tag)} ${s.tag}</span>
+                                </div>
+                                <h4 class="step-heading">${s.title}</h4>
+                                <p class="step-description">${s.description}</p>
+                                <div class="step-highlights-list">
+                                    ${highlightsHtml}
+                                </div>
+                            </div>
+                            <div class="step-media-col" onclick="if(window.openGalleryAtImage) window.openGalleryAtImage('${s.image}')">
+                                <img class="step-media-img" src="${s.image}" alt="${s.title}" loading="lazy">
+                                <div class="step-media-overlay">
+                                    <span class="step-media-badge">${s.badge || 'Ver en detalle'}</span>
+                                    <div class="step-media-zoom-icon">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+
+                // Renderizar nodos de progreso
+                const progressNodesContainer = document.getElementById('timeline-progress-nodes');
+                if (progressNodesContainer) {
+                    progressNodesContainer.innerHTML = steps.map((_, i) =>
+                        `<div class="progress-node" data-node-index="${i}"></div>`
+                    ).join('');
+                }
+
+                // Scroll Reveal con Intersection Observer + stagger
+                const stepItems = timelineGridEl.querySelectorAll('.timeline-step-item');
+                const progressNodes = progressNodesContainer ? progressNodesContainer.querySelectorAll('.progress-node') : [];
+                const totalSteps = stepItems.length;
+
+                if (stepItems.length > 0 && ('IntersectionObserver' in window)) {
+                    const observer = new IntersectionObserver((entries) => {
+                        let maxVisible = -1;
+                        entries.forEach(entry => {
+                            const idx = parseInt(entry.target.dataset.step) - 1;
+                            if (entry.isIntersecting) {
+                                entry.target.classList.add('revealed');
+                                // Stagger highlights
+                                const tags = entry.target.querySelectorAll('.step-highlight-tag');
+                                tags.forEach((tag, i) => {
+                                    tag.style.transitionDelay = `${i * 80}ms`;
+                                });
+                                if (idx > maxVisible) maxVisible = idx;
+                            }
+                        });
+                        // Actualizar progreso
+                        if (maxVisible >= 0 && progressNodes.length > 0) {
+                            const fillPct = ((maxVisible + 1) / totalSteps) * 100;
+                            const fillEl = document.getElementById('timeline-progress-fill');
+                            if (fillEl) fillEl.style.height = `${fillPct}%`;
+                            progressNodes.forEach((node, i) => {
+                                node.classList.toggle('done', i <= maxVisible);
+                                node.classList.toggle('active', i === maxVisible);
+                            });
+                        }
+                    }, {
+                        threshold: 0.25,
+                        rootMargin: '0px 0px -60px 0px'
+                    });
+
+                    stepItems.forEach(item => observer.observe(item));
+
+                    // Revelar primer paso inmediatamente si está visible
+                    setTimeout(() => {
+                        const first = stepItems[0];
+                        if (first && first.getBoundingClientRect().top < window.innerHeight) {
+                            first.classList.add('revealed');
+                            if (progressNodes[0]) {
+                                progressNodes[0].classList.add('active');
+                                progressNodes[0].classList.add('done');
+                            }
+                            const fillEl = document.getElementById('timeline-progress-fill');
+                            if (fillEl) fillEl.style.height = `${(1 / totalSteps) * 100}%`;
+                        }
+                    }, 300);
+                } else {
+                    // Fallback: mostrar todos si no hay IO
+                    stepItems.forEach(item => item.classList.add('revealed'));
+                }
+            }
+
+            window.openGalleryAtImage = (imgSrc) => {
+                const lightbox = document.getElementById('modal-gallery-lightbox');
+                const lightboxImg = document.getElementById('lightbox-img');
+                if (lightbox && lightboxImg) {
+                    lightboxImg.src = imgSrc;
+                    lightbox.style.display = 'flex';
+                    setTimeout(() => lightbox.classList.add('show'), 10);
+                    document.body.style.overflow = 'hidden';
+                }
+            };
+        }
+
         // Renderizar comodidades
         const amenitiesGrid = document.getElementById('booking-page-amenities-grid');
         if (amenitiesGrid) {
@@ -1621,7 +2617,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const renderReviews = async () => {
             if (!reviewsCommentsContainer) return;
             const reviews = await window.BookingData.getReviews(product.id, 'approved');
-            
+
             if (reviews.length === 0) {
                 reviewsCommentsContainer.innerHTML = `
                     <div class="reviews-empty-state" style="grid-column: 1 / -1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 40px 20px; background: rgba(255, 255, 255, 0.01); border: 1px dashed rgba(255, 255, 255, 0.08); border-radius: 20px; gap: 15px; margin-bottom: 25px; width: 100%;">
@@ -1645,7 +2641,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 const dateStr = `${monthNames[dateObj.getMonth()]} de ${dateObj.getFullYear()}`;
                 const avatarUrl = r.avatar || 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=150&auto=format&fit=crop';
                 const stars = '★'.repeat(Math.round(r.rating)) + '☆'.repeat(5 - Math.round(r.rating));
-                
+
                 return `
                     <div class="review-comment-card" style="display: flex; flex-direction: column; gap: 12px; padding: 20px; border-radius: 16px;">
                         <div class="reviewer-header" style="display: flex; align-items: center; gap: 12px;">
@@ -1810,7 +2806,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (!calGrids) return;
 
             const monthNames = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
-            
+
             // Mes 1 (Izquierdo)
             const m1 = new Date(currentCalendarMonth);
             // Mes 2 (Derecho)
@@ -1839,14 +2835,14 @@ document.addEventListener('DOMContentLoaded', async () => {
             const generateMonthHtml = (dateObj, isSecondMonthOnMobile) => {
                 const year = dateObj.getFullYear();
                 const month = dateObj.getMonth();
-                
+
                 const firstDayIndex = new Date(year, month, 1).getDay(); // 0 = Domingo, 1 = Lunes, etc.
                 const totalDays = new Date(year, month + 1, 0).getDate();
 
                 const todayStr = formatDate(new Date());
 
-                let html = `<div class="mock-cal-grid ${isSecondMonthOnMobile ? 'mobile-hide' : ''}" style="flex: 1; display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; gap: 8px; font-size: 0.85rem;">`;
-                
+                let html = `<div class="mock-cal-grid ${isSecondMonthOnMobile ? 'mobile-hide' : ''}" style="flex: 1; min-width: 0; display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; gap: clamp(2px, 1.2vw, 8px); font-size: 0.85rem;">`;
+
                 // Cabeceras de días de la semana
                 const dayHeaders = ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sá"];
                 dayHeaders.forEach(day => {
@@ -1864,7 +2860,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     const dayStr = formatDate(dayDate);
 
                     let classes = ["cal-day"];
-                    
+
                     // Comprobar si está deshabilitado (en el pasado)
                     if (dayStr < todayStr) {
                         classes.push("disabled");
@@ -2279,7 +3275,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         document.getElementById('w-btn-whatsapp').addEventListener('click', () => {
             const companyNumber = "573168251303"; // Número del main-header/footer
 
-            let message = `¡Hola *Eco Conexión Calima*! Deseo realizar una reserva:\n\n`;
+            let message = `¡Hola *Conexión Eco Calima*! Deseo realizar una reserva:\n\n`;
             message += `*Servicio:* ${product.title}\n`;
             message += `*Categoría:* ${product.category.toUpperCase()}\n`;
 
@@ -2499,7 +3495,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         // Generar QR Dinámico de QRServer
         const qrImg = document.getElementById('t-qr');
-        const qrDataString = `Eco Conexion Calima\nTicket: ${ticketId}\nCliente: ${checkoutState.customer.name}\nPlan: ${product.title}\nTotal: $${totals.finalTotal.toLocaleString('es-CO')} COP`;
+        const qrDataString = `Conexion Eco Calima\nTicket: ${ticketId}\nCliente: ${checkoutState.customer.name}\nPlan: ${product.title}\nTotal: $${totals.finalTotal.toLocaleString('es-CO')} COP`;
         qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(qrDataString)}`;
 
         // Mostrar Voucher Modal
@@ -2538,6 +3534,59 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
         }, 300);
     }
+
+    // --- 7. Modal de Términos Legales y Sostenibilidad ---
+    const modalLegal = document.getElementById('modal-legal');
+    const closeLegalBtn = modalLegal ? modalLegal.querySelector('.close-legal-modal') : null;
+    const legalLinks = document.querySelectorAll('.footer-legal-link');
+    const legalTabs = modalLegal ? modalLegal.querySelectorAll('.legal-tab') : [];
+    const legalTabContents = modalLegal ? modalLegal.querySelectorAll('.legal-tab-content') : [];
+
+    const openLegalModal = (e) => {
+        if (e) e.preventDefault();
+        if (!modalLegal) return;
+        modalLegal.style.display = 'block';
+        setTimeout(() => modalLegal.classList.add('show'), 10);
+        document.body.style.overflow = 'hidden';
+    };
+
+    const closeLegalModal = () => {
+        if (!modalLegal) return;
+        modalLegal.classList.remove('show');
+        setTimeout(() => {
+            modalLegal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }, 300);
+    };
+
+    legalLinks.forEach(link => {
+        link.addEventListener('click', openLegalModal);
+    });
+
+    if (closeLegalBtn) {
+        closeLegalBtn.addEventListener('click', closeLegalModal);
+    }
+
+    window.addEventListener('click', (event) => {
+        if (event.target === modalLegal) {
+            closeLegalModal();
+        }
+    });
+
+    legalTabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            const targetTab = tab.getAttribute('data-tab');
+
+            legalTabs.forEach(t => t.classList.remove('active'));
+            legalTabContents.forEach(content => content.classList.remove('active'));
+
+            tab.classList.add('active');
+            const targetContent = document.getElementById(targetTab);
+            if (targetContent) {
+                targetContent.classList.add('active');
+            }
+        });
+    });
 
     // Inicializar explorer al cargar
     initExplorer();

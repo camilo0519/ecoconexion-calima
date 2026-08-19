@@ -1,5 +1,5 @@
 <?php
-// Eco Conexión Calima - Configuración de Base de Datos MySQL (PDO)
+// Conexión Eco Calima - Configuración de Base de Datos MySQL (PDO)
 
 $host = '127.0.0.1';
 $db   = 'ecocalima';

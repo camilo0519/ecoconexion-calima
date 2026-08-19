@@ -1,5 +1,5 @@
 <?php
-// Eco Conexión Calima - API Backend en PHP para MySQL
+// Conexión Eco Calima - API Backend en PHP para MySQL
 header('Content-Type: application/json');
 require_once 'config.php';
 
@@ -63,6 +63,15 @@ function ensureDescriptionColumnExists($pdo) {
 
         if (!in_array('description', $columns)) {
             $pdo->exec("ALTER TABLE products ADD COLUMN description TEXT NULL");
+        }
+        if (!in_array('images', $columns)) {
+            $pdo->exec("ALTER TABLE products ADD COLUMN images TEXT NULL");
+        }
+        if (!in_array('itinerary', $columns)) {
+            $pdo->exec("ALTER TABLE products ADD COLUMN itinerary TEXT NULL");
+        }
+        if (!in_array('status', $columns)) {
+            $pdo->exec("ALTER TABLE products ADD COLUMN status VARCHAR(20) NOT NULL DEFAULT 'active'");
         }
     } catch (\Exception $e) {
         // Ignorar errores en caso de que la tabla aún no haya sido creada
@@ -261,8 +270,25 @@ switch ($action) {
                 $p['partnerLogo'] = $p['partner_logo'];
                 $p['partnerCommission'] = $p['partner_commission'] ? (float)$p['partner_commission'] : 0;
                 
-                // Galería (por base de datos guardamos solo la principal en un arreglo)
-                $p['gallery'] = [$p['image']];
+                // Galería e Itinerario guardados en MySQL
+                if (!empty($p['images'])) {
+                    $decodedImages = json_decode($p['images'], true);
+                    if (is_array($decodedImages) && count($decodedImages) > 0) {
+                        $p['images'] = $decodedImages;
+                        $p['gallery'] = $decodedImages;
+                    } else {
+                        $p['gallery'] = [$p['image']];
+                    }
+                } else {
+                    $p['gallery'] = [$p['image']];
+                }
+
+                if (!empty($p['itinerary'])) {
+                    $decodedItinerary = json_decode($p['itinerary'], true);
+                    if (is_array($decodedItinerary)) {
+                        $p['itinerary'] = $decodedItinerary;
+                    }
+                }
 
                 // Comprobar si es un servicio del sistema modificado (override)
                 $isOverridden = false;
@@ -315,8 +341,8 @@ switch ($action) {
             $pdo->beginTransaction();
 
             // Insertar o actualizar tabla principal de productos
-            $sql = "INSERT INTO products (id, partner_id, category, title, subtitle, rating, reviews_count, price, price_type, image, max_guests, child_discount_rate, description)
-                    VALUES (:id, :partner_id, :category, :title, :subtitle, :rating, :reviews_count, :price, :price_type, :image, :max_guests, :child_discount_rate, :description)
+            $sql = "INSERT INTO products (id, partner_id, category, title, subtitle, rating, reviews_count, price, price_type, image, images, itinerary, max_guests, child_discount_rate, description)
+                    VALUES (:id, :partner_id, :category, :title, :subtitle, :rating, :reviews_count, :price, :price_type, :image, :images, :itinerary, :max_guests, :child_discount_rate, :description)
                     ON DUPLICATE KEY UPDATE 
                         partner_id = VALUES(partner_id),
                         category = VALUES(category),
@@ -325,6 +351,8 @@ switch ($action) {
                         price = VALUES(price),
                         price_type = VALUES(price_type),
                         image = VALUES(image),
+                        images = VALUES(images),
+                        itinerary = VALUES(itinerary),
                         max_guests = VALUES(max_guests),
                         child_discount_rate = VALUES(child_discount_rate),
                         description = VALUES(description)";
@@ -332,17 +360,19 @@ switch ($action) {
             $stmt = $pdo->prepare($sql);
             $stmt->execute([
                 ':id' => $input['id'],
-                ':partner_id' => isset($input['partnerId']) ? $input['partnerId'] : null,
-                ':category' => $input['category'],
-                ':title' => $input['title'],
-                ':subtitle' => $input['subtitle'],
+                ':partner_id' => (!empty($input['partnerId']) && trim($input['partnerId']) !== '') ? $input['partnerId'] : null,
+                ':category' => !empty($input['category']) ? $input['category'] : 'pasadia',
+                ':title' => !empty($input['title']) ? $input['title'] : 'Pasadía Lago Calima',
+                ':subtitle' => !empty($input['subtitle']) ? $input['subtitle'] : 'Experiencia ecoturística inolvidable',
                 ':rating' => isset($input['rating']) ? (float)$input['rating'] : 5.0,
                 ':reviews_count' => isset($input['reviewsCount']) ? (int)$input['reviewsCount'] : 1,
-                ':price' => (int)$input['price'],
-                ':price_type' => $input['priceType'],
-                ':image' => $input['image'],
-                ':max_guests' => (int)$input['maxGuests'],
-                ':child_discount_rate' => (float)$input['childDiscountRate'],
+                ':price' => isset($input['price']) ? (int)$input['price'] : 95000,
+                ':price_type' => !empty($input['priceType']) ? $input['priceType'] : 'person',
+                ':image' => !empty($input['image']) ? $input['image'] : 'https://conexioneco.com/wp-content/uploads/2026/06/PONTON.webp',
+                ':images' => isset($input['images']) && is_array($input['images']) ? json_encode($input['images']) : null,
+                ':itinerary' => isset($input['itinerary']) && is_array($input['itinerary']) ? json_encode($input['itinerary']) : null,
+                ':max_guests' => isset($input['maxGuests']) ? (int)$input['maxGuests'] : 15,
+                ':child_discount_rate' => isset($input['childDiscountRate']) ? (float)$input['childDiscountRate'] : 0.5,
                 ':description' => isset($input['description']) ? $input['description'] : null
             ]);
 
@@ -386,67 +416,40 @@ switch ($action) {
 
             $pdo->beginTransaction();
 
-            if (strpos($id, 'custom-') === 0) {
-                // Es un servicio totalmente personalizado creado en localStorage, lo borramos de la DB
-                $stmt = $pdo->prepare("DELETE FROM products WHERE id = ?");
-                $stmt->execute([$id]);
-            } else {
-                // Es un servicio de sistema. Para reestablecerlo, volvemos a escribir sus valores iniciales por defecto.
-                if (isset($DEFAULT_PRODUCTS[$id])) {
-                    $default = $DEFAULT_PRODUCTS[$id];
-
-                    // Actualizar tabla principal
-                    $sql = "UPDATE products SET 
-                                category = :category,
-                                title = :title,
-                                subtitle = :subtitle,
-                                rating = :rating,
-                                reviews_count = :reviews_count,
-                                price = :price,
-                                price_type = :price_type,
-                                image = :image,
-                                max_guests = :max_guests,
-                                child_discount_rate = :child_discount_rate,
-                                description = :description
-                            WHERE id = :id";
-                    $stmt = $pdo->prepare($sql);
-                    $stmt->execute([
-                        ':id' => $id,
-                        ':category' => $default['category'],
-                        ':title' => $default['title'],
-                        ':subtitle' => $default['subtitle'],
-                        ':rating' => (float)$default['rating'],
-                        ':reviews_count' => (int)$default['reviews_count'],
-                        ':price' => (int)$default['price'],
-                        ':price_type' => $default['price_type'],
-                        ':image' => $default['image'],
-                        ':max_guests' => (int)$default['max_guests'],
-                        ':child_discount_rate' => (float)$default['child_discount_rate'],
-                        ':description' => isset($default['description']) ? $default['description'] : null
-                    ]);
-
-                    // Reestablecer comodidades (features)
-                    $pdo->prepare("DELETE FROM product_features WHERE product_id = ?")->execute([$id]);
-                    $fStmt = $pdo->prepare("INSERT INTO product_features (product_id, feature) VALUES (?, ?)");
-                    foreach ($default['features'] as $feature) {
-                        $fStmt->execute([$id, $feature]);
-                    }
-
-                    // Reestablecer adicionales (addons)
-                    $pdo->prepare("DELETE FROM product_addons WHERE product_id = ?")->execute([$id]);
-                    $aStmt = $pdo->prepare("INSERT INTO product_addons (product_id, addon_id) VALUES (?, ?)");
-                    foreach ($default['addons'] as $addonId) {
-                        $aStmt->execute([$id, $addonId]);
-                    }
-                }
-            }
+            // Eliminar registros de características y adicionales vinculados
+            $pdo->prepare("DELETE FROM product_features WHERE product_id = ?")->execute([$id]);
+            $pdo->prepare("DELETE FROM product_addons WHERE product_id = ?")->execute([$id]);
+            
+            // Eliminar producto de la tabla principal
+            $stmt = $pdo->prepare("DELETE FROM products WHERE id = ?");
+            $stmt->execute([$id]);
 
             $pdo->commit();
-            echo json_encode(['status' => 'success', 'message' => 'Servicio reestablecido/eliminado.']);
+            echo json_encode(['status' => 'success', 'message' => 'Servicio eliminado correctamente de la base de datos.']);
         } catch (\Exception $e) {
             if ($pdo->inTransaction()) {
                 $pdo->rollBack();
             }
+            http_response_code(500);
+            echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
+        }
+        break;
+
+    case 'toggle_product_status':
+        try {
+            $input = json_decode(file_get_contents('php://input'), true);
+            $id = isset($input['id']) ? $input['id'] : '';
+            $status = isset($input['status']) ? $input['status'] : 'active';
+
+            if (!$id) {
+                throw new \Exception("ID de producto no proporcionado.");
+            }
+
+            $stmt = $pdo->prepare("UPDATE products SET status = :status WHERE id = :id");
+            $stmt->execute([':status' => $status, ':id' => $id]);
+
+            echo json_encode(['status' => 'success', 'message' => 'Estado del servicio actualizado correctamente.', 'new_status' => $status]);
+        } catch (\Exception $e) {
             http_response_code(500);
             echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
         }

@@ -1,0 +1,3 @@
+server_log.txt
+server_log_err.txt
+*.log

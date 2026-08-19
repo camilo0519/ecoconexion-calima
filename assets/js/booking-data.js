@@ -1,10 +1,19 @@
 /**
- * Eco Conexión Calima - Base de Datos y Lógica de Sincronización con PHP/MySQL
+ * Conexión Eco Calima - Base de Datos y Lógica de Sincronización con PHP/MySQL
  * Permite la integración transparente entre el frontend y la base de datos real mediante llamadas asíncronas a api.php.
  */
 
 let cachedProducts = [];
 let cachedAddons = {};
+
+window.formatGoogleDriveUrl = function(url) {
+    if (!url || typeof url !== 'string') return url;
+    const driveMatch = url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/) || url.match(/id=([a-zA-Z0-9_-]+)/);
+    if (driveMatch && driveMatch[1]) {
+        return `https://lh3.googleusercontent.com/d/${driveMatch[1]}`;
+    }
+    return url;
+};
 
 const CATEGORY_ICONS = {
     todos: `
@@ -87,7 +96,14 @@ async function init() {
         if (!prodRes.ok || !addonRes.ok) {
             throw new Error("Respuesta incorrecta de la API.");
         }
-        cachedProducts = await prodRes.json();
+        const rawProducts = await prodRes.json();
+        cachedProducts = rawProducts.map(p => {
+            if (p.image) p.image = window.formatGoogleDriveUrl(p.image);
+            if (p.gallery && Array.isArray(p.gallery)) {
+                p.gallery = p.gallery.map(g => window.formatGoogleDriveUrl(g));
+            }
+            return p;
+        });
         const addonsList = await addonRes.json();
         cachedAddons = {};
         addonsList.forEach(addon => {
@@ -96,17 +112,28 @@ async function init() {
     } catch (e) {
         console.error("Falla al conectar con MySQL/API PHP. Usando localStorage de respaldo.", e);
         // Fallback local de emergencia en caso de que PHP no esté disponible
-        cachedProducts = JSON.parse(localStorage.getItem('ecocalima_custom_products')) || [];
+        const rawProducts = JSON.parse(localStorage.getItem('ecocalima_custom_products')) || [];
+        cachedProducts = rawProducts.map(p => {
+            if (p.image) p.image = window.formatGoogleDriveUrl(p.image);
+            if (p.gallery && Array.isArray(p.gallery)) {
+                p.gallery = p.gallery.map(g => window.formatGoogleDriveUrl(g));
+            }
+            return p;
+        });
         cachedAddons = JSON.parse(localStorage.getItem('ecocalima_custom_addons')) || {};
     }
 }
 
-function getProducts() {
-    return cachedProducts;
+function getProducts(includeInactive = false) {
+    if (includeInactive) {
+        return cachedProducts;
+    }
+    return cachedProducts.filter(p => p.status !== 'inactive');
 }
 
-function getProductById(id) {
-    return cachedProducts.find(p => p.id === id) || null;
+function getProductById(id, includeInactive = false) {
+    const list = getProducts(includeInactive);
+    return list.find(p => String(p.id) === String(id)) || null;
 }
 
 async function saveProduct(product) {
@@ -283,6 +310,22 @@ async function deletePartner(id) {
     }
 }
 
+async function toggleProductStatus(id, status) {
+    try {
+        const res = await fetch('backend/api.php?action=toggle_product_status', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id, status })
+        });
+        const result = await res.json();
+        await init();
+        return result;
+    } catch (e) {
+        console.error("Error al cambiar estado de producto:", e);
+        return { status: 'error', message: e.message };
+    }
+}
+
 // Exportar objetos para uso en navegadores
 window.BookingData = {
     init,
@@ -290,6 +333,7 @@ window.BookingData = {
     getProductById,
     saveProduct,
     deleteProduct,
+    toggleProductStatus,
     isProductOverridden,
     getAddonDetails,
     getAllAddons,
